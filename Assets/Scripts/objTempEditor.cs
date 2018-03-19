@@ -1,9 +1,7 @@
-﻿#if UNITY_EDITOR
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
 
 [CustomEditor(typeof(objTempScripts))]
 public class objTempEditor : Editor {
@@ -22,4 +20,3 @@ public class objTempEditor : Editor {
 
     }
 }
-#endif

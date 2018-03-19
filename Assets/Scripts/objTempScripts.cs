@@ -23,11 +23,9 @@ public class objTempScripts : MonoBehaviour {
         Vector3 camPos = Camera.main.WorldToScreenPoint(transform.position);
 
         textObj.rectTransform.position = new Vector3(camPos.x, camPos.y + transform.GetComponent<BoxCollider>().bounds.size.y*100, 0);
-		textObj.text = objIndex + " : " + transform.position.x + " : " + transform.position.y;
-        if (moveEnalbe && GeneralScript.selectedObj == objIndex)
+        textObj.text = transform.position.x + " : " + transform.position.y;
+        if (moveEnalbe && GeneralScript.Instance.selectedObj == objIndex)
         {
-			GeneralScript.SendUserPos (GeneralScript.selectedObj, transform.position.x, transform.position.y);
-			// Debug.Log("Now selected Obj is" + GeneralScript.selectedObj);
 
             if (Input.GetKey(KeyCode.LeftArrow))
             {
@@ -51,7 +49,7 @@ public class objTempScripts : MonoBehaviour {
     {
         if (moveEnalbe)
         {
-             transform.position = changePos;
+            transform.position = changePos;
         }
     }
 
