@@ -1,0 +1,34 @@
+
+Gun.png
+size: 128,64
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Bullet
+  rotate: false
+  xy: 70, 44
+  size: 8, 4
+  orig: 8, 4
+  offset: 0, 0
+  index: -1
+Gun_SpinDown
+  rotate: false
+  xy: 2, 16
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Gun_SpinUp
+  rotate: false
+  xy: 36, 16
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Hand_Pistol_0
+  rotate: false
+  xy: 2, 2
+  size: 25, 12
+  orig: 25, 12
+  offset: 0, 0
+  index: -1

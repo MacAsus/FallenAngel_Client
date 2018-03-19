@@ -26,7 +26,7 @@ public class objTempScripts : MonoBehaviour {
         textObj.text = transform.position.x + " : " + transform.position.y;
         if (moveEnalbe && GeneralScript.Instance.selectedObj == objIndex)
         {
-
+            
             if (Input.GetKey(KeyCode.LeftArrow))
             {
                 transform.Translate(new Vector3(-speed * Time.deltaTime, 0, 0));
