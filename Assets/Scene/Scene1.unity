@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 11400000, guid: 178f244cbb619ff4aa72d7d4c7461d11, type: 2}
-  initialSkinName: default
+  initialSkinName: BrownieHG
   initialFlipX: 0
   initialFlipY: 0
   separatorSlotNames: []
@@ -673,7 +673,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1638076574}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.072, y: 0, z: 0}
   m_LocalScale: {x: 3.079655, y: 3.079655, z: 1}
   m_Children: []
   m_Father: {fileID: 837748194}
@@ -822,7 +822,7 @@ Transform:
   - {fileID: 558785986}
   m_Father: {fileID: 1908058422}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 41.291}
 --- !u!114 &1758553210
 MonoBehaviour:
   m_ObjectHideFlags: 0
