@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine;
+using Spine.Unity;
 
 public abstract class CharacterGeneral : MonoBehaviour {
 
@@ -15,6 +17,9 @@ public abstract class CharacterGeneral : MonoBehaviour {
     public float f_SpritelocalScale;
     public float f_WeaponlocalScale;
 
+    public enum State{Idle, Run, Attack, Dead};
+    public State e_State;
+
     protected void GetAimDegree(Vector3 v_TargetPos)
     {
         
@@ -27,6 +32,7 @@ public abstract class CharacterGeneral : MonoBehaviour {
     
     public virtual void InitializeParam()
     {
+        e_State = State.Idle;
         g_Sprite = transform.Find("Sprite");
         if (b_Ranged)
         {
@@ -59,6 +65,16 @@ public abstract class CharacterGeneral : MonoBehaviour {
             g_Sprite.localScale = new Vector3(-f_SpritelocalScale, g_Sprite.localScale.y, g_Sprite.localScale.z);
             g_Weapon.localScale = new Vector3(g_Weapon.localScale.x, -f_WeaponlocalScale, g_Weapon.localScale.z);
         }
+    }
+
+    public virtual void CharacterAttack()
+    {
+
+    }
+
+    public virtual void CharacterDead()
+    {
+
     }
 
 }
