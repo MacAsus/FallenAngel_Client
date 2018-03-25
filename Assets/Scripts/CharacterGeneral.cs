@@ -17,10 +17,41 @@ public abstract class CharacterGeneral : MonoBehaviour {
     public float f_SpritelocalScale;
     public float f_WeaponlocalScale;
 
-    public enum State{Idle, Run, Attack, Dead};
-    public State e_State;
+    public Animator a_Animator;
+    public SkeletonAnimation spine_CharacterAnim;
+    public SkeletonAnimation spine_GunAnim;
 
-    protected void GetAimDegree(Vector3 v_TargetPos)
+    public enum SpriteState{ Idle, Run, Attack, Dead };
+    public enum SpineState { Idle, Attack };
+    public SpriteState e_SpriteState;
+
+    public virtual void InitializeParam()
+    {
+        e_SpriteState = SpriteState.Idle;
+        g_Sprite = transform.Find("Sprite");
+        if (b_Ranged)
+        {
+            g_Weapon = transform.Find("Weapon");
+        }
+        f_SpritelocalScale = g_Sprite.localScale.x;
+        f_WeaponlocalScale = g_Sprite.localScale.y;
+        if (g_Sprite.GetComponent<Animator>() != null)
+        {
+            a_Animator = g_Sprite.GetComponent<Animator>();
+        }
+        else if (g_Sprite.GetComponent<SkeletonAnimation>() != null)
+        {
+            spine_CharacterAnim = g_Sprite.GetComponent<SkeletonAnimation>();
+        }
+
+        if (g_Weapon.GetComponent<SkeletonAnimation>() != null)
+        {
+            spine_GunAnim = g_Weapon.GetComponent<SkeletonAnimation>();
+        }
+
+    }
+
+    public void GetAimDegree(Vector3 v_TargetPos)
     {
         
         float x = g_Weapon.position.x - v_TargetPos.x;
@@ -30,17 +61,6 @@ public abstract class CharacterGeneral : MonoBehaviour {
         f_AimDegree = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
     }
     
-    public virtual void InitializeParam()
-    {
-        e_State = State.Idle;
-        g_Sprite = transform.Find("Sprite");
-        if (b_Ranged)
-        {
-            g_Weapon = transform.Find("Weapon");
-        }
-        f_SpritelocalScale = g_Sprite.localScale.x;
-        f_WeaponlocalScale = g_Sprite.localScale.y;
-    }
 
 
     public virtual void CharacterMovement()
@@ -77,4 +97,16 @@ public abstract class CharacterGeneral : MonoBehaviour {
 
     }
 
+
+    //Sprite 애니메이션 컨트롤
+    public virtual void AnimationControl()
+    {
+
+    }
+
+    //Spine 애니메이션 없으면 Updata에 넣을 필요 없음
+    public virtual void WeaponSpineControl()
+    {
+
+    }
 }
