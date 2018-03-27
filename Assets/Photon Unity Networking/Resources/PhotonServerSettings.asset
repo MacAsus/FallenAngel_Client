@@ -15,7 +15,7 @@ MonoBehaviour:
   VoiceAppID: 
   ChatAppID: bb20e7b8-d9db-45dc-86ce-e6038567971c
   HostType: 1
-  PreferredRegion: 0
+  PreferredRegion: 9
   EnabledRegions: -1
   Protocol: 0
   ServerAddress: 
