@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 114463502197329796}
   - component: {fileID: 114994152367860560}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Attacker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -658,7 +658,6 @@ MonoBehaviour:
   n_hp: 3
   f_AimDegree: 0
   f_Speed: 4
-  b_Ranged: 1
   s_Weapon: 
   g_Sprite: {fileID: 0}
   g_Weapon: {fileID: 0}
