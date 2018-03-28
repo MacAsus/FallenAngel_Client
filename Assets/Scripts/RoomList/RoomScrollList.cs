@@ -7,40 +7,45 @@ using UnityEngine.UI;
 public class Item {
 	public string roomName;
 	public string roomState;
+
+    public Item(string _roomName, string _roomState) {
+        roomName = _roomName;
+        roomState = _roomState;
+    }
 }
 
-public class RoomScrollList : MonoBehaviour {
+public class RoomScrollList : Photon.PunBehaviour {
+    public static RoomInfo[] rooms = { };
 	public List<Item> roomList;
 	public Transform contentPanel;
 	public RoomObjectPool roomObjectPool;
 
+    /*****************
+	 * Unity LifeCycle
+	*****************/
+    void Awake() {
+        RefreshDisplay();
+        Debug.Log("RoomScroll에서 본 룸 갯수" + rooms.Length);
+    }
 
 	// Use this for initialization
 	void Start () {
-		RefreshDisplay();
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
-
-	// AddButtons
-	private void AddRooms() {
-		for(int i = 0; i < roomList.Count; i++) {
-			Item item = roomList[i];
-			GameObject newButton = roomObjectPool.GetObject();
-			newButton.transform.SetParent(contentPanel);
-			SampleBtn sampleBtn = newButton.GetComponent<SampleBtn>();
-			sampleBtn.Setup(item, this);
-		}
-	}
-
-	void RefreshDisplay() {
-        // RemoveButtons ();
-        AddButtons ();
+    /*****************
+	 * Custom Method
+	******************/
+    void RefreshDisplay() {
+        RemoveButtons ();
+        // AddButtons ();
     }
 
+    // AddButtons
 	private void RemoveButtons()
     {
         while (contentPanel.childCount > 0) 
@@ -50,9 +55,10 @@ public class RoomScrollList : MonoBehaviour {
         }
     }
 
+    // AddButtons
 	private void AddButtons()
     {
-        for (int i = 0; i < roomList.Count; i++) 
+        for (int i = 0; i < roomList.Count; i++)
         {
             Item item = roomList[i];
             GameObject newButton = roomObjectPool.GetObject();
@@ -77,5 +83,23 @@ public class RoomScrollList : MonoBehaviour {
                 roomScrollList.roomList.RemoveAt(i);
             }
         }
+    }
+    
+    /*****************
+	 * Photon Event
+	*****************/
+    public override void OnReceivedRoomListUpdate() {
+        Debug.Log("Room Count" + PhotonNetwork.countOfRooms);
+        rooms = PhotonNetwork.GetRoomList();;
+        roomList.Clear(); // clear room list
+        foreach(var room in rooms) {
+            Debug.Log("Found room: " + room);
+            Item item = new Item(room.Name, room.PlayerCount + " / " + room.MaxPlayers);
+            roomList.Add(item);
+        }
+        Debug.Log("Total rooms count: " + rooms.Length);
+
+        RemoveButtons();
+        AddButtons ();
     }
 }

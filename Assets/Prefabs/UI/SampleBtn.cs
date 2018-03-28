@@ -13,7 +13,7 @@ public class SampleBtn : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        button.onClick.AddListener (HandleClick);
 	}
 
 	public void Setup(Item currentItem, RoomScrollList currentScrollList)
@@ -26,6 +26,6 @@ public class SampleBtn : MonoBehaviour {
     
     public void HandleClick()
     {
-        
+        PhotonNetwork.JoinRoom(item.roomName);
     }
 }

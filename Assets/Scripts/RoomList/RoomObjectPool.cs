@@ -52,10 +52,12 @@ public class RoomObjectPool : MonoBehaviour
             
             // add the instance to the collection of inactive instances
             inactiveInstances.Push(toReturn);
+            Debug.LogWarning(toReturn.name + " Push");
         }
         // otherwise, just destroy it
         else
         {
+            toReturn.transform.SetParent(null);
             Debug.LogWarning(toReturn.name + " was returned to a pool it wasn't spawned from! Destroying.");
             Destroy(toReturn);
         }

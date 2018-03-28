@@ -47,9 +47,10 @@ public class CreateRoomGui : Photon.PunBehaviour {
             Debug.Log("We load the 'Room for ' " + PhotonNetwork.room.Name);
         }
 
-        // set player name to integer player count
-        PhotonNetwork.playerName = PhotonNetwork.room.PlayerCount+"";
-
         SceneManager.LoadScene("RoomWaiting", LoadSceneMode.Single);
+    }
+
+    public override void OnCreatedRoom() {
+        Debug.Log("===============OnCreatedRoom: " + PhotonNetwork.player.ID);
     }
 }

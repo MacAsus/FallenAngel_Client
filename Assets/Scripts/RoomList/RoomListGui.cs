@@ -11,11 +11,8 @@ public class RoomListGui : Photon.PunBehaviour {
     public static byte MaxPlayersPerRoom = 4;
     private static bool isConnecting = false;
 
-    // Use this for initialization
-    public static RoomInfo[] rooms;
 
-
-	/*****************
+    /*****************
 	 * Unity LifeCycle
 	*****************/
     void Awake() {
@@ -25,6 +22,7 @@ public class RoomListGui : Photon.PunBehaviour {
         Connect();
 	}
 
+    // Use this for initialization
     void Start () {
         
     }
@@ -37,7 +35,6 @@ public class RoomListGui : Photon.PunBehaviour {
 	/*****************
 	 * Custom Method
 	******************/
-	
 	public static void Connect()
     {
         // networkState.text = "Now Connecting...";
@@ -64,20 +61,8 @@ public class RoomListGui : Photon.PunBehaviour {
 	/*****************
 	 * Photon Event
 	*****************/
-    public override void OnReceivedRoomListUpdate() {
-        Debug.Log("Room Count" + PhotonNetwork.countOfRooms);
-        rooms = PhotonNetwork.GetRoomList();;
-        foreach(var room in rooms) 
-             Debug.Log("Found room: " + room);
-
-
-        Debug.Log("Total rooms count: " + rooms.Length);
-    }
-
     public override void OnJoinedLobby() {
-        // foreach(RoomInfo room in rooms) {
-            // Debug.Log(room.Name + " " + room.PlayerCount + " / " + room.MaxPlayers);
-        // }
+        
     }
 
 	public override void OnFailedToConnectToPhoton(DisconnectCause cause) {
@@ -115,6 +100,7 @@ public class RoomListGui : Photon.PunBehaviour {
             // PhotonNetwork.LoadLevel("Room for 1");
         }
 
+        
         SceneManager.LoadScene("RoomWaiting", LoadSceneMode.Single);
     }
 

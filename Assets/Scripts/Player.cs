@@ -12,7 +12,7 @@ public class Player : CharacterGeneral {
     // Use this for initialization
     void Start () {
         InitializeParam();
-        spine_GunAnim.state.Event += SpineOnevent;
+        // spine_GunAnim.state.Event += SpineOnevent;
     }
 	
 	// Update is called once per frame

@@ -17,3 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RoomWaiting.unity
     guid: 341f7f0ac1b364a40a823a83bb29ae09
+  - enabled: 1
+    path: Assets/Scenes/Scene1.unity
+    guid: cca8846fafd20e14b9bfbb6f8850fb02
