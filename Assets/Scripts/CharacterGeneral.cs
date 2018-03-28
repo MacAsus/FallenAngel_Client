@@ -53,9 +53,8 @@ public abstract class CharacterGeneral : MonoBehaviour {
         if (g_Weapon != null && g_Weapon.GetComponent<SkeletonAnimation>() != null)
         {
             spine_GunAnim = g_Weapon.GetComponent<SkeletonAnimation>();
-            spine_GunAnim.state.Event += SpineOnevent;
+          
         }
-
     }
 
 
