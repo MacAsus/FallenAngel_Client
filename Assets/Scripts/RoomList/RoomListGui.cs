@@ -9,10 +9,10 @@ public class RoomListGui : Photon.PunBehaviour {
 	public static string _gameVersion = "1";
     public PhotonLogLevel LogLevel = PhotonLogLevel.ErrorsOnly;
     public static byte MaxPlayersPerRoom = 4;
-    private static bool isConnecting;
+    private static bool isConnecting = false;
 
     // Use this for initialization
-    private RoomInfo[] rooms;
+    public static RoomInfo[] rooms;
 
 
 	/*****************
@@ -66,12 +66,12 @@ public class RoomListGui : Photon.PunBehaviour {
 	*****************/
     public override void OnReceivedRoomListUpdate() {
         Debug.Log("Room Count" + PhotonNetwork.countOfRooms);
-        var roomList = PhotonNetwork.GetRoomList();;
-        foreach(var room in roomList) 
+        rooms = PhotonNetwork.GetRoomList();;
+        foreach(var room in rooms) 
              Debug.Log("Found room: " + room);
 
 
-        Debug.Log("Total rooms count: " + roomList.Length);
+        Debug.Log("Total rooms count: " + rooms.Length);
     }
 
     public override void OnJoinedLobby() {
