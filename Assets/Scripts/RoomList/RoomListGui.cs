@@ -11,12 +11,6 @@ public class RoomListGui : Photon.PunBehaviour {
     public static byte MaxPlayersPerRoom = 4;
     private static bool isConnecting;
 
-	void Awake() {
-		PhotonNetwork.logLevel = LogLevel;
-		PhotonNetwork.autoJoinLobby = false;
-		PhotonNetwork.automaticallySyncScene = true;
-	}
-
     // Use this for initialization
     private RoomInfo[] rooms;
 
@@ -24,8 +18,15 @@ public class RoomListGui : Photon.PunBehaviour {
 	/*****************
 	 * Unity LifeCycle
 	*****************/
-    void Start () {
+    void Awake() {
+		PhotonNetwork.logLevel = LogLevel;
+		PhotonNetwork.autoJoinLobby = true;
+		PhotonNetwork.automaticallySyncScene = true;
         Connect();
+	}
+
+    void Start () {
+        
     }
 	
 	// Update is called once per frame
@@ -46,6 +47,7 @@ public class RoomListGui : Photon.PunBehaviour {
             PhotonNetwork.ConnectUsingSettings(_gameVersion);
         }
     }
+    
 
 	/*****************
 	 * GUI Trigger
@@ -62,6 +64,22 @@ public class RoomListGui : Photon.PunBehaviour {
 	/*****************
 	 * Photon Event
 	*****************/
+    public override void OnReceivedRoomListUpdate() {
+        Debug.Log("Room Count" + PhotonNetwork.countOfRooms);
+        var roomList = PhotonNetwork.GetRoomList();;
+        foreach(var room in roomList) 
+             Debug.Log("Found room: " + room);
+
+
+        Debug.Log("Total rooms count: " + roomList.Length);
+    }
+
+    public override void OnJoinedLobby() {
+        // foreach(RoomInfo room in rooms) {
+            // Debug.Log(room.Name + " " + room.PlayerCount + " / " + room.MaxPlayers);
+        // }
+    }
+
 	public override void OnFailedToConnectToPhoton(DisconnectCause cause) {
         Debug.Log(cause);
     }
@@ -70,11 +88,6 @@ public class RoomListGui : Photon.PunBehaviour {
     {
         // networkState.text = "OnConnectedToMaster...";
         Debug.Log("=========Launcher: OnConnectedToMaster() was called by PUN=========");
-		rooms = GameManager.GetRoomList();
-        Debug.Log("Total rooms count: " + rooms.Length);
-        foreach(RoomInfo room in rooms) {
-            Debug.Log(room.Name + " " + room.PlayerCount + " / " + room.MaxPlayers);
-        }
     }
 
 	public override void OnDisconnectedFromPhoton()

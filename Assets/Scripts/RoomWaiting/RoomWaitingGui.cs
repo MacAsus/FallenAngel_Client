@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RoomWaitingGui : Photon.PunBehaviour {
 
@@ -11,6 +12,24 @@ public class RoomWaitingGui : Photon.PunBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
+	}
+
+	public void OnClickLeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+		SceneManager.LoadScene("RoomList", LoadSceneMode.Single);
+    }
+
+	public void OnClickConfig() {
+
+	}
+
+	public void OnClickStart() {
+		SceneManager.LoadScene("Scene1", LoadSceneMode.Single);
+	}
+
+	public override void OnJoinedRoom() {
 		
 	}
 }

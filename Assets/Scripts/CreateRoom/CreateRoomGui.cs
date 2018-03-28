@@ -33,7 +33,8 @@ public class CreateRoomGui : Photon.PunBehaviour {
     }
 
 	public void CreateRoom(string roomName) {
-        PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = Launcher.MaxPlayersPerRoom }, null);
+        PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = Launcher.MaxPlayersPerRoom, IsVisible = true }, null);
+        // TypedLobby.Default
     }
 
 	public override void OnJoinedRoom()
