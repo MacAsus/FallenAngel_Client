@@ -37,7 +37,7 @@ public class RoomScrollList : MonoBehaviour {
 	}
 
 	void RefreshDisplay() {
-        RemoveButtons ();
+        // RemoveButtons ();
         AddButtons ();
     }
 
@@ -58,8 +58,8 @@ public class RoomScrollList : MonoBehaviour {
             GameObject newButton = roomObjectPool.GetObject();
             newButton.transform.SetParent(contentPanel);
 
-            SampleBtn sampleButton = newButton.GetComponent<SampleBtn>();
-            sampleButton.Setup(item, this);
+            SampleBtn sampleBtn = newButton.GetComponent<SampleBtn>();
+            sampleBtn.Setup(item, this);
         }
     }
 

@@ -22,7 +22,6 @@ public class SampleBtn : MonoBehaviour {
         roomName.text = item.roomName;
         roomState.text = item.roomState;
         roomList = currentScrollList;
-        
     }
     
     public void HandleClick()
