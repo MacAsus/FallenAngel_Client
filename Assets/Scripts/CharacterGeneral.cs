@@ -6,35 +6,41 @@ using Spine.Unity;
 
 public abstract class CharacterGeneral : MonoBehaviour {
 
-    public int n_hp;
+    public int n_hp;    //캐릭터의 체력
 
-    public float f_AimDegree;
-    public float f_Speed;
-    public bool b_Ranged;
-    public string s_Weapon;
-    public Transform g_Sprite;
-    public Transform g_Weapon;
-    public float f_SpritelocalScale;
-    public float f_WeaponlocalScale;
 
-    public Animator a_Animator;
-    public SkeletonAnimation spine_CharacterAnim;
-    public SkeletonAnimation spine_GunAnim;
+    public float f_AimDegree; //Aim 각도
+    public float f_Speed; //캐릭터 무빙 스피드
 
-    public enum SpriteState{ Idle, Run, Attack, Dead };
-    public enum SpineState { Idle, Attack };
-    public SpriteState e_SpriteState;
+    public string s_Weapon; //가지고 있는 무기의 이름
+    public Transform g_Sprite; //캐릭터 스프라이트(or spine) Transform
+    public Transform g_Weapon; //무기 스프라이트(or spine) Transform
+    public float f_SpritelocalScale; //캐릭터 로컬 스케일(타일과 크기 맞춤을 위함)
+    public float f_WeaponlocalScale; //무기 로컬 스케일(타일과 크기 맞춤을 위함)
+
+    public Animator a_Animator; //애니메이터
+    public SkeletonAnimation spine_CharacterAnim; //(캐릭터 애니메이션이 spine일 때) 애니메이터
+    public SkeletonAnimation spine_GunAnim; //(총의 애니메이션이 spine일 때) 애니메이터
+
+    public enum SpriteState{ Idle, Run, Attack, Dead }; //캐릭터의 상태 enum
+    public enum SpineState { Idle, Attack }; //무기의 상태 enum
+    public SpriteState e_SpriteState; //애니메이터에게 보내줄 상태(캐릭터의 상태)
 
     public virtual void InitializeParam()
     {
+        
         e_SpriteState = SpriteState.Idle;
+
+        //규칙 : 캐릭터의 스프라이트 or 스파인 정보는 g_Sprite에 저장
         g_Sprite = transform.Find("Sprite");
-        if (b_Ranged)
+        if (transform.Find("Weapon") != null)
         {
             g_Weapon = transform.Find("Weapon");
         }
         f_SpritelocalScale = g_Sprite.localScale.x;
         f_WeaponlocalScale = g_Sprite.localScale.y;
+
+        //애니메이터 결정
         if (g_Sprite.GetComponent<Animator>() != null)
         {
             a_Animator = g_Sprite.GetComponent<Animator>();
@@ -44,12 +50,14 @@ public abstract class CharacterGeneral : MonoBehaviour {
             spine_CharacterAnim = g_Sprite.GetComponent<SkeletonAnimation>();
         }
 
-        if (g_Weapon.GetComponent<SkeletonAnimation>() != null)
+        if (g_Weapon != null && g_Weapon.GetComponent<SkeletonAnimation>() != null)
         {
             spine_GunAnim = g_Weapon.GetComponent<SkeletonAnimation>();
+            spine_GunAnim.state.Event += SpineOnevent;
         }
 
     }
+
 
     public void GetAimDegree(Vector3 v_TargetPos)
     {
@@ -60,7 +68,6 @@ public abstract class CharacterGeneral : MonoBehaviour {
 
         f_AimDegree = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
     }
-    
 
 
     public virtual void CharacterMovement()
@@ -106,6 +113,11 @@ public abstract class CharacterGeneral : MonoBehaviour {
 
     //Spine 애니메이션 없으면 Updata에 넣을 필요 없음
     public virtual void WeaponSpineControl()
+    {
+
+    }
+
+    public virtual void Attack()
     {
 
     }

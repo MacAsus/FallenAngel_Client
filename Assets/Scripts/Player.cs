@@ -6,11 +6,13 @@ using Spine.Unity;
 
 public class Player : CharacterGeneral {
     public static GameObject LocalPlayerInstance;
-    
+
+
+
     // Use this for initialization
     void Start () {
         InitializeParam();
-
+        spine_GunAnim.state.Event += SpineOnevent;
     }
 	
 	// Update is called once per frame
@@ -54,6 +56,13 @@ public class Player : CharacterGeneral {
         }
     }
 
+
+    void SpineOnevent(Spine.AnimationState state, int trackIndex, Spine.Event e)
+    {
+
+    }
+
+
     public override void AnimationControl()
     {
         if (e_SpriteState == SpriteState.Idle)
@@ -69,4 +78,5 @@ public class Player : CharacterGeneral {
     {
         
     }
+
 }
