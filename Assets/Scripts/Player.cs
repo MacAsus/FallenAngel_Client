@@ -5,9 +5,7 @@ using Spine;
 using Spine.Unity;
 
 public class Player : CharacterGeneral {
-
-
-
+    public static GameObject LocalPlayerInstance;
     
     // Use this for initialization
     void Start () {

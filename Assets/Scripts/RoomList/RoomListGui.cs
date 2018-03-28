@@ -1,34 +1,43 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Launcher : Photon.PunBehaviour
-{
+public class RoomListGui : Photon.PunBehaviour {
 
-    public string _gameVersion = "1";
-    public PhotonLogLevel LogLevel = PhotonLogLevel.Informational;
+	public static string _gameVersion = "1";
+    public PhotonLogLevel LogLevel = PhotonLogLevel.ErrorsOnly;
     public static byte MaxPlayersPerRoom = 4;
-    private bool isConnecting;
-    private void Awake()
-    {
-        if (!PhotonNetwork.connected) {
-            PhotonNetwork.logLevel = LogLevel;
-            PhotonNetwork.autoJoinLobby = true;
-            PhotonNetwork.automaticallySyncScene = true;
-        }
+    private static bool isConnecting;
 
-        Connect();
-    }
+	void Awake() {
+		PhotonNetwork.logLevel = LogLevel;
+		PhotonNetwork.autoJoinLobby = false;
+		PhotonNetwork.automaticallySyncScene = true;
+	}
 
     // Use this for initialization
-    void Start()
-    {
-        
-    }
+    private RoomInfo[] rooms;
 
-    public  void Connect()
+
+	/*****************
+	 * Unity LifeCycle
+	*****************/
+    void Start () {
+        Connect();
+    }
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+
+	/*****************
+	 * Custom Method
+	******************/
+	
+	public static void Connect()
     {
         // networkState.text = "Now Connecting...";
         isConnecting = true;
@@ -38,29 +47,37 @@ public class Launcher : Photon.PunBehaviour
         }
     }
 
-    public void joinRandomRoom() {
+	/*****************
+	 * GUI Trigger
+	 *****************/
+	public void OnClickCreate() {
+        SceneManager.LoadScene("CreateRoom", LoadSceneMode.Single);
+    }
+
+	public void OnClickFastJoin() {
         PhotonNetwork.JoinRandomRoom();
     }
 
-    public void CreateRoom(string roomName) {
-        if(isConnecting) {
-            PhotonNetwork.CreateRoom(roomName, new RoomOptions() { MaxPlayers = MaxPlayersPerRoom }, null);
-        } else {
-            Debug.Log("Photon Does not connected");
-        }
+
+	/*****************
+	 * Photon Event
+	*****************/
+	public override void OnFailedToConnectToPhoton(DisconnectCause cause) {
+        Debug.Log(cause);
     }
 
-    public override void OnConnectedToMaster()
+	public override void OnConnectedToMaster()
     {
         // networkState.text = "OnConnectedToMaster...";
-        Debug.Log("Launcher: OnConnectedToMaster() was called by PUN");
-        if (isConnecting)
-        {
-            
+        Debug.Log("=========Launcher: OnConnectedToMaster() was called by PUN=========");
+		rooms = GameManager.GetRoomList();
+        Debug.Log("Total rooms count: " + rooms.Length);
+        foreach(RoomInfo room in rooms) {
+            Debug.Log(room.Name + " " + room.PlayerCount + " / " + room.MaxPlayers);
         }
     }
 
-    public override void OnDisconnectedFromPhoton()
+	public override void OnDisconnectedFromPhoton()
     {
         // networkState.text = "OnDisconnectedFromPhoton...";
         Debug.LogWarning("Launcher: OnDisconnectedFromPhoton() was called by PUN");
@@ -91,11 +108,5 @@ public class Launcher : Photon.PunBehaviour
     public override void OnPhotonCreateRoomFailed(object[] codeAndMsg) {
         // networkState.text = "OnPhotonCreateRoomFailed...";
         Debug.Log("Launcher:OnPhotonCreateRoomFailed() was called by PUN.");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
