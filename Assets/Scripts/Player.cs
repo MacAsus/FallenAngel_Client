@@ -12,7 +12,7 @@ public class Player : CharacterGeneral {
     // Use this for initialization
     void Start () {
         InitializeParam();
-        spine_GunAnim.state.Event += OnEvent;
+        spine_GunAnim.state.Event += SpineOnevent;
     }
 	
 	// Update is called once per frame
@@ -57,12 +57,9 @@ public class Player : CharacterGeneral {
     }
 
 
-    void OnEvent(TrackEntry trackIndex, Spine.Event e)
+    void SpineOnevent(Spine.AnimationState state, int trackIndex, Spine.Event e)
     {
-        if(e.Data.name == "Start")
-        {
 
-        }
     }
 
 
