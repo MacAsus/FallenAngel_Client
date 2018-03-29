@@ -57,11 +57,6 @@ public class Player : CharacterGeneral {
     }
 
 
-    void SpineOnevent(Spine.AnimationState state, int trackIndex, Spine.Event e)
-    {
-
-    }
-
 
     public override void AnimationControl()
     {
