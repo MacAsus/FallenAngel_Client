@@ -15,6 +15,8 @@ public abstract class CharacterGeneral : MonoBehaviour {
     public string s_Weapon; //가지고 있는 무기의 이름
     public Transform g_Sprite; //캐릭터 스프라이트(or spine) Transform
     public Transform g_Weapon; //무기 스프라이트(or spine) Transform
+    public GameObject g_Bullet; //총알 prefab (나중에 xml 파싱을 이용하도록 한다)
+
     public float f_SpritelocalScale; //캐릭터 로컬 스케일(타일과 크기 맞춤을 위함)
     public float f_WeaponlocalScale; //무기 로컬 스케일(타일과 크기 맞춤을 위함)
 
@@ -22,8 +24,10 @@ public abstract class CharacterGeneral : MonoBehaviour {
     public SkeletonAnimation spine_CharacterAnim; //(캐릭터 애니메이션이 spine일 때) 애니메이터
     public SkeletonAnimation spine_GunAnim; //(총의 애니메이션이 spine일 때) 애니메이터
 
-    public enum SpriteState{ Idle, Run, Attack, Dead }; //캐릭터의 상태 enum
-    public enum SpineState { Idle, Attack }; //무기의 상태 enum
+    public enum SpriteState{ Idle, Run, Dead }; //캐릭터의 상태 enum
+
+    public bool b_Fired = false; //애니메이션 Shoot 컨트롤러(Event "Start" 와 "End" 컨트롤)
+    public bool b_Reload = false;
     public SpriteState e_SpriteState; //애니메이터에게 보내줄 상태(캐릭터의 상태)
 
     public virtual void InitializeParam()
@@ -58,7 +62,7 @@ public abstract class CharacterGeneral : MonoBehaviour {
 
     }
 
-    void SpineOnevent(TrackEntry trackIndex, Spine.Event e)
+    public virtual void SpineOnevent(TrackEntry trackIndex, Spine.Event e)
     {
 
     }
@@ -122,7 +126,7 @@ public abstract class CharacterGeneral : MonoBehaviour {
 
     }
 
-    public virtual void Attack()
+    public virtual void FireBullet()
     {
 
     }

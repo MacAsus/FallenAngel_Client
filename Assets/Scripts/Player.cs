@@ -7,12 +7,11 @@ using Spine.Unity;
 public class Player : CharacterGeneral {
     public static GameObject LocalPlayerInstance;
 
-
+    public int n_Magazine = 10;
 
     // Use this for initialization
     void Start () {
         InitializeParam();
-        // spine_GunAnim.state.Event += SpineOnevent;
     }
 	
 	// Update is called once per frame
@@ -25,6 +24,7 @@ public class Player : CharacterGeneral {
             RotateGun(v_MousePos);
             CharacterMovement();
             AnimationControl();
+            FireBullet();
         }
         
 	}
@@ -56,7 +56,24 @@ public class Player : CharacterGeneral {
         }
     }
 
+    public override void SpineOnevent(TrackEntry trackIndex, Spine.Event e)
+    {
+        
+        if (e.Data.name == "Shoot_Start")
+        {
 
+            
+                b_Fired = true;
+
+            
+        }
+        else if(e.data.name == "Shoot_End")
+        {
+
+                b_Fired = false;
+        }
+        
+    }
 
     public override void AnimationControl()
     {
@@ -69,9 +86,14 @@ public class Player : CharacterGeneral {
             a_Animator.SetBool("Run", true);
         }
     }
-    public override void WeaponSpineControl()
+    public override void FireBullet()
     {
-        
+
+        if (Input.GetKey(KeyCode.Mouse0) && !b_Fired)
+        {
+            spine_GunAnim.state.SetAnimation(0, "Shoot", false);
+        }
+
     }
 
 }

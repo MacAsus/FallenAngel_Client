@@ -306,8 +306,19 @@ Prefab:
     - target: {fileID: 114597506480887970, guid: cd298e0de01cb4f2d930dfed61a7dd16,
         type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114597506480887970, guid: cd298e0de01cb4f2d930dfed61a7dd16,
+        type: 2}
+      propertyPath: _animationName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114823491918215322, guid: cd298e0de01cb4f2d930dfed61a7dd16,
+        type: 2}
+      propertyPath: g_Bullet
+      value: 
+      objectReference: {fileID: 1492072304933554, guid: b462f56d4cbe1fe40889f8cc75d1f2a0,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cd298e0de01cb4f2d930dfed61a7dd16, type: 2}
   m_IsPrefabParent: 0
