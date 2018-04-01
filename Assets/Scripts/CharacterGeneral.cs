@@ -30,7 +30,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour {
     public bool b_Reload = false;
     public SpriteState e_SpriteState; //애니메이터에게 보내줄 상태(캐릭터의 상태)
 
-    public virtual void InitializeParam()
+    protected virtual void InitializeParam()
     {
         
         e_SpriteState = SpriteState.Idle;
@@ -79,13 +79,13 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour {
     }
 
 
-    public virtual void CharacterMovement()
+    protected virtual void CharacterMovement()
     {
 
     }
 
 
-    public virtual void RotateGun(Vector3 v_TargetPos)
+    protected virtual void RotateGun(Vector3 v_TargetPos)
     {
 
         GetAimDegree(v_TargetPos);
@@ -103,30 +103,30 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour {
         }
     }
     
-    public virtual void CharacterAttack()
+    protected virtual void CharacterAttack()
     {
 
     }
 
-    public virtual void CharacterDead()
+    protected virtual void CharacterDead()
     {
 
     }
 
 
     //Sprite 애니메이션 컨트롤
-    public virtual void AnimationControl()
+    protected virtual void AnimationControl()
     {
 
     }
 
     //Spine 애니메이션 없으면 Updata에 넣을 필요 없음
-    public virtual void WeaponSpineControl()
+    protected virtual void WeaponSpineControl()
     {
 
     }
 
-    public virtual void FireBullet()
+    protected virtual void FireBullet()
     {
 
     }

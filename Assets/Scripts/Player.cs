@@ -6,7 +6,7 @@ using Spine.Unity;
 
 public class Player : CharacterGeneral, IPunObservable {
     public static GameObject LocalPlayerInstance;
-
+    private Rigidbody2D rigid;
     public int n_Magazine = 10;
 
     // Use this for initialization
@@ -35,7 +35,7 @@ public class Player : CharacterGeneral, IPunObservable {
         
 	}
 
-    public override void CharacterMovement()
+    protected override void CharacterMovement()
     {
         float f_DeltaSpeed = f_Speed * Time.deltaTime;
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
@@ -43,6 +43,7 @@ public class Player : CharacterGeneral, IPunObservable {
             e_SpriteState = SpriteState.Run;
             if (Input.GetKey(KeyCode.A))
             {
+                
                 transform.Translate(new Vector3(-f_DeltaSpeed, 0));
             }
             if (Input.GetKey(KeyCode.D))
@@ -81,8 +82,9 @@ public class Player : CharacterGeneral, IPunObservable {
         
     }
 
-    public override void AnimationControl()
+    protected override void AnimationControl()
     {
+        WeaponSpineControl();
         if (e_SpriteState == SpriteState.Idle)
         {
             a_Animator.SetBool("Run", false);
@@ -91,15 +93,20 @@ public class Player : CharacterGeneral, IPunObservable {
         {
             a_Animator.SetBool("Run", true);
         }
-    }
-    public override void FireBullet()
-    {
 
+    }
+    protected override void FireBullet()
+    {
+        
+
+    }
+
+    protected override void WeaponSpineControl()
+    {
         if (Input.GetKey(KeyCode.Mouse0) && !b_Fired)
         {
             spine_GunAnim.state.SetAnimation(0, "Shoot", false);
         }
-
     }
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
