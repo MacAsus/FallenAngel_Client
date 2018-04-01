@@ -4,120 +4,144 @@
 		<Name>Ar_1</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Ar_2</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Ar_3</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Sr_1</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Sr_2</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Sr_3</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Smg_1</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Smg_2</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Smg_3</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Hg_1</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Hg_2</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Hg_3</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Mg_1</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Mg_2</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Mg_3</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Melee_1</Name>
 		<Bulletspeed>0</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Melee_2</Name>
 		<Bulletspeed>0</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Melee_3</Name>
 		<Bulletspeed>0</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Heal_1</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Heal_2</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Heal_3</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Rocket_1</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Rocket_2</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 	<Weapon>
 		<Name>Rocket_3</Name>
 		<Bulletspeed>1</Bulletspeed>
 		<Damage>5</Damage>
+    <BulletName>Ar_Norm</BulletName>
 	</Weapon>
 </Main>
