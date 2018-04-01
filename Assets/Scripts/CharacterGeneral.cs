@@ -4,7 +4,8 @@ using UnityEngine;
 using Spine;
 using Spine.Unity;
 
-public abstract class CharacterGeneral : Photon.MonoBehaviour {
+public abstract class CharacterGeneral : Photon.MonoBehaviour
+{
 
     public int n_hp;    //캐릭터의 체력
 
@@ -24,7 +25,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour {
     public SkeletonAnimation spine_CharacterAnim; //(캐릭터 애니메이션이 spine일 때) 애니메이터
     public SkeletonAnimation spine_GunAnim; //(총의 애니메이션이 spine일 때) 애니메이터
 
-    public enum SpriteState{ Idle, Run, Dead }; //캐릭터의 상태 enum
+    public enum SpriteState { Idle, Run, Dead }; //캐릭터의 상태 enum
 
     public bool b_Fired = false; //애니메이션 Shoot 컨트롤러(Event "Start" 와 "End" 컨트롤)
     public bool b_Reload = false;
@@ -32,7 +33,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour {
 
     protected virtual void InitializeParam()
     {
-        
+
         e_SpriteState = SpriteState.Idle;
 
         //규칙 : 캐릭터의 스프라이트 or 스파인 정보는 g_Sprite에 저장
@@ -70,7 +71,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour {
 
     public void GetAimDegree(Vector3 v_TargetPos)
     {
-        
+
         float x = g_Weapon.position.x - v_TargetPos.x;
         float y = g_Weapon.position.y - v_TargetPos.y;
 
@@ -102,7 +103,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour {
             g_Weapon.localScale = new Vector3(g_Weapon.localScale.x, -f_WeaponlocalScale, g_Weapon.localScale.z);
         }
     }
-    
+
     protected virtual void CharacterAttack()
     {
 
@@ -115,13 +116,13 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour {
 
 
     //Sprite 애니메이션 컨트롤
-    protected virtual void AnimationControl()
+    protected virtual void AnimationControl(SpriteState _e_SpriteState, bool _b_Fired, bool networking)
     {
 
     }
 
     //Spine 애니메이션 없으면 Updata에 넣을 필요 없음
-    protected virtual void WeaponSpineControl()
+    protected virtual void WeaponSpineControl(bool _b_Fired, bool networking)
     {
 
     }
