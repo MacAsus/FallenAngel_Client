@@ -48,7 +48,7 @@ public class RoomWaitingGui : Photon.PunBehaviour
 
     public void OnClickStart()
     {
-        SceneManager.LoadScene("Scene1", LoadSceneMode.Single);
+        SceneManager.LoadScene("InGame", LoadSceneMode.Single);
     }
 
     // when User Leave
