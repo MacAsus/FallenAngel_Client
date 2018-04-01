@@ -4,7 +4,7 @@ using UnityEngine;
 using Spine;
 using Spine.Unity;
 
-public abstract class CharacterGeneral : MonoBehaviour {
+public abstract class CharacterGeneral : Photon.MonoBehaviour {
 
     public int n_hp;    //캐릭터의 체력
 
@@ -102,7 +102,7 @@ public abstract class CharacterGeneral : MonoBehaviour {
             g_Weapon.localScale = new Vector3(g_Weapon.localScale.x, -f_WeaponlocalScale, g_Weapon.localScale.z);
         }
     }
-
+    
     public virtual void CharacterAttack()
     {
 

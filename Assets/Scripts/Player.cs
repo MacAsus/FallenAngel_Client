@@ -16,6 +16,12 @@ public class Player : CharacterGeneral {
 	
 	// Update is called once per frame
 	void Update () {
+        // if this view is not mine, then do not update
+        if(photonView.isMine == false && PhotonNetwork.connected == true){
+            return;
+        }
+
+
         if (e_SpriteState != SpriteState.Dead)
         {
             e_SpriteState = SpriteState.Idle;
