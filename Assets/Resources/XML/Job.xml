@@ -1,0 +1,27 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<Job>
+	<Character>
+		<Id>1</Id>
+		<Name>Attacker</Name>
+		<Hp>150</Hp>
+		<Speed>1.5</Speed>
+	</Character>
+	<Character>
+		<Id>2</Id>
+		<Name>Tanker</Name>
+		<Hp>250</Hp>
+		<Speed>1.5</Speed>
+	</Character>
+	<Character>
+		<Id>3</Id>
+		<Name>Healer</Name>
+		<Hp>100</Hp>
+		<Speed>1</Speed>
+	</Character>
+	<Character>
+		<Id>4</Id>
+		<Name>Heavy</Name>
+		<Hp>150</Hp>
+		<Speed>1</Speed>
+	</Character>
+</Job>
