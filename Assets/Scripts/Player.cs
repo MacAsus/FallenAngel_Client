@@ -4,7 +4,7 @@ using UnityEngine;
 using Spine;
 using Spine.Unity;
 
-public class Player : CharacterGeneral {
+public class Player : CharacterGeneral, IPunObservable {
     public static GameObject LocalPlayerInstance;
 
     public int n_Magazine = 10;
@@ -102,4 +102,13 @@ public class Player : CharacterGeneral {
 
     }
 
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+        if (stream.isWriting) {
+            // We own this player: send the others our data
+            stream.SendNext(b_Fired);
+        } else{
+            // Network player, receive data
+            this.b_Fired = (bool)stream.ReceiveNext();
+        }
+    }
 }
