@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Xml;
 
-
-public class PlaySceneGeneral : MonoBehaviour {
+public class GeneralInitialize : MonoBehaviour {
 
     public class GunParameter
     {
@@ -35,7 +34,7 @@ public class PlaySceneGeneral : MonoBehaviour {
         }
     }
 
-    public static PlaySceneGeneral instance = null;
+    public static GeneralInitialize instance = null;
 
     private string xml_Job = "Job";
     private string xml_Weapon = "Weapon";
@@ -71,16 +70,22 @@ public class PlaySceneGeneral : MonoBehaviour {
             JobParameter temp = new JobParameter(node.SelectSingleNode("Name").InnerText, System.Convert.ToSingle(node.SelectSingleNode("Hp").InnerText), System.Convert.ToSingle(node.SelectSingleNode("Speed").InnerText));
             l_JobList.Add(temp);
         }
-        
+        loadCharacterList();
 
     }
     private void loadCharacterList()
     {
-        foreach(var jobparam in l_JobList)
+        foreach(var jparam in l_JobList)
         {
-            if (Resources.Load())
-            {
+            GameObject tempObj;
 
+            if(Resources.Load("Character/" + jparam.s_JobName) != null)
+            {
+                Debug.Log(jparam.s_JobName + " Created");
+                tempObj = Resources.Load("Character/" + jparam.s_JobName) as GameObject;
+                tempObj.GetComponent<Player>().n_hp = jparam.f_HP;
+                tempObj.GetComponent<Player>().f_Speed = jparam.f_Speed;
+                PlayableCharacterList.Add(tempObj);
             }
         }
     } 

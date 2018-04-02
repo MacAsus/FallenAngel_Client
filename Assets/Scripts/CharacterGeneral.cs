@@ -7,7 +7,7 @@ using Spine.Unity;
 public abstract class CharacterGeneral : Photon.MonoBehaviour
 {
 
-    public int n_hp;    //캐릭터의 체력
+    public float n_hp;    //캐릭터의 체력
 
 
     public float f_AimDegree; //Aim 각도
