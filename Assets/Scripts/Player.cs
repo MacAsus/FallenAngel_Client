@@ -7,7 +7,7 @@ using Spine.Unity;
 public class Player : CharacterGeneral
 {
     public static GameObject LocalPlayerInstance;
-    private Rigidbody2D rigid;
+
     public int n_Magazine = 10;
     Vector3 v_MousePos = new Vector3();
 
@@ -48,30 +48,32 @@ public class Player : CharacterGeneral
 
     protected override void CharacterMovement()
     {
-        float f_DeltaSpeed = f_Speed * Time.deltaTime;
+        int tempx = 0;
+        int tempy = 0;
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
-            e_SpriteState = SpriteState.Run;
+
             if (Input.GetKey(KeyCode.A))
             {
-
-                transform.Translate(new Vector3(-f_DeltaSpeed, 0));
+                tempx -= 1;
             }
-            if (Input.GetKey(KeyCode.D))
+            if(Input.GetKey(KeyCode.D))
             {
-                transform.Translate(new Vector3(f_DeltaSpeed, 0));
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                transform.Translate(new Vector3(0, -f_DeltaSpeed));
+                tempx += 1;
             }
             if (Input.GetKey(KeyCode.W))
             {
-                transform.Translate(new Vector3(0, f_DeltaSpeed));
+                tempy += 1;
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                tempy -= 1;
             }
 
 
         }
+        rigid.velocity = new Vector2(f_Speed * tempx, f_Speed * tempy);
+
     }
 
     public override void SpineOnevent(TrackEntry trackIndex, Spine.Event e)

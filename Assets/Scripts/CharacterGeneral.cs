@@ -9,7 +9,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 
     public float n_hp;    //캐릭터의 체력
 
-
+    public Rigidbody2D rigid;
     public float f_AimDegree; //Aim 각도
     public float f_Speed; //캐릭터 무빙 스피드
 
@@ -35,7 +35,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     {
 
         e_SpriteState = SpriteState.Idle;
-
+        rigid = transform.GetComponent<Rigidbody2D>();
         //규칙 : 캐릭터의 스프라이트 or 스파인 정보는 g_Sprite에 저장
         g_Sprite = transform.Find("Sprite");
         if (transform.Find("Weapon") != null)
