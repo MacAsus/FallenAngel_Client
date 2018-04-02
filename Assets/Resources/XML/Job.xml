@@ -2,22 +2,22 @@
 <Job>
 	<Character>
 		<Name>Attacker</Name>
-		<Hp>4</Hp>
-		<Speed>6</Speed>
+		<Hp>150</Hp>
+		<Speed>1.5</Speed>
 	</Character>
 	<Character>
 		<Name>Tanker</Name>
-		<Hp>8</Hp>
-		<Speed>4</Speed>
+		<Hp>250</Hp>
+		<Speed>1.5</Speed>
 	</Character>
 	<Character>
-		<Name>3</Name>
-		<Hp>4</Hp>
-		<Speed>4</Speed>
+		<Name>Healer</Name>
+		<Hp>100</Hp>
+		<Speed>1</Speed>
 	</Character>
 	<Character>
 		<Name>Heavy</Name>
-		<Hp>5</Hp>
-		<Speed>2.5</Speed>
+		<Hp>150</Hp>
+		<Speed>1</Speed>
 	</Character>
 </Job>
