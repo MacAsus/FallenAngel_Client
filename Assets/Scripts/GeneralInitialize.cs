@@ -56,6 +56,7 @@ public class GeneralInitialize : MonoBehaviour {
             Destroy(gameObject);
         }
         loadXML_Job(xml_Job);
+        loadXML_Gun(xml_Weapon);
     }
 
     private void loadXML_Job(string filename)
@@ -73,6 +74,21 @@ public class GeneralInitialize : MonoBehaviour {
         loadCharacterList();
 
     }
+    private void loadXML_Gun(string filename)
+    {
+        TextAsset txtAsset = (TextAsset)Resources.Load("XML/" + filename);
+        XmlDocument xmlDoc = new XmlDocument();
+
+        xmlDoc.LoadXml(txtAsset.text);
+        XmlNodeList all_xml_Weapon_Table = xmlDoc.SelectNodes("Main/Weapon");
+        foreach (XmlNode node in all_xml_Weapon_Table)
+        {
+            GunParameter temp = new GunParameter(node.SelectSingleNode("Name").InnerText, System.Convert.ToSingle(node.SelectSingleNode("Bulletspeed").InnerText), System.Convert.ToSingle(node.SelectSingleNode("Damage").InnerText), node.SelectSingleNode("BulletName").InnerText);
+            l_GunList.Add(temp);
+        }
+        loadGunList();
+
+    }
     private void loadCharacterList()
     {
         foreach(var jparam in l_JobList)
@@ -88,8 +104,11 @@ public class GeneralInitialize : MonoBehaviour {
                 PlayableCharacterList.Add(tempObj);
             }
         }
-    } 
-
+    }
+    private void loadGunList()
+    {
+        //Code...
+    }
     // Use this for initialization
     void Start () {
 		
