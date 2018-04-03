@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InGame : MonoBehaviour {
+	public GameObject PingLabel;
 
 	// Use this for initialization
 	void Start () {
@@ -11,6 +13,6 @@ public class InGame : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
+		PingLabel.GetComponent<Text>().text = "Ping: " + PhotonNetwork.GetPing();
     }
 }

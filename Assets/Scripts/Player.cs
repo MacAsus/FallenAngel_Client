@@ -181,6 +181,8 @@ public class Player : CharacterGeneral
             AnimationControl(_e_SpriteState, _b_Fired, false);
             RotateGun(_v_MousePos);
             FireBullet();
+
+            // timestamp: info.timestamp
         }
     }
 
