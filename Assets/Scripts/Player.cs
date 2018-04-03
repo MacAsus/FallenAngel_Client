@@ -17,6 +17,8 @@ public class Player : CharacterGeneral
         PhotonNetwork.sendRate = 500 / Launcher.MaxPlayersPerRoom;
         PhotonNetwork.sendRateOnSerialize = 500 / Launcher.MaxPlayersPerRoom;
         InitializeParam();
+
+        this.photonView.RPC("OtherFiredBullet", PhotonTargets.All, PhotonNetwork.player.ID, "gun_type", "to_position");
     }
 
     // Update is called once per frame
@@ -176,5 +178,11 @@ public class Player : CharacterGeneral
         {
             a_Animator.SetBool("Run", true);
         }
+    }
+
+    [PunRPC]
+    void OtherFiredBullet(int sender, string gun_type, string to_position)
+    {
+        Debug.Log("OtherFiredBullet sender: " + sender + "gun_type: " + gun_type + "to_position: " + to_position);
     }
 }

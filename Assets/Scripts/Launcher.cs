@@ -8,7 +8,7 @@ public class Launcher : Photon.PunBehaviour
 {
 
     public string _gameVersion = "1";
-    public PhotonLogLevel LogLevel = PhotonLogLevel.Informational;
+    public PhotonLogLevel LogLevel = PhotonLogLevel.ErrorsOnly;
     public static byte MaxPlayersPerRoom = 4;
     private bool isConnecting;
     private void Awake()

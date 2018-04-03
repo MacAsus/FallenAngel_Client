@@ -656,9 +656,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c6d68bf77772e742bb0954dd598c1cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  n_hp: 3
+  n_hp: 150
+  rigid: {fileID: 0}
   f_AimDegree: 0
-  f_Speed: 4
+  f_Speed: 5
   s_Weapon: 
   g_Sprite: {fileID: 0}
   g_Weapon: {fileID: 0}
@@ -745,7 +746,7 @@ MonoBehaviour:
     TeleportEnabled: 1
     TeleportIfDistanceGreaterThan: 3
     InterpolateOption: 2
-    InterpolateMoveTowardsSpeed: 4
+    InterpolateMoveTowardsSpeed: 5
     InterpolateLerpSpeed: 3
     InterpolateMoveTowardsAcceleration: 2
     InterpolateMoveTowardsDeceleration: 2

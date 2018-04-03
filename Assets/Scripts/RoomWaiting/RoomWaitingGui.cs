@@ -24,7 +24,7 @@ public class RoomWaitingGui : Photon.PunBehaviour
     void Start()
     {        
         // set player name to integer player count
-        Debug.Log("======== My Id: " + PhotonNetwork.playerName);
+        Debug.Log("======== My Id: " + PhotonNetwork.player.ID);
 
         _initUserSlot();
         UpdateUserCount();
