@@ -117,13 +117,13 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 
 
     //Sprite 애니메이션 컨트롤
-    protected virtual void AnimationControl(SpriteState _e_SpriteState, bool _b_Fired, bool networking)
+    protected virtual void AnimationControl(SpriteState _e_SpriteState, bool _b_Fired)
     {
 
     }
 
     //Spine 애니메이션 없으면 Updata에 넣을 필요 없음
-    protected virtual void WeaponSpineControl(bool _b_Fired, bool networking)
+    protected virtual void WeaponSpineControl(bool _b_Fired)
     {
 
     }
