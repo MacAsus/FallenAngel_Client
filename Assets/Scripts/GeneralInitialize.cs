@@ -11,13 +11,15 @@ public class GeneralInitialize : MonoBehaviour {
         public float f_BulletSpeed;
         public float f_Damage;
         public string s_BulletName;
+        public float f_Magazine;
 
-        public GunParameter(string gunName, float bulletSpeed, float damage, string bulletName)
+        public GunParameter(string gunName, float bulletSpeed, float damage, string bulletName, float magazine)
         {
             s_GunName = gunName;
             f_BulletSpeed = bulletSpeed;
             f_Damage = damage;
             s_BulletName = bulletName;
+            f_Magazine = magazine;
         }
     }
     public class JobParameter
@@ -83,7 +85,7 @@ public class GeneralInitialize : MonoBehaviour {
         XmlNodeList all_xml_Weapon_Table = xmlDoc.SelectNodes("Main/Weapon");
         foreach (XmlNode node in all_xml_Weapon_Table)
         {
-            GunParameter temp = new GunParameter(node.SelectSingleNode("Name").InnerText, System.Convert.ToSingle(node.SelectSingleNode("Bulletspeed").InnerText), System.Convert.ToSingle(node.SelectSingleNode("Damage").InnerText), node.SelectSingleNode("BulletName").InnerText);
+            GunParameter temp = new GunParameter(node.SelectSingleNode("Name").InnerText, System.Convert.ToSingle(node.SelectSingleNode("Bulletspeed").InnerText), System.Convert.ToSingle(node.SelectSingleNode("Damage").InnerText), node.SelectSingleNode("BulletName").InnerText, System.Convert.ToSingle(node.SelectSingleNode("Magazine").InnerText));
             l_GunList.Add(temp);
         }
         loadGunList();
