@@ -54,7 +54,7 @@ public class Player : CharacterGeneral
         int tempy = 0;
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
-
+            e_SpriteState = SpriteState.Run;
             if (Input.GetKey(KeyCode.A))
             {
                 tempx -= 1;
