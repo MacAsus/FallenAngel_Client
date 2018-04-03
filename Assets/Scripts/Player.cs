@@ -27,7 +27,7 @@ public class Player : CharacterGeneral
         weaponScript = GetComponent<WeaponGeneral>();
         //디버그용
         //로비에서 총까지 다 구현하면 지울것
-        GeneralInitialize.GunParameter tempParam = new GeneralInitialize.GunParameter("Hg_Brownie", 5, 5, "Hg_Norm", 5);
+        GeneralInitialize.GunParameter tempParam = new GeneralInitialize.GunParameter("Hg_Brownie", 10, 5, "Hg_Norm", 5);
         bulletImage = tempParam.BulletImage;
         //여기까지
         PhotonNetwork.sendRate = 500 / Launcher.MaxPlayersPerRoom;
@@ -47,6 +47,7 @@ public class Player : CharacterGeneral
         Weapon1 = tempParam;
         Weapon2 = tempParam;
         cur_Weapon = tempParam;
+        spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
         this.photonView.RPC("OtherFiredBullet", PhotonTargets.All, PhotonNetwork.player.ID, "gun_type", "to_position");
     }
 
@@ -215,11 +216,13 @@ public class Player : CharacterGeneral
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             cur_Weapon = Weapon1;
+
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             cur_Weapon = Weapon2;
         }
+        spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
     }
 
     [PunRPC]

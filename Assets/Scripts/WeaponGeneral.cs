@@ -30,6 +30,8 @@ public class WeaponGeneral : MonoBehaviour {
 		
 	}
 
+    
+
     public void FireBullet()
     {
 
