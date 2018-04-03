@@ -12,6 +12,8 @@ public class GeneralInitialize : MonoBehaviour {
         public float f_Damage;
         public string s_BulletName;
         public float f_Magazine;
+        public Sprite GunImage;
+        public Sprite BulletImage;
 
         public GunParameter(string gunName, float bulletSpeed, float damage, string bulletName, float magazine)
         {
@@ -20,6 +22,12 @@ public class GeneralInitialize : MonoBehaviour {
             f_Damage = damage;
             s_BulletName = bulletName;
             f_Magazine = magazine;
+            if(Resources.Load("GunImage/" + s_GunName) != null)
+                GunImage = Resources.Load("GunImage/" + s_GunName) as Sprite;
+            if (Resources.Load<Sprite>("BulletImage/" + bulletName) != null)
+            {
+                BulletImage = Resources.Load<Sprite>("BulletImage/" + bulletName);
+            }
         }
     }
     public class JobParameter
@@ -44,9 +52,17 @@ public class GeneralInitialize : MonoBehaviour {
     public enum JobEnum { Attacker, Tanker, Healer, Heavy };
 
     public List<GameObject> PlayableCharacterList = new List<GameObject>();
-    public List<GunParameter> l_GunList = new List<GunParameter>();
+    //public List<GunParameter> l_GunList = new List<GunParameter>();
     public List<JobParameter> l_JobList = new List<JobParameter>();
 
+    public List<GunParameter> l_ARList = new List<GunParameter>();
+    public List<GunParameter> l_HGList = new List<GunParameter>();
+    public List<GunParameter> l_MELEEList = new List<GunParameter>();
+    public List<GunParameter> l_SMGList = new List<GunParameter>();
+    public List<GunParameter> l_SRList = new List<GunParameter>();
+    public List<GunParameter> l_HEALList = new List<GunParameter>();
+    public List<GunParameter> l_MGList = new List<GunParameter>();
+    public List<GunParameter> l_ROCKETList = new List<GunParameter>();
 
     private void Awake()
     {
@@ -86,9 +102,42 @@ public class GeneralInitialize : MonoBehaviour {
         foreach (XmlNode node in all_xml_Weapon_Table)
         {
             GunParameter temp = new GunParameter(node.SelectSingleNode("Name").InnerText, System.Convert.ToSingle(node.SelectSingleNode("Bulletspeed").InnerText), System.Convert.ToSingle(node.SelectSingleNode("Damage").InnerText), node.SelectSingleNode("BulletName").InnerText, System.Convert.ToSingle(node.SelectSingleNode("Magazine").InnerText));
-            l_GunList.Add(temp);
+            string[] tempName = node.SelectSingleNode("Name").InnerText.Split('_');
+            if(tempName[0] == "Ar")
+            { 
+                l_ARList.Add(temp);
+            }
+            else if(tempName[0] == "Hg")
+            {
+                l_HGList.Add(temp);
+            }
+            else if(tempName[0] == "Melee")
+            {
+                l_MELEEList.Add(temp);
+            }
+            else if(tempName[0] == "Smg")
+            {
+                l_SMGList.Add(temp);
+            }
+            else if(tempName[0] == "Sr")
+            {
+                l_SRList.Add(temp);
+            }
+            else if(tempName[0] == "Heal")
+            {
+                l_HEALList.Add(temp);
+            }
+            else if(tempName[0] == "Mg")
+            {
+                l_MGList.Add(temp);
+            }
+            else if(tempName[0] == "Rocket")
+            {
+                l_ROCKETList.Add(temp);
+            }
+
         }
-        loadGunList();
+        //loadGunList();
 
     }
     private void loadCharacterList()
@@ -101,16 +150,20 @@ public class GeneralInitialize : MonoBehaviour {
             {
                 Debug.Log(jparam.s_JobName + " Created");
                 tempObj = Resources.Load("Character/" + jparam.s_JobName) as GameObject;
+                tempObj.GetComponent<Player>().s_jobname = jparam.s_JobName;
                 tempObj.GetComponent<Player>().n_hp = jparam.f_HP;
                 tempObj.GetComponent<Player>().f_Speed = jparam.f_Speed;
                 PlayableCharacterList.Add(tempObj);
             }
         }
     }
-    private void loadGunList()
+
+    public void selectGun(GameObject tempPlayer, GunParameter weapon1, GunParameter weapon2)
     {
-        //Code...
+        tempPlayer.GetComponent<Player>().Weapon1 = weapon1;
+        tempPlayer.GetComponent<Player>().Weapon2 = weapon2;
     }
+
     // Use this for initialization
     void Start () {
 		

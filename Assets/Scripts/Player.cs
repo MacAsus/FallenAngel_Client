@@ -8,16 +8,45 @@ public class Player : CharacterGeneral
 {
     public static GameObject LocalPlayerInstance;
 
+    public GeneralInitialize.GunParameter cur_Weapon;
+
+    public GeneralInitialize.GunParameter Weapon1, Weapon2;
+
+    public Sprite bulletImage;
+
+    public WeaponGeneral weaponScript;
+
+    public string s_jobname;
     public int n_Magazine = 10;
+
     Vector3 v_MousePos = new Vector3();
 
     // Use this for initialization
     void Start()
     {
+        weaponScript = GetComponent<WeaponGeneral>();
+        //디버그용
+        //로비에서 총까지 다 구현하면 지울것
+        GeneralInitialize.GunParameter tempParam = new GeneralInitialize.GunParameter("Hg_Brownie", 5, 5, "Hg_Norm", 5);
+        bulletImage = tempParam.BulletImage;
+        //여기까지
         PhotonNetwork.sendRate = 500 / Launcher.MaxPlayersPerRoom;
         PhotonNetwork.sendRateOnSerialize = 500 / Launcher.MaxPlayersPerRoom;
         InitializeParam();
 
+        //디버그용
+        //위에 코드 지우면 주석 풀것
+        //if(Weapon1 != null)
+        //{
+        //    cur_Weapon = Weapon1;
+        //}else if(Weapon2 != null)
+        //{
+        //    cur_Weapon = Weapon2;
+        //}
+
+        Weapon1 = tempParam;
+        Weapon2 = tempParam;
+        cur_Weapon = tempParam;
         this.photonView.RPC("OtherFiredBullet", PhotonTargets.All, PhotonNetwork.player.ID, "gun_type", "to_position");
     }
 
@@ -33,6 +62,7 @@ public class Player : CharacterGeneral
 
         if (e_SpriteState != SpriteState.Dead)
         {
+            Debug.Log(b_Fired);
             e_SpriteState = SpriteState.Idle;
 
             v_MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -84,14 +114,12 @@ public class Player : CharacterGeneral
         if (e.Data.name == "Shoot_Start")
         {
 
-
             b_Fired = true;
 
 
         }
         else if (e.data.name == "Shoot_End")
         {
-
             b_Fired = false;
         }
 
@@ -106,7 +134,6 @@ public class Player : CharacterGeneral
         }
         if (_e_SpriteState == SpriteState.Run)
         {
-            Debug.Log("==== Run ===");
             a_Animator.SetBool("Run", true);
         }
 
@@ -114,13 +141,14 @@ public class Player : CharacterGeneral
     protected override void FireBullet()
     {
 
-
     }
 
     protected override void WeaponSpineControl(bool _b_Fired, bool networking)
     {
+        
         if (!networking && Input.GetKey(KeyCode.Mouse0) && !_b_Fired) // triggerd by local
         {
+            weaponScript.FireBullet();
             spine_GunAnim.state.SetAnimation(0, "Shoot", false);
         }
         else // triggerd by network
@@ -177,6 +205,18 @@ public class Player : CharacterGeneral
         if (_spriteState == SpriteState.Run)
         {
             a_Animator.SetBool("Run", true);
+        }
+    }
+
+    void ChangeWeapon()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            cur_Weapon = Weapon1;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            cur_Weapon = Weapon2;
         }
     }
 

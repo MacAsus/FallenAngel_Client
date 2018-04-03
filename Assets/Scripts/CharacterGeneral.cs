@@ -31,9 +31,10 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     public bool b_Reload = false;
     public SpriteState e_SpriteState; //애니메이터에게 보내줄 상태(캐릭터의 상태)
 
+
     protected virtual void InitializeParam()
     {
-
+        g_Bullet = Resources.Load("Bullet") as GameObject;
         e_SpriteState = SpriteState.Idle;
         rigid = transform.GetComponent<Rigidbody2D>();
         //규칙 : 캐릭터의 스프라이트 or 스파인 정보는 g_Sprite에 저장
