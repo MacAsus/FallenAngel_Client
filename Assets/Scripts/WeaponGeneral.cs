@@ -29,7 +29,6 @@ public class WeaponGeneral : MonoBehaviour {
 	void Update () {
 		
 	}
-
     public Vector3 getMuzzlePos() {
         return g_Muzzle.transform.position;
     }
