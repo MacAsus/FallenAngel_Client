@@ -47,8 +47,6 @@ public class Player : CharacterGeneral
         Weapon1 = tempParam;
         Weapon2 = tempParam;
         cur_Weapon = tempParam;
-        spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
-        this.photonView.RPC("OtherFiredBullet", PhotonTargets.All, PhotonNetwork.player.ID, "gun_type", "to_position");
     }
 
     // Update is called once per frame
@@ -63,7 +61,6 @@ public class Player : CharacterGeneral
 
         if (e_SpriteState != SpriteState.Dead)
         {
-            Debug.Log(b_Fired);
             e_SpriteState = SpriteState.Idle;
 
             v_MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -72,9 +69,8 @@ public class Player : CharacterGeneral
             CharacterMovement();
 
             // below value should be setted by manually
-            AnimationControl(e_SpriteState, b_Fired, false);
+            AnimationControl(e_SpriteState, b_Fired);
             RotateGun(v_MousePos);
-            FireBullet();
         }
 
     }
@@ -126,9 +122,9 @@ public class Player : CharacterGeneral
 
     }
 
-    protected override void AnimationControl(SpriteState _e_SpriteState, bool _b_Fired, bool networking)
+    protected override void AnimationControl(SpriteState _e_SpriteState, bool _b_Fired)
     {
-        WeaponSpineControl(_b_Fired, networking);
+        WeaponSpineControl(_b_Fired);
         if (_e_SpriteState == SpriteState.Idle)
         {
             a_Animator.SetBool("Run", false);
@@ -139,27 +135,30 @@ public class Player : CharacterGeneral
         }
 
     }
-    protected override void FireBullet()
+    protected void FireBullet()
     {
+        Debug.Log("FireBullet called");
+        Vector3 v_muzzle = weaponScript.getMuzzlePos();
+        Vector3 v_bulletSpeed = weaponScript.getBulletSpeed();
 
+        this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
     }
 
-    protected override void WeaponSpineControl(bool _b_Fired, bool networking)
+    [PunRPC]
+    void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed) {
+        Debug.Log("FireBulletNetwork called");
+        GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
+        bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos- this.g_Weapon.transform.position).normalized * this.cur_Weapon.f_BulletSpeed;
+    }
+
+    protected override void WeaponSpineControl(bool _b_Fired)
     {
         
-        if (!networking && Input.GetKey(KeyCode.Mouse0) && !_b_Fired) // triggerd by local
+        if (Input.GetKey(KeyCode.Mouse0) && !_b_Fired) // triggerd by local
         {
-            weaponScript.FireBullet();
+            // GameObject bullet = weaponScript.FireBullet();
+            FireBullet();
             spine_GunAnim.state.SetAnimation(0, "Shoot", false);
-        }
-        else // triggerd by network
-        { 
-            bool isNowFiring = this.b_Fired;
-            this.b_Fired = _b_Fired;
-            if (!isNowFiring && _b_Fired)
-            {
-                spine_GunAnim.state.SetAnimation(0, "Shoot", false);
-            }
         }
     }
 
@@ -179,9 +178,8 @@ public class Player : CharacterGeneral
             Vector3 _v_MousePos = (Vector3)stream.ReceiveNext();
             
             // below value should be setted by manually
-            AnimationControl(_e_SpriteState, _b_Fired, false);
+            AnimationControl(_e_SpriteState, _b_Fired);
             RotateGun(_v_MousePos);
-            FireBullet();
 
             // timestamp: info.timestamp
         }
@@ -223,11 +221,5 @@ public class Player : CharacterGeneral
             cur_Weapon = Weapon2;
         }
         spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
-    }
-
-    [PunRPC]
-    void OtherFiredBullet(int sender, string gun_type, string to_position)
-    {
-        Debug.Log("OtherFiredBullet sender: " + sender + "gun_type: " + gun_type + "to_position: " + to_position);
     }
 }
