@@ -222,4 +222,12 @@ public class Player : CharacterGeneral
         }
         spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
     }
+    //임시 충돌 테스트
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.tag == "Bullet")
+        {
+            this.n_hp -= Weapon1.f_Damage; //맞은 총알이 어떤 무기에서 날아오는지 모르겠음
+        }
+    }
 }
