@@ -66,7 +66,6 @@ public class RoomWaitingGui : Photon.PunBehaviour
         {
             PhotonNetwork.room.IsVisible = false;
             SendStartMsg(); // send evt to others
-            LoadSceneToInGame(); // if master then load game scene to ingame
         }
         else
         {
@@ -85,8 +84,10 @@ public class RoomWaitingGui : Photon.PunBehaviour
     private void SendStartMsg()
     {
         byte evCode = Events.STARTED_GAME_EVT;    // start event 0.
+        RaiseEventOptions options = new RaiseEventOptions();
+		options.Receivers = ReceiverGroup.All;
         bool reliable = true;
-        PhotonNetwork.RaiseEvent(evCode, null, reliable, null);
+        PhotonNetwork.RaiseEvent(evCode, null, reliable, options);
     }
 
     private void OnStartEvent(byte eventcode, object content, int senderid)
@@ -97,8 +98,12 @@ public class RoomWaitingGui : Photon.PunBehaviour
             this.LoadSceneToInGame();
         }
         else if (eventcode == Events.SOMEONE_SELECTED_CHARACTER_EVT)
-        { // other user selected Character & Weapon
-            Debug.Log("Event 1 Called in RoomWaiting Scene");
+        { 
+            // other user selected Character & Weapon
+            // set current user scene to enable
+            if(senderid == PhotonNetwork.player.ID) {
+                CanvasObject.SetActive(true);
+            }
         }
     }
 
