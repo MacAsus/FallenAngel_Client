@@ -16,6 +16,9 @@ public class Player : CharacterGeneral
 
     public WeaponGeneral weaponScript;
 
+    public GameObject g_Muzzle;
+
+
     public string s_jobname;
     public int n_Magazine = 10;
 
@@ -47,6 +50,8 @@ public class Player : CharacterGeneral
         Weapon1 = tempParam;
         Weapon2 = tempParam;
         cur_Weapon = tempParam;
+
+        FindMuzzle();
     }
 
     // Update is called once per frame
@@ -69,6 +74,8 @@ public class Player : CharacterGeneral
             CharacterMovement();
 
             // below value should be setted by manually
+
+            //스파인 애니메이션, 총알의 발사 모두 처리하는 함수
             AnimationControl(e_SpriteState, b_Fired);
             RotateGun(v_MousePos);
             ChangeWeapon();
@@ -76,6 +83,7 @@ public class Player : CharacterGeneral
 
     }
 
+    //캐릭터 이동 
     protected override void CharacterMovement()
     {
         int tempx = 0;
@@ -106,6 +114,7 @@ public class Player : CharacterGeneral
 
     }
 
+    //스파인 이벤트 처리
     public override void SpineOnevent(TrackEntry trackIndex, Spine.Event e)
     {
 
@@ -123,6 +132,7 @@ public class Player : CharacterGeneral
 
     }
 
+    //애니메이션 컨트롤(weaponSpineControl, fireBullet 모두 처리하는 중)
     protected override void AnimationControl(SpriteState _e_SpriteState, bool _b_Fired)
     {
         WeaponSpineControl(_b_Fired);
@@ -139,8 +149,8 @@ public class Player : CharacterGeneral
     protected override void FireBullet()
     {
         Debug.Log("FireBullet called");
-        Vector3 v_muzzle = weaponScript.getMuzzlePos();
-        Vector3 v_bulletSpeed = weaponScript.getBulletSpeed();
+        Vector3 v_muzzle = g_Muzzle.transform.position;
+        Vector3 v_bulletSpeed = (g_Muzzle.transform.position - g_Weapon.transform.position).normalized * cur_Weapon.f_BulletSpeed;
 
         this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
     }
@@ -148,10 +158,14 @@ public class Player : CharacterGeneral
     [PunRPC]
     void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed) {
         Debug.Log("FireBulletNetwork called");
-        GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
-        BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
-        temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_Weapon.f_Damage);
-        bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos- this.g_Weapon.transform.position).normalized * this.cur_Weapon.f_BulletSpeed;
+        if(this.photonView.isMine)
+        {
+            GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
+            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
+            temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_Weapon.f_Damage);
+            bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - this.g_Weapon.transform.position).normalized * this.cur_Weapon.f_BulletSpeed;
+        }
+        
     }
 
     protected override void WeaponSpineControl(bool _b_Fired)
@@ -188,51 +202,35 @@ public class Player : CharacterGeneral
         }
     }
 
-    void fireControl(bool _fired, Vector3 _v_MousePos)
-    {
-        bool isNowFiring = this.b_Fired;
-        this.b_Fired = _fired;
-        if (!isNowFiring && this.b_Fired)
-        {
-            spine_GunAnim.state.SetAnimation(0, "Shoot", false);
-        }
-        this.v_MousePos = _v_MousePos;
-        RotateGun(v_MousePos);
-    }
-
-    void moveControl(SpriteState _spriteState)
-    {
-        if (_spriteState == SpriteState.Idle)
-        {
-            a_Animator.SetBool("Run", false);
-        }
-        if (_spriteState == SpriteState.Run)
-        {
-            a_Animator.SetBool("Run", true);
-        }
-    }
-
+    //총 변경
     void ChangeWeapon()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             cur_Weapon = Weapon1;
-
+            FindMuzzle();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             cur_Weapon = Weapon2;
+            FindMuzzle();
         }
         spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
     }
-    ////임시 충돌 테스트
-    //void OnTriggerEnter(Collider col)
-    //{
-    //    if (col.gameObject.tag == "Bullet")
-    //    {
-    //        this.n_hp -= Weapon1.f_Damage; //맞은 총알이 어떤 무기에서 날아오는지 모르겠음
-    //    }
-    //}
+
+    //총구 위치 찾기
+    void FindMuzzle()
+    {
+        if (cur_Weapon.s_GunName.Contains("Hg"))
+        {
+            g_Muzzle = GameObject.Find("Hg_Muzzle");
+        }
+        else if (cur_Weapon.s_GunName.Contains("Ar"))
+        {
+            g_Muzzle = GameObject.Find("Ar_Muzzle");
+        }
+    }
+
     protected override void OnTriggerEnter2D(Collider2D col)
     {
         

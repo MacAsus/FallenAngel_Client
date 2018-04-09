@@ -595,10 +595,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParentPlayer: {fileID: 0}
-  s_GunName: 
-  f_Damage: 0
-  f_Magazine: 0
-  f_BulletSpeed: 0
   g_Muzzle: {fileID: 0}
 --- !u!114 &114650167209543356
 MonoBehaviour:
@@ -642,6 +638,7 @@ MonoBehaviour:
   e_SpriteState: 0
   bulletImage: {fileID: 0}
   weaponScript: {fileID: 0}
+  g_Muzzle: {fileID: 0}
   s_jobname: Attacker
   n_Magazine: 10
 --- !u!114 &114904086045109344
