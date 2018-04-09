@@ -132,4 +132,9 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     {
 
     }
+
+    protected virtual void OnTriggerEnter2D(Collider2D col)
+    {
+
+    }
 }

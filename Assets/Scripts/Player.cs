@@ -71,6 +71,7 @@ public class Player : CharacterGeneral
             // below value should be setted by manually
             AnimationControl(e_SpriteState, b_Fired);
             RotateGun(v_MousePos);
+            ChangeWeapon();
         }
 
     }
@@ -135,7 +136,7 @@ public class Player : CharacterGeneral
         }
 
     }
-    protected void FireBullet()
+    protected override void FireBullet()
     {
         Debug.Log("FireBullet called");
         Vector3 v_muzzle = weaponScript.getMuzzlePos();
@@ -148,6 +149,8 @@ public class Player : CharacterGeneral
     void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed) {
         Debug.Log("FireBulletNetwork called");
         GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
+        BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
+        temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_Weapon.f_Damage);
         bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos- this.g_Weapon.transform.position).normalized * this.cur_Weapon.f_BulletSpeed;
     }
 
@@ -222,12 +225,16 @@ public class Player : CharacterGeneral
         }
         spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
     }
-    //임시 충돌 테스트
-    void OnTriggerEnter(Collider col)
+    ////임시 충돌 테스트
+    //void OnTriggerEnter(Collider col)
+    //{
+    //    if (col.gameObject.tag == "Bullet")
+    //    {
+    //        this.n_hp -= Weapon1.f_Damage; //맞은 총알이 어떤 무기에서 날아오는지 모르겠음
+    //    }
+    //}
+    protected override void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Bullet")
-        {
-            this.n_hp -= Weapon1.f_Damage; //맞은 총알이 어떤 무기에서 날아오는지 모르겠음
-        }
+        
     }
 }

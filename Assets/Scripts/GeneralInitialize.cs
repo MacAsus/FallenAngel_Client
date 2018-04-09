@@ -12,6 +12,7 @@ public class GeneralInitialize : MonoBehaviour {
         public float f_Damage;
         public string s_BulletName;
         public float f_Magazine;
+        public string tag;
         public Sprite GunImage;
         public Sprite BulletImage;
 
@@ -43,6 +44,18 @@ public class GeneralInitialize : MonoBehaviour {
             f_Speed = speed;
         }
     }
+    public class BulletParameter
+    {
+        public string s_Host;
+        public float f_Damage;
+
+        public BulletParameter(string host, float damage)
+        {
+            s_Host = host;
+            f_Damage = damage;
+        }
+    }
+
 
     public static GeneralInitialize instance = null;
 
