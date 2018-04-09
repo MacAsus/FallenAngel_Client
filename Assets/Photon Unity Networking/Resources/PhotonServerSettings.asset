@@ -45,4 +45,6 @@ MonoBehaviour:
   - ChatMessage
   - OtherFiredBullet
   - FireBulletNetwork
+  - OnStartRPC
+  - StartRoomRPC
   DisableAutoOpenWizard: 1

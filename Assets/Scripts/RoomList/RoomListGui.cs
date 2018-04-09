@@ -33,6 +33,17 @@ public class RoomListGui : Photon.PunBehaviour {
 	}
 
 	/*****************
+	 * GUI Trigger
+	 *****************/
+	public void OnClickCreate() {
+        SceneManager.LoadScene("CreateRoom", LoadSceneMode.Single);
+    }
+
+	public void OnClickFastJoin() {
+        PhotonNetwork.JoinRandomRoom();
+    }
+
+    /*****************
 	 * Custom Method
 	******************/
 	public static void Connect()
@@ -43,18 +54,6 @@ public class RoomListGui : Photon.PunBehaviour {
         if (!PhotonNetwork.connected) {
             PhotonNetwork.ConnectUsingSettings(_gameVersion);
         }
-    }
-    
-
-	/*****************
-	 * GUI Trigger
-	 *****************/
-	public void OnClickCreate() {
-        SceneManager.LoadScene("CreateRoom", LoadSceneMode.Single);
-    }
-
-	public void OnClickFastJoin() {
-        PhotonNetwork.JoinRandomRoom();
     }
 
 
