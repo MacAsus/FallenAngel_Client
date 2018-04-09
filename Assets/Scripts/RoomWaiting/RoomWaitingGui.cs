@@ -8,6 +8,7 @@ public class RoomWaitingGui : Photon.PunBehaviour
 {
 
     public Text roomStateUI;
+    public GameObject CanvasObject;
 
     public GameObject player1_name;
     public GameObject player1_image;
@@ -17,7 +18,7 @@ public class RoomWaitingGui : Photon.PunBehaviour
     public GameObject player3_image;
     public GameObject player4_name;
     public GameObject player4_image;
-    
+
 
     public List<UserSlot> userSlots = new List<UserSlot>();
 
@@ -66,9 +67,16 @@ public class RoomWaitingGui : Photon.PunBehaviour
             PhotonNetwork.room.IsVisible = false;
             SendStartMsg(); // send evt to others
             LoadSceneToInGame(); // if master then load game scene to ingame
-        } else {
+        }
+        else
+        {
             Debug.Log("Client cannot Start!");
         }
+    }
+    public void OnClickCharacter()
+    {
+        CanvasObject.SetActive(false);
+        SceneManager.LoadScene("SelectCharacter", LoadSceneMode.Additive);
     }
 
     /*****************
@@ -76,20 +84,26 @@ public class RoomWaitingGui : Photon.PunBehaviour
 	******************/
     private void SendStartMsg()
     {
-        byte evCode = 0;    // start event 0.
+        byte evCode = Events.STARTED_GAME_EVT;    // start event 0.
         bool reliable = true;
         PhotonNetwork.RaiseEvent(evCode, null, reliable, null);
     }
 
     private void OnStartEvent(byte eventcode, object content, int senderid)
     {
-        if (eventcode == 0)
+        Debug.Log("OnStartEvent called");
+        if (eventcode == Events.STARTED_GAME_EVT) // Master Client Started Game
         {
             this.LoadSceneToInGame();
         }
+        else if (eventcode == Events.SOMEONE_SELECTED_CHARACTER_EVT)
+        { // other user selected Character & Weapon
+            Debug.Log("Event 1 Called in RoomWaiting Scene");
+        }
     }
 
-    private void LoadSceneToInGame() {
+    private void LoadSceneToInGame()
+    {
         SceneManager.LoadScene("InGame", LoadSceneMode.Single);
     }
 
@@ -161,9 +175,6 @@ public class RoomWaitingGui : Photon.PunBehaviour
         userSlots.Add(slot_user4);
     }
 
-    public void OnClickCharacter() {
-        SceneManager.LoadScene("SelectCharacter", LoadSceneMode.Additive);
-    }
 
     /*****************
 	 * Photon Event

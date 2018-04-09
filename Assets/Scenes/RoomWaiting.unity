@@ -1595,6 +1595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomStateUI: {fileID: 1770933045}
+  CanvasObject: {fileID: 334584042}
   player1_name: {fileID: 648280357}
   player1_image: {fileID: 1210348546}
   player2_name: {fileID: 1482244266}
