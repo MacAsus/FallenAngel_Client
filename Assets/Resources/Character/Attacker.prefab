@@ -361,7 +361,8 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_Materials: []
+  m_Materials:
+  - {fileID: 2100000, guid: 82e05746e2f5eb2428ae435688daabdd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -546,7 +547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 11400000, guid: 178f244cbb619ff4aa72d7d4c7461d11, type: 2}
-  initialSkinName: default
+  initialSkinName: Hg_Brownie
   initialFlipX: 0
   initialFlipY: 0
   separatorSlotNames: []
@@ -599,7 +600,6 @@ MonoBehaviour:
   f_Damage: 0
   f_Magazine: 0
   f_BulletSpeed: 0
-  g_Bullet: {fileID: 0}
   g_Muzzle: {fileID: 0}
 --- !u!114 &114650167209543356
 MonoBehaviour:
@@ -642,6 +642,7 @@ MonoBehaviour:
   b_Reload: 0
   e_SpriteState: 0
   bulletImage: {fileID: 0}
+  weaponScript: {fileID: 0}
   s_jobname: Attacker
   n_Magazine: 10
 --- !u!114 &114904086045109344

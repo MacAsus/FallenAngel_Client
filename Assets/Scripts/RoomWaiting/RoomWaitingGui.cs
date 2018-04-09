@@ -17,12 +17,16 @@ public class RoomWaitingGui : Photon.PunBehaviour
     public GameObject player3_image;
     public GameObject player4_name;
     public GameObject player4_image;
+    
 
     public List<UserSlot> userSlots = new List<UserSlot>();
 
+    /*****************
+	 * Unity LifeCycle
+	*****************/
     // Use this for initialization
     void Start()
-    {        
+    {
         // set player name to integer player count
         Debug.Log("======== My Id: " + PhotonNetwork.player.ID);
 
@@ -36,6 +40,14 @@ public class RoomWaitingGui : Photon.PunBehaviour
 
     }
 
+    void Awake()
+    {
+        PhotonNetwork.OnEventCall += this.OnStartEvent;
+    }
+
+    /*****************
+	 * GUI Trigger
+	 *****************/
     public void OnClickLeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
@@ -46,8 +58,38 @@ public class RoomWaitingGui : Photon.PunBehaviour
 
     }
 
+    // Only Works by Master Client
     public void OnClickStart()
     {
+        if (PhotonNetwork.isMasterClient)
+        {
+            PhotonNetwork.room.IsVisible = false;
+            SendStartMsg(); // send evt to others
+            LoadSceneToInGame(); // if master then load game scene to ingame
+        } else {
+            Debug.Log("Client cannot Start!");
+        }
+    }
+
+    /*****************
+	 * Custom Method
+	******************/
+    private void SendStartMsg()
+    {
+        byte evCode = 0;    // start event 0.
+        bool reliable = true;
+        PhotonNetwork.RaiseEvent(evCode, null, reliable, null);
+    }
+
+    private void OnStartEvent(byte eventcode, object content, int senderid)
+    {
+        if (eventcode == 0)
+        {
+            this.LoadSceneToInGame();
+        }
+    }
+
+    private void LoadSceneToInGame() {
         SceneManager.LoadScene("InGame", LoadSceneMode.Single);
     }
 
@@ -58,6 +100,74 @@ public class RoomWaitingGui : Photon.PunBehaviour
         SceneManager.LoadScene("RoomList", LoadSceneMode.Single);
     }
 
+    private void UpdateUserCount()
+    {
+        List<User> users = new List<User>();
+        Debug.Log("========UpdateUserCount Called ==========");
+        _initUserSlot();
+
+        // Add my Users data (because of joined At the end)
+        var myUser = new User("IsMine!!!");
+        users.Add(myUser);
+
+        // Add Other Users data
+        foreach (PhotonPlayer player in PhotonNetwork.otherPlayers)
+        {
+            var user = new User(player.NickName + "");
+            Debug.Log("player others: " + player.NickName);
+            users.Add(user);
+        }
+
+
+
+        // Enable User Slot UI
+        foreach (User user in users)
+        {
+            int idx = users.IndexOf(user);
+            userSlots[idx].userName.GetComponent<Text>().text = user.userName;
+            userSlots[idx].userImg.SetActive(true);
+            userSlots[idx].userName.SetActive(true);
+            userSlots[idx].isVisible = true;
+        }
+
+        // Disable User Slot UI
+        for (int i = 0; i < Launcher.MaxPlayersPerRoom; i++)
+        {
+            if (!userSlots[i].isVisible)
+            {
+                // Debug.Log("I'll disabled index " + i);
+                userSlots[i].userImg.SetActive(false);
+                userSlots[i].userName.SetActive(false);
+                userSlots[i].userName.GetComponent<Text>().text = "";
+            }
+        }
+
+        roomStateUI.text = PhotonNetwork.room.PlayerCount + " / " + PhotonNetwork.room.MaxPlayers;
+    }
+
+    private void _initUserSlot()
+    {
+        Debug.Log("========_initUserSlot Called ==========");
+        userSlots.Clear();
+
+        UserSlot slot_user1 = new UserSlot(player1_name, player1_image);
+        UserSlot slot_user2 = new UserSlot(player2_name, player2_image);
+        UserSlot slot_user3 = new UserSlot(player3_name, player3_image);
+        UserSlot slot_user4 = new UserSlot(player4_name, player4_image);
+
+        userSlots.Add(slot_user1);
+        userSlots.Add(slot_user2);
+        userSlots.Add(slot_user3);
+        userSlots.Add(slot_user4);
+    }
+
+    public void OnClickCharacter() {
+        SceneManager.LoadScene("SelectCharacter", LoadSceneMode.Additive);
+    }
+
+    /*****************
+	 * Photon Event
+	*****************/
     // Triggered when Player enter
     public override void OnPhotonPlayerConnected(PhotonPlayer other)
     {
@@ -80,65 +190,11 @@ public class RoomWaitingGui : Photon.PunBehaviour
         UpdateUserCount();
     }
 
-    private void UpdateUserCount()
+    [PunRPC]
+    private void StartRoomRPC()
     {
-        List<User> users = new List<User>();
-        Debug.Log("========UpdateUserCount Called ==========");
-        _initUserSlot();
-
-        // Add my Users data (because of joined At the end)
-        var myUser = new User("IsMine!!!");
-        users.Add(myUser);
-
-        // Add Other Users data
-        foreach (PhotonPlayer player in PhotonNetwork.otherPlayers)
-        {
-            var user = new User(player.NickName + "");
-            Debug.Log("player others: " + player.NickName);
-            users.Add(user);
-        }
-
-        
-
-        // Enable User Slot UI
-        foreach (User user in users) {
-            int idx = users.IndexOf(user);
-            userSlots[idx].userName.GetComponent<Text>().text = user.userName;
-            userSlots[idx].userImg.SetActive(true);
-            userSlots[idx].userName.SetActive(true);
-            userSlots[idx].isVisible = true;
-        }
-
-        // Disable User Slot UI
-        for (int i = 0; i < Launcher.MaxPlayersPerRoom; i++)
-        {
-            if(!userSlots[i].isVisible) {
-                // Debug.Log("I'll disabled index " + i);
-                userSlots[i].userImg.SetActive(false);
-                userSlots[i].userName.SetActive(false);
-                userSlots[i].userName.GetComponent<Text>().text = "";
-            }
-        }
-
-        roomStateUI.text = PhotonNetwork.room.PlayerCount + " / " + PhotonNetwork.room.MaxPlayers;
+        SceneManager.LoadScene("InGame", LoadSceneMode.Single);
     }
-
-    private void _initUserSlot()
-    {
-        Debug.Log("========_initUserSlot Called ==========");
-        userSlots.Clear();
-        
-        UserSlot slot_user1 = new UserSlot(player1_name, player1_image);
-        UserSlot slot_user2 = new UserSlot(player2_name, player2_image);
-        UserSlot slot_user3 = new UserSlot(player3_name, player3_image);
-        UserSlot slot_user4 = new UserSlot(player4_name, player4_image);
-
-        userSlots.Add(slot_user1);
-        userSlots.Add(slot_user2);
-        userSlots.Add(slot_user3);
-        userSlots.Add(slot_user4);
-    }
-
 }
 
 
