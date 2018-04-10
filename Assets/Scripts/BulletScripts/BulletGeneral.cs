@@ -13,6 +13,7 @@ public class BulletGeneral : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         var hit = col.gameObject;
+        
         if (col.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp > 0)
         {
             hit.GetComponent<CharacterGeneral>().n_hp -= bulletInfo.f_Damage;
