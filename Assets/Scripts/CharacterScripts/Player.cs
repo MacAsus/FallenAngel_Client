@@ -295,4 +295,9 @@ public class Player : CharacterGeneral
             g_Muzzle = GameObject.Find("Ar_Muzzle");
         }
     }
+
+    [PunRPC]
+    void TakeDamage(float _f_Damage) {
+        this.n_hp -= _f_Damage;
+    }
 }

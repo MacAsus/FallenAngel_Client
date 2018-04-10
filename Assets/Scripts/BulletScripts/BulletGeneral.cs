@@ -16,10 +16,12 @@ public class BulletGeneral : MonoBehaviour
         
         if (col.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp > 0)
         {
-            hit.GetComponent<CharacterGeneral>().n_hp -= bulletInfo.f_Damage;
+            Debug.Log("===============충돌!!!=========");
+            bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
+            if(IsMine) { // 자기가 맞았을 경우에만 RPC 호출
+                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, bulletInfo.f_Damage);
+            }
             Destroy(this.gameObject);
-            Debug.Log("Bullet Collision!!!");
-            Debug.Log("Collided Player HP : " + hit.GetComponent<CharacterGeneral>().n_hp);
         }
         if (col.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp == 0)
         {

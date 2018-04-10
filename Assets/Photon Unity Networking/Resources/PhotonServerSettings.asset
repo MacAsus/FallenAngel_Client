@@ -47,4 +47,6 @@ MonoBehaviour:
   - FireBulletNetwork
   - OnStartRPC
   - StartRoomRPC
+  - FireAnimationNetwork
+  - TakeDamage
   DisableAutoOpenWizard: 1
