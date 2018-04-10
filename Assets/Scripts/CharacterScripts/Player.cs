@@ -221,6 +221,7 @@ public class Player : CharacterGeneral
         GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
         BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
         temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_Weapon.f_Damage);
+        temp_bullet.s_Victim = "Enemy";
         bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - this.g_Weapon.transform.position).normalized * this.cur_Weapon.f_BulletSpeed;
     }
     
