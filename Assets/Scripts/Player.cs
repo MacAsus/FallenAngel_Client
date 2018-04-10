@@ -260,9 +260,4 @@ public class Player : CharacterGeneral
             g_Muzzle = GameObject.Find("Ar_Muzzle");
         }
     }
-
-    protected override void OnTriggerEnter2D(Collider2D col)
-    {
-
-    }
 }
