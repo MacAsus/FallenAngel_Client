@@ -81,7 +81,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     }
 
 
-    protected virtual void CharacterMovement()
+    protected virtual void UpdatePosition()
     {
 
     }
@@ -117,7 +117,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 
 
     //Sprite 애니메이션 컨트롤
-    protected virtual void AnimationControl(SpriteState _e_SpriteState, bool _b_Fired)
+    protected virtual void UpdateAnimationControl(SpriteState _e_SpriteState, bool _b_Fired)
     {
 
     }

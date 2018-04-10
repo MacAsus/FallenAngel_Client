@@ -28,6 +28,9 @@ public class Player : CharacterGeneral
 
     // by PhotonNetwork Value
     Vector3 v_NetworkPosition;
+    Vector3 v_NetworkMousePos;
+    SpriteState e_NetworkSpriteState;
+    bool b_NetworkFired;
     double f_LastNetworkDataReceivedTime;
     // Use this for initialization
     void Start()
@@ -40,8 +43,6 @@ public class Player : CharacterGeneral
         //여기까지
         PhotonNetwork.sendRate = 500 / Launcher.MaxPlayersPerRoom;
         PhotonNetwork.sendRateOnSerialize = 500 / Launcher.MaxPlayersPerRoom;
-        PhotonNetwork.sendRate = 500;
-        PhotonNetwork.sendRateOnSerialize = 500;
         InitializeParam();
 
         //디버그용
@@ -65,7 +66,7 @@ public class Player : CharacterGeneral
     void Update()
     {
         // if this view is not mine, then do not update
-        if (photonView.isMine)
+        if (photonView.isMine == true)
         {
             if (e_SpriteState != SpriteState.Dead)
             {
@@ -74,17 +75,18 @@ public class Player : CharacterGeneral
                 v_MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
                 // movement synced by Photon View
-                CharacterMovement();
+                UpdatePosition();
 
                 // below value should be setted by manually
 
                 //스파인 애니메이션, 총알의 발사 모두 처리하는 함수
-                AnimationControl(e_SpriteState, b_Fired);
+                UpdateAnimationControl(e_SpriteState, b_Fired);
                 RotateGun(v_MousePos);
                 ChangeWeapon();
             }
         } else {
             UpdateNetworkedPosition();
+            UpdateMousePosition(); // Need To Lerp
         }
     }
 
@@ -107,8 +109,16 @@ public class Player : CharacterGeneral
         transform.position = newPosition;
     }
 
+    void UpdateNetworkAnimationControl() {
+        UpdateAnimationControl(e_NetworkSpriteState, b_NetworkFired);
+    }
+
+    void UpdateMousePosition() {
+        RotateGun(v_NetworkMousePos);
+    }
+
     //캐릭터 이동 
-    protected override void CharacterMovement()
+    protected override void UpdatePosition()
     {
         int tempx = 0;
         int tempy = 0;
@@ -156,7 +166,7 @@ public class Player : CharacterGeneral
     }
 
     //애니메이션 컨트롤(weaponSpineControl, fireBullet 모두 처리하는 중)
-    protected override void AnimationControl(SpriteState _e_SpriteState, bool _b_Fired)
+    protected override void UpdateAnimationControl(SpriteState _e_SpriteState, bool _b_Fired)
     {
         WeaponSpineControl(_b_Fired);
         if (_e_SpriteState == SpriteState.Idle)
@@ -182,14 +192,10 @@ public class Player : CharacterGeneral
     void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed)
     {
         Debug.Log("FireBulletNetwork called");
-        if (this.photonView.isMine)
-        {
-            GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
-            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
-            temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_Weapon.f_Damage);
-            bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - this.g_Weapon.transform.position).normalized * this.cur_Weapon.f_BulletSpeed;
-        }
-
+        GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
+        BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
+        temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_Weapon.f_Damage);
+        bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - this.g_Weapon.transform.position).normalized * this.cur_Weapon.f_BulletSpeed;
     }
 
     protected override void WeaponSpineControl(bool _b_Fired)
@@ -209,21 +215,19 @@ public class Player : CharacterGeneral
         if (stream.isWriting)
         {
             stream.SendNext(v_NetworkPosition); // 현재 위치가 아니라 움직일 위치를 보내주는게 좋음
-            // stream.SendNext(e_SpriteState);
-            // stream.SendNext(b_Fired);
-            // stream.SendNext(v_MousePos);
+            stream.SendNext(e_SpriteState);
+            stream.SendNext(b_Fired);
+            stream.SendNext(v_MousePos);
         }
         else
         {
             // Network player, receive data
             v_NetworkPosition = (Vector3)stream.ReceiveNext();
-            // SpriteState _e_SpriteState = (SpriteState)stream.ReceiveNext();
-            // bool _b_Fired = (bool)stream.ReceiveNext();
-            // Vector3 _v_MousePos = (Vector3)stream.ReceiveNext();
+            e_NetworkSpriteState = (SpriteState)stream.ReceiveNext();
+            b_NetworkFired = (bool)stream.ReceiveNext();
+            v_NetworkMousePos = (Vector3)stream.ReceiveNext();
 
-            // Todo: RotateGun, AnimationControl 함수 지우고 Update에서 Network Trigger
             // RotateGun(_v_MousePos);
-            // AnimationControl(_e_SpriteState, _b_Fired);
             f_LastNetworkDataReceivedTime = info.timestamp;
         }
     }
