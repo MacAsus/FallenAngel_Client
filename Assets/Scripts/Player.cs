@@ -18,6 +18,8 @@ public class Player : CharacterGeneral
 
     public GameObject g_Muzzle;
 
+    public GameObject PlayerUiPrefab;
+
 
     public string s_jobname;
     public int n_Magazine = 10;
@@ -60,6 +62,15 @@ public class Player : CharacterGeneral
         cur_Weapon = tempParam;
 
         FindMuzzle();
+        if (PlayerUiPrefab != null)
+        {
+            GameObject _uiGo = Instantiate(PlayerUiPrefab) as GameObject;
+            _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+        }
+        else
+        {
+            Debug.LogWarning("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
+        }
     }
 
     // Update is called once per frame
@@ -84,23 +95,27 @@ public class Player : CharacterGeneral
                 RotateGun(v_MousePos);
                 ChangeWeapon();
             }
-        } else {
+        }
+        else
+        {
             UpdateNetworkedPosition();
             UpdateMousePosition(); // Need To Lerp
+            UpdateNetworkAnimationControl();
         }
     }
 
-    void UpdateNetworkedPosition() {
+    void UpdateNetworkedPosition()
+    {
         float pingInSeconds = (float)PhotonNetwork.GetPing() * 0.001f;
-		float timeSinceLastUpdate = (float)( PhotonNetwork.time - f_LastNetworkDataReceivedTime );
-		float totalTimePassed = pingInSeconds + timeSinceLastUpdate;
+        float timeSinceLastUpdate = (float)(PhotonNetwork.time - f_LastNetworkDataReceivedTime);
+        float totalTimePassed = pingInSeconds + timeSinceLastUpdate;
         int lerpValue = 20; // lerpValue가 높아질 수록 빠르게 따라잡음
 
         Vector3 newPosition = Vector3.Lerp(transform.position, v_NetworkPosition, Time.smoothDeltaTime * lerpValue); // 
 
-        if( Vector3.Distance( transform.position, v_NetworkPosition ) > 3f )
-		{
-			newPosition = v_NetworkPosition;
+        if (Vector3.Distance(transform.position, v_NetworkPosition) > 3f)
+        {
+            newPosition = v_NetworkPosition;
             Debug.Log("Teleport");
         }
 
@@ -109,11 +124,21 @@ public class Player : CharacterGeneral
         transform.position = newPosition;
     }
 
-    void UpdateNetworkAnimationControl() {
-        UpdateAnimationControl(e_NetworkSpriteState, b_NetworkFired);
+    void UpdateNetworkAnimationControl()
+    {
+        // UpdateAnimationControl(e_NetworkSpriteState, b_NetworkFired);
+        if (e_NetworkSpriteState == SpriteState.Idle)
+        {
+            a_Animator.SetBool("Run", false);
+        }
+        if (e_NetworkSpriteState == SpriteState.Run)
+        {
+            a_Animator.SetBool("Run", true);
+        }
     }
 
-    void UpdateMousePosition() {
+    void UpdateMousePosition()
+    {
         RotateGun(v_NetworkMousePos);
     }
 
@@ -177,8 +202,8 @@ public class Player : CharacterGeneral
         {
             a_Animator.SetBool("Run", true);
         }
-
     }
+
     protected override void FireBullet()
     {
         Debug.Log("FireBullet called");
@@ -186,6 +211,7 @@ public class Player : CharacterGeneral
         Vector3 v_bulletSpeed = (g_Muzzle.transform.position - g_Weapon.transform.position).normalized * cur_Weapon.f_BulletSpeed;
 
         this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
+        this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others);
     }
 
     [PunRPC]
@@ -197,7 +223,15 @@ public class Player : CharacterGeneral
         temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_Weapon.f_Damage);
         bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - this.g_Weapon.transform.position).normalized * this.cur_Weapon.f_BulletSpeed;
     }
-
+    
+    [PunRPC]
+    void FireAnimationNetwork() {
+        if(b_NetworkFired) {
+            spine_GunAnim.state.SetAnimation(0, "Shoot", true);
+        } else {
+            spine_GunAnim.state.SetAnimation(0, "Shoot", false);
+        }
+    }
     protected override void WeaponSpineControl(bool _b_Fired)
     {
 

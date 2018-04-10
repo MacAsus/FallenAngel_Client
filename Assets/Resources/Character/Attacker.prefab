@@ -638,6 +638,8 @@ MonoBehaviour:
   bulletImage: {fileID: 0}
   weaponScript: {fileID: 0}
   g_Muzzle: {fileID: 0}
+  PlayerUiPrefab: {fileID: 1579187010457662, guid: 50e15e9ab486c44bf8841e737f8e4136,
+    type: 2}
   s_jobname: Attacker
   n_Magazine: 10
 --- !u!114 &114904086045109344
