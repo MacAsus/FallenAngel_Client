@@ -28,6 +28,13 @@ public class PlayerUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
+        if (_target == null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        
         Debug.Log("Player UI Update");
         // Reflect the Player Health
         if (PlayerHealthSlider != null)
