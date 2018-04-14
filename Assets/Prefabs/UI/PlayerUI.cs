@@ -40,7 +40,7 @@ public class PlayerUI : MonoBehaviour
         if (PlayerHealthSlider != null)
         {
             PlayerHealthSlider.value = _target.n_hp;
-            Debug.Log("현재 체력" + _target.n_hp);
+            // Debug.Log("현재 체력" + _target.n_hp);
         }
     }
 
@@ -52,7 +52,6 @@ public class PlayerUI : MonoBehaviour
 
     void LateUpdate()
     {
-        Debug.Log("Player UI Awake");
         // #Critical
         // Follow the Target GameObject on screen.
         if (_targetTransform != null)

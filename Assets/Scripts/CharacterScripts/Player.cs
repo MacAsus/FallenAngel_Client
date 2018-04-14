@@ -19,6 +19,7 @@ public class Player : CharacterGeneral
     public GameObject g_Muzzle;
 
     public GameObject PlayerUiPrefab;
+    private ExitGames.Client.Photon.Hashtable xyPosTable = new ExitGames.Client.Photon.Hashtable();
 
 
     public string s_jobname;
@@ -95,6 +96,8 @@ public class Player : CharacterGeneral
                 RotateGun(v_MousePos);
                 ChangeWeapon();
             }
+
+            GetOtherPlayerPos();
         }
         else
         {
@@ -249,6 +252,10 @@ public class Player : CharacterGeneral
         // Debug.Log("SerializeState Called");
         if (stream.isWriting)
         {
+            xyPosTable["x"] = v_NetworkPosition.x;
+            xyPosTable["y"] = v_NetworkPosition.y;
+            PhotonNetwork.player.SetCustomProperties(xyPosTable, null, true);
+
             stream.SendNext(v_NetworkPosition); // 현재 위치가 아니라 움직일 위치를 보내주는게 좋음
             stream.SendNext(e_SpriteState);
             stream.SendNext(b_Fired);
@@ -299,5 +306,11 @@ public class Player : CharacterGeneral
     [PunRPC]
     void TakeDamage(float _f_Damage) {
         this.n_hp -= _f_Damage;
+    }
+
+    void GetOtherPlayerPos() {
+        foreach (PhotonPlayer player in PhotonNetwork.otherPlayers) {
+            Debug.Log("other x: "+ player.CustomProperties["x"] + " : " + player.CustomProperties["y"]);
+        }
     }
 }
