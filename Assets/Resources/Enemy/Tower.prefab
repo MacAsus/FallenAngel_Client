@@ -561,7 +561,7 @@ MonoBehaviour:
   f_Distance: 0
   b_IsSearch: 0
   TowerPrefab: {fileID: 0}
-  Target: {fileID: 0}
+  Target: {fileID: 1953006606613092, guid: cd298e0de01cb4f2d930dfed61a7dd16, type: 2}
   Tower_Muzzle: {fileID: 0}
   EnemyUiPrefab: {fileID: 0}
   TowerBulletImage: {fileID: 0}

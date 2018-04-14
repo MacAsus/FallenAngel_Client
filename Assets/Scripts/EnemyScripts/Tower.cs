@@ -12,7 +12,7 @@ public class Tower : EnemyGeneral
     public bool b_IsSearch = false; //Player 탐색 여부
 
     public GameObject TowerPrefab; //타워 프리팹
-    public GameObject Target; //공격할 타겟 오브젝트
+    public GameObject Target; //공격할 타겟
     public GameObject Tower_Muzzle; //타워 공격 시작점
     public GameObject EnemyUiPrefab; //적 UI 프리팹
 
@@ -208,10 +208,13 @@ public class Tower : EnemyGeneral
 
     protected override void WeaponSpineControl(bool _b_EnemyFired)
     {
-        if (b_IsSearch == true && !_b_EnemyFired)
+        if (b_IsSearch == true)
         {
-            FireBullet();
-            Spine_EnemyWeaponAnim.state.SetAnimation(0, "Shoot", false);
+            if (!_b_EnemyFired && Target.GetComponent<CharacterGeneral>().n_hp != 0)
+            {
+                FireBullet();
+                Spine_EnemyWeaponAnim.state.SetAnimation(0, "Shoot", false);
+            }
         }
     }
 
@@ -264,7 +267,7 @@ public class Tower : EnemyGeneral
 
     protected override void Search()
     {
-        //Target = GameObject.Find("Attacker");
+        Target = GameObject.FindWithTag("Player");
         f_Distance = Vector3.Distance(Target.transform.position, this.transform.position);
         if (f_Distance <= 5)
         {

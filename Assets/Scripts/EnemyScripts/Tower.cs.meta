@@ -5,7 +5,19 @@ licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - EnemySprite: {instanceID: 0}
+  - EnemyWeapon: {instanceID: 0}
+  - EnemyBullet: {instanceID: 0}
+  - EnemyRigidBody: {instanceID: 0}
+  - EnemyAnimator: {instanceID: 0}
+  - Spine_EnemyAnim: {instanceID: 0}
+  - Spine_EnemyWeaponAnim: {instanceID: 0}
+  - TowerPrefab: {instanceID: 0}
+  - Target: {fileID: 1953006606613092, guid: cd298e0de01cb4f2d930dfed61a7dd16, type: 2}
+  - Tower_Muzzle: {instanceID: 0}
+  - EnemyUiPrefab: {instanceID: 0}
+  - TowerBulletImage: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
