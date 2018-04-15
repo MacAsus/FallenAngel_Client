@@ -97,7 +97,7 @@ public class Player : CharacterGeneral
                 ChangeWeapon();
             }
 
-            GetOtherPlayerPos();
+            //GetOtherPlayerPos();
         }
         else
         {
@@ -222,7 +222,7 @@ public class Player : CharacterGeneral
     {
         Debug.Log("FireBulletNetwork called");
         GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
-        PlayerBullet temp_bullet = bullet.GetComponent<PlayerBullet>();
+        BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
         temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_Weapon.f_Damage);
         temp_bullet.s_Victim = "Enemy";
         bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - this.g_Weapon.transform.position).normalized * this.cur_Weapon.f_BulletSpeed;
@@ -308,11 +308,5 @@ public class Player : CharacterGeneral
         this.n_hp -= _f_Damage;
     }
 
-    void GetOtherPlayerPos()
-    {
-        foreach (PhotonPlayer player in PhotonNetwork.otherPlayers)
-        {
-            Debug.Log("other x: "+ player.CustomProperties["x"] + " : " + player.CustomProperties["y"]);
-        }
-    }
+
 }

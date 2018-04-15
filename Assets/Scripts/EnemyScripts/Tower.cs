@@ -4,7 +4,7 @@ using UnityEngine;
 using Spine;
 using Spine.Unity;
 
-public class Tower : EnemyGeneral
+public class Tower : CharacterGeneral
 {
 
     public float f_Distance; //Player와 Tower와의 거리
@@ -25,15 +25,15 @@ public class Tower : EnemyGeneral
     //Photon Value
     Vector3 v_NetworkPosition;
     Vector3 v_NetworkTargetPos;
-    EnemySpriteState e_NetworkSpriteState;
+    SpriteState e_NetworkSpriteState;
     bool b_NetworkFired;
     double f_LastNetworkDataReceivedTime;
 
     // Use this for initialization
     void Start()
     {
-        base.f_Enemy_HP = 100f;
-        base.f_EnemyMovingSpeed = 0f;
+        base.n_hp = 100f;
+        base.f_Speed = 0f;
         //임시 테스트용
         GeneralInitialize.GunParameter tempEnemyWeapon =
             new GeneralInitialize.GunParameter("Hg_Brownie", 10, 5, "Hg_Norm", 5);
@@ -49,9 +49,9 @@ public class Tower : EnemyGeneral
     {
         if (photonView.isMine == true)
         {
-            if (e_EnemySpriteState != EnemySpriteState.Dead)
+            if (e_SpriteState != SpriteState.Dead)
             {
-                e_EnemySpriteState = EnemySpriteState.Idle;
+                e_SpriteState = SpriteState.Idle;
 
                 v_TargetPosition = Target.transform.position;
 
@@ -61,7 +61,7 @@ public class Tower : EnemyGeneral
                 // below value should be setted by manually
 
                 //스파인 애니메이션, 총알의 발사 모두 처리하는 함수
-                UpdateAnimationControl(e_EnemySpriteState, b_EnemyFired);
+                UpdateAnimationControl(e_SpriteState, b_Fired);
                 RotateGun(v_TargetPosition);
             }
         }
@@ -96,13 +96,13 @@ public class Tower : EnemyGeneral
     void UpdateNetworkAnimationControl()
     {
         // UpdateAnimationControl(e_NetworkSpriteState, b_NetworkFired);
-        if (e_NetworkSpriteState == EnemySpriteState.Idle)
+        if (e_NetworkSpriteState == SpriteState.Idle)
         {
-            EnemyAnimator.SetBool("Run", false);
+            a_Animator.SetBool("Run", false);
         }
-        if (e_NetworkSpriteState == EnemySpriteState.Run)
+        if (e_NetworkSpriteState == SpriteState.Run)
         {
-            EnemyAnimator.SetBool("Run", true);
+            a_Animator.SetBool("Run", true);
         }
     }
 
@@ -146,29 +146,32 @@ public class Tower : EnemyGeneral
     }
 
     //스파인 이벤트 처리
-    public override void SpineOnEvent(TrackEntry trackIndex, Spine.Event e)
+    public override void SpineOnevent(TrackEntry trackIndex, Spine.Event e)
     {
         if (e.Data.name == "Shoot_Start")
         {
-            b_EnemyFired = true;
+
+            b_Fired = true;
+
+
         }
         else if (e.data.name == "Shoot_End")
         {
-            b_EnemyFired = false;
+            b_Fired = false;
         }
     }
 
     //애니메이션 컨트롤(weaponSpineControl, fireBullet 모두 처리하는 중)
-    protected override void UpdateAnimationControl(EnemySpriteState _e_EnemySpriteState, bool _b_EnemyFired)
+    protected override void UpdateAnimationControl(SpriteState _e_SpriteState, bool _b_Fired)
     {
-        WeaponSpineControl(_b_EnemyFired);
-        if (_e_EnemySpriteState == EnemySpriteState.Idle)
+        WeaponSpineControl(_b_Fired);
+        if (_e_SpriteState == SpriteState.Idle)
         {
-            EnemyAnimator.SetBool("Run", false);
+            a_Animator.SetBool("Run", false);
         }
-        if (_e_EnemySpriteState == EnemySpriteState.Run)
+        if (_e_SpriteState == SpriteState.Run)
         {
-            EnemyAnimator.SetBool("Run", true);
+            a_Animator.SetBool("Run", true);
         }
     }
 
@@ -186,11 +189,11 @@ public class Tower : EnemyGeneral
     void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed)
     {
         Debug.Log("[Tower] FireBulletNetwork called");
-        GameObject bullet = Instantiate(this.EnemyBullet, muzzlePos, Quaternion.identity);
-        EnemyBullet temp_bullet = bullet.GetComponent<EnemyBullet>();
+        GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
+        BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
         temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_EnemyWeapon.f_Damage);
         temp_bullet.s_Victim = "Player";
-        bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - this.EnemyWeapon.transform.position).normalized * this.cur_EnemyWeapon.f_BulletSpeed;
+        bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - this.g_Weapon.transform.position).normalized * this.cur_EnemyWeapon.f_BulletSpeed;
     }
 
     [PunRPC]
@@ -198,11 +201,11 @@ public class Tower : EnemyGeneral
     {
         if (b_NetworkFired)
         {
-            Spine_EnemyWeaponAnim.state.SetAnimation(0, "Shoot", true);
+            spine_GunAnim.state.SetAnimation(0, "Shoot", true);
         }
         else
         {
-            Spine_EnemyWeaponAnim.state.SetAnimation(0, "Shoot", false);
+            spine_GunAnim.state.SetAnimation(0, "Shoot", false);
         }
     }
 
@@ -213,7 +216,7 @@ public class Tower : EnemyGeneral
             if (!_b_EnemyFired && Target.GetComponent<CharacterGeneral>().n_hp != 0)
             {
                 FireBullet();
-                Spine_EnemyWeaponAnim.state.SetAnimation(0, "Shoot", false);
+                spine_GunAnim.state.SetAnimation(0, "Shoot", false);
             }
         }
     }
@@ -224,15 +227,15 @@ public class Tower : EnemyGeneral
         if (stream.isWriting)
         {
             stream.SendNext(v_NetworkPosition); // 현재 위치가 아니라 움직일 위치를 보내주는게 좋음
-            stream.SendNext(e_EnemySpriteState);
-            stream.SendNext(b_EnemyFired);
+            stream.SendNext(e_SpriteState);
+            stream.SendNext(b_Fired);
             stream.SendNext(v_TargetPosition);
         }
         else
         {
             // Network player, receive data
             v_NetworkPosition = (Vector3)stream.ReceiveNext();
-            e_NetworkSpriteState = (EnemySpriteState)stream.ReceiveNext();
+            e_NetworkSpriteState = (SpriteState)stream.ReceiveNext();
             b_NetworkFired = (bool)stream.ReceiveNext();
             v_NetworkTargetPos = (Vector3)stream.ReceiveNext();
 
@@ -257,16 +260,35 @@ public class Tower : EnemyGeneral
     [PunRPC]
     void TakeDamage(float _f_Damage)
     {
-        this.f_Enemy_HP -= _f_Damage;
+        this.n_hp -= _f_Damage;
     }
 
     protected override void OnTriggerEnter2D(Collider2D col)
     {
-        base.OnTriggerEnter2D(col);
+        var hit = col.gameObject;
+
+        if (col.tag == "Player" && hit.GetComponent<CharacterGeneral>().n_hp > 0)
+        {
+            Debug.Log("======Player가 Enemy와 충돌!!!======");
+            bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
+            if (IsMine)
+            { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
+                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, 5);
+            }
+        }
+        if (col.tag == "Player" && hit.GetComponent<CharacterGeneral>().n_hp == 0)
+        {
+            // 캐릭터 사망
+            Debug.Log("Player is dead.");
+            hit.GetComponent<CharacterGeneral>().e_SpriteState = CharacterGeneral.SpriteState.Dead;
+        }
     }
 
     protected override void Search()
     {
+        //Code...
+
+        /*
         Target = GameObject.FindWithTag("Player");
         f_Distance = Vector3.Distance(Target.transform.position, this.transform.position);
         if (f_Distance <= 5)
@@ -276,6 +298,6 @@ public class Tower : EnemyGeneral
         else
         {
             b_IsSearch = false;
-        }
+        }*/
     }
 }

@@ -70,7 +70,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     }
 
 
-    public void GetAimDegree(Vector3 v_TargetPos)
+    public virtual void GetAimDegree(Vector3 v_TargetPos)
     {
 
         float x = g_Weapon.position.x - v_TargetPos.x;
@@ -129,6 +129,16 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     }
 
     protected virtual void FireBullet()
+    {
+
+    }
+    
+    protected virtual void OnTriggerEnter2D(Collider2D col)
+    {
+
+    }
+
+    protected virtual void Search()
     {
 
     }
