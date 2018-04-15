@@ -19,7 +19,6 @@ public class Player : CharacterGeneral
     public GameObject g_Muzzle;
 
     public GameObject PlayerUiPrefab;
-    private ExitGames.Client.Photon.Hashtable xyPosTable = new ExitGames.Client.Photon.Hashtable();
 
 
     public string s_jobname;
@@ -252,9 +251,6 @@ public class Player : CharacterGeneral
         // Debug.Log("SerializeState Called");
         if (stream.isWriting)
         {
-            xyPosTable["x"] = v_NetworkPosition.x;
-            xyPosTable["y"] = v_NetworkPosition.y;
-
             stream.SendNext(v_NetworkPosition); // 현재 위치가 아니라 움직일 위치를 보내주는게 좋음
             stream.SendNext(e_SpriteState);
             stream.SendNext(b_Fired);

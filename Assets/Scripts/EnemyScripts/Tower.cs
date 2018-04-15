@@ -23,7 +23,6 @@ public class Tower : CharacterGeneral
     Vector3 v_TargetPosition = new Vector3(); //타겟 위치 Vector3 값
 
     //Photon Value
-    Vector3 v_NetworkPosition;
     Vector3 v_NetworkTargetPos;
     SpriteState e_NetworkSpriteState;
     bool b_NetworkFired;
@@ -57,48 +56,23 @@ public class Tower : CharacterGeneral
                 if(Target) {
                     v_TargetPosition = Target.transform.position;
                 }
-
-                // movement synced by Photon View
-                UpdatePosition();
-
                 // below value should be setted by manually
 
                 //스파인 애니메이션, 총알의 발사 모두 처리하는 함수
                 UpdateAnimationControl(e_SpriteState, b_Fired);
-                RotateGun(v_TargetPosition);
             }
         }
         else
         {
-            UpdateNetworkedPosition();
-            UpdateTargetPosition(); // Need To Lerp
             UpdateNetworkAnimationControl();
         }
-    }
 
-    void UpdateNetworkedPosition()
-    {
-        float pingInSeconds = (float)PhotonNetwork.GetPing() * 0.001f;
-        float timeSinceLastUpdate = (float)(PhotonNetwork.time - f_LastNetworkDataReceivedTime);
-        float totalTimePassed = pingInSeconds + timeSinceLastUpdate;
-        int lerpValue = 20; // lerpValue가 높아질 수록 빠르게 따라잡음
-
-        Vector3 newPosition = Vector3.Lerp(transform.position, v_NetworkPosition, Time.smoothDeltaTime * lerpValue); // 
-
-        if (Vector3.Distance(transform.position, v_NetworkPosition) > 3f)
-        {
-            newPosition = v_NetworkPosition;
-            Debug.Log("Teleport");
-        }
-
-        // Debug.Log("newPosition is" + newPosition.x + " : " + newPosition.y);
-
-        transform.position = newPosition;
+        Search(); // Find Nearest Other Players
+        RotateGun(Target.transform.position);
     }
 
     void UpdateNetworkAnimationControl()
     {
-        // UpdateAnimationControl(e_NetworkSpriteState, b_NetworkFired);
         if (e_NetworkSpriteState == SpriteState.Idle)
         {
             a_Animator.SetBool("Run", false);
@@ -107,45 +81,6 @@ public class Tower : CharacterGeneral
         {
             a_Animator.SetBool("Run", true);
         }
-    }
-
-    void UpdateTargetPosition()
-    {
-        RotateGun(v_NetworkTargetPos);
-    }
-
-    //적 이동 
-    protected override void UpdatePosition()
-    {
-        //Tower는 이동하지 않고 Search 기능만 수행합니다.
-        Search();
-        /*
-        int tempx = 0;
-        int tempy = 0;
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-        {
-            e_EnemySpriteState = EnemySpriteState.Run;
-            if (Input.GetKey(KeyCode.A))
-            {
-                tempx -= 1;
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                tempx += 1;
-            }
-            if (Input.GetKey(KeyCode.W))
-            {
-                tempy += 1;
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                tempy -= 1;
-            }
-        }
-
-        v_NetworkPosition = new Vector3(EnemyRigidBody.position.x + (f_EnemyMovingSpeed * tempx * Time.deltaTime), EnemyRigidBody.position.y + (f_EnemyMovingSpeed * tempy * Time.deltaTime));
-        EnemyRigidBody.velocity = new Vector2(f_EnemyMovingSpeed * tempx, f_EnemyMovingSpeed * tempy);
-        */
     }
 
     //스파인 이벤트 처리
@@ -241,10 +176,31 @@ public class Tower : CharacterGeneral
         }
     }
 
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // Debug.Log("SerializeState Called");
+        if (stream.isWriting)
+        {
+            stream.SendNext(e_SpriteState);
+            stream.SendNext(b_Fired);
+            stream.SendNext(v_TargetPosition);
+        }
+        else
+        {
+            // Network player, receive data
+            e_NetworkSpriteState = (SpriteState)stream.ReceiveNext();
+            b_NetworkFired = (bool)stream.ReceiveNext();
+            v_NetworkTargetPos = (Vector3)stream.ReceiveNext();
+
+            f_LastNetworkDataReceivedTime = info.timestamp;
+        }
+    }
+
     protected override void Search()
     {
         Vector3 distance = new Vector3(9999, 9999);
         if (NetworkUtil.PlayerList.Count != 0) {
+            Debug.Log("NetworkUtil.PlayerList count " + NetworkUtil.PlayerList.Count);
             foreach(GameObject player in NetworkUtil.PlayerList) {
                 Vector3 playerPos = player.transform.position;
                 
