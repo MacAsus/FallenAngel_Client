@@ -54,7 +54,9 @@ public class Tower : CharacterGeneral
             {
                 e_SpriteState = SpriteState.Idle;
 
-                v_TargetPosition = Target.transform.position;
+                if(Target) {
+                    v_TargetPosition = Target.transform.position;
+                }
 
                 // movement synced by Photon View
                 UpdatePosition();
@@ -222,29 +224,6 @@ public class Tower : CharacterGeneral
         }
     }
 
-    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        // Debug.Log("SerializeState Called");
-        if (stream.isWriting)
-        {
-            stream.SendNext(v_NetworkPosition); // 현재 위치가 아니라 움직일 위치를 보내주는게 좋음
-            stream.SendNext(e_SpriteState);
-            stream.SendNext(b_Fired);
-            stream.SendNext(v_TargetPosition);
-        }
-        else
-        {
-            // Network player, receive data
-            v_NetworkPosition = (Vector3)stream.ReceiveNext();
-            e_NetworkSpriteState = (SpriteState)stream.ReceiveNext();
-            b_NetworkFired = (bool)stream.ReceiveNext();
-            v_NetworkTargetPos = (Vector3)stream.ReceiveNext();
-
-            // RotateGun(_v_MousePos);
-            f_LastNetworkDataReceivedTime = info.timestamp;
-        }
-    }
-
     //총구 위치 찾기(추후 수정)
     void FindMuzzle()
     {
@@ -271,10 +250,16 @@ public class Tower : CharacterGeneral
                 // 현 플레이어 - 타워 거리보다 최소거리 - 타워거리가 더 가까우면
                 if(playerToTowerDist < minDistToTowerDist) {
                     distance = playerPos;
-                    f_Distance = minDistToTowerDist;
+                    f_Distance = playerToTowerDist;
                     Target = player;
                 }
             }
+
+            if(Target != null) {
+                Debug.Log("Player pos: " + Target.transform.position.x + " : " + Target.transform.position.y);
+            }
+
+            Debug.Log("f_Distance is: " + f_Distance);
 
             if(f_Distance <= 5) { // 거리가 5보다 가까운 플레이어가 있으면
                 b_IsSearch = true;
