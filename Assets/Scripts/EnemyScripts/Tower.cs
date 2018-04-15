@@ -34,6 +34,7 @@ public class Tower : CharacterGeneral
     {
         base.n_hp = 100f;
         base.f_Speed = 0f;
+        Target = GameObject.FindWithTag("Player");
         //임시 테스트용
         GeneralInitialize.GunParameter tempEnemyWeapon =
             new GeneralInitialize.GunParameter("Hg_Brownie", 10, 5, "Hg_Norm", 5);
@@ -257,48 +258,22 @@ public class Tower : CharacterGeneral
         }
     }
 
-    [PunRPC]
-    void TakeDamage(float _f_Damage)
-    {
-        this.n_hp -= _f_Damage;
-    }
-
-    protected override void OnTriggerEnter2D(Collider2D col)
-    {
-        var hit = col.gameObject;
-
-        if (col.tag == "Player" && hit.GetComponent<CharacterGeneral>().n_hp > 0)
-        {
-            Debug.Log("======Player가 Enemy와 충돌!!!======");
-            bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
-            if (IsMine)
-            { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
-                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, 5);
-            }
-        }
-        if (col.tag == "Player" && hit.GetComponent<CharacterGeneral>().n_hp == 0)
-        {
-            // 캐릭터 사망
-            Debug.Log("Player is dead.");
-            hit.GetComponent<CharacterGeneral>().e_SpriteState = CharacterGeneral.SpriteState.Dead;
-        }
-    }
-
     protected override void Search()
     {
         Vector3 distance = new Vector3(9999, 9999);
         if (NetworkUtil.PlayerList.Count != 0) {
             foreach(GameObject player in NetworkUtil.PlayerList) {
-            Vector3 playerPos = player.transform.position;
+                Vector3 playerPos = player.transform.position;
+                
+                float playerToTowerDist = Vector3.Distance(playerPos, this.transform.position); // "플레이어 - 타워" 사이의 거리
+                float minDistToTowerDist = Vector3.Distance(distance, this.transform.position); // "최소거리 - 타워" 사이의 거리
 
-            float playerToTowerDist = Vector3.Distance(playerPos, this.transform.position); // "플레이어 - 타워" 사이의 거리
-            float minDistToTowerDist = Vector3.Distance(distance, this.transform.position); // "최소거리 - 타워" 사이의 거리
-
-            // 현 플레이어 - 타워 거리보다 최소거리 - 타워거리가 더 가까우면
-            if(playerToTowerDist < minDistToTowerDist) {
-                distance = playerPos;
-                f_Distance = minDistToTowerDist;
-            }
+                // 현 플레이어 - 타워 거리보다 최소거리 - 타워거리가 더 가까우면
+                if(playerToTowerDist < minDistToTowerDist) {
+                    distance = playerPos;
+                    f_Distance = minDistToTowerDist;
+                    Target = player;
+                }
             }
 
             if(f_Distance <= 5) { // 거리가 5보다 가까운 플레이어가 있으면

@@ -6,15 +6,15 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - EnemySprite: {instanceID: 0}
-  - EnemyWeapon: {instanceID: 0}
-  - EnemyBullet: {instanceID: 0}
-  - EnemyRigidBody: {instanceID: 0}
-  - EnemyAnimator: {instanceID: 0}
-  - Spine_EnemyAnim: {instanceID: 0}
-  - Spine_EnemyWeaponAnim: {instanceID: 0}
+  - rigid: {instanceID: 0}
+  - g_Sprite: {instanceID: 0}
+  - g_Weapon: {instanceID: 0}
+  - g_Bullet: {instanceID: 0}
+  - a_Animator: {instanceID: 0}
+  - spine_CharacterAnim: {instanceID: 0}
+  - spine_GunAnim: {instanceID: 0}
   - TowerPrefab: {instanceID: 0}
-  - Target: {fileID: 1953006606613092, guid: cd298e0de01cb4f2d930dfed61a7dd16, type: 2}
+  - Target: {instanceID: 0}
   - Tower_Muzzle: {instanceID: 0}
   - EnemyUiPrefab: {instanceID: 0}
   - TowerBulletImage: {instanceID: 0}
