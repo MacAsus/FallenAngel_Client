@@ -181,11 +181,15 @@ public class Tower : CharacterGeneral
     protected override void FireBullet()
     {
         Debug.Log("[Tower] FireBullet called");
-        Vector3 v_muzzle = Tower_Muzzle.transform.position;
-        Vector3 v_bulletSpeed = (Tower_Muzzle.transform.position - Target.transform.position).normalized * cur_EnemyWeapon.f_BulletSpeed;
+        if (Tower_Muzzle) {
+            Vector3 v_muzzle = Tower_Muzzle.transform.position;
+            Vector3 v_bulletSpeed = (Tower_Muzzle.transform.position - Target.transform.position).normalized * cur_EnemyWeapon.f_BulletSpeed;
 
-        this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
-        this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others);
+            this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
+            this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others);
+        } else {
+            Debug.Log("Muzzle Not Found");
+        }
     }
 
     [PunRPC]
@@ -229,11 +233,11 @@ public class Tower : CharacterGeneral
     {
         if (cur_EnemyWeapon.s_GunName.Contains("Hg"))
         {
-            Tower_Muzzle = GameObject.Find("Hg_Muzzle");
+            // 인스펙터에서 적용
         }
         else if (cur_EnemyWeapon.s_GunName.Contains("Ar"))
         {
-            Tower_Muzzle = GameObject.Find("Ar_Muzzle");
+            // 인스펙터에서 적용
         }
     }
 

@@ -543,26 +543,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0387728f67e235a4b9aaad445c7bf800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  f_Enemy_HP: 0
-  f_EnemyMovingSpeed: 0
-  f_EnemySpriteLocalScale: 0
-  f_EnemyWeaponLocalScale: 0
-  f_EnemyAimDegree: 0
-  EnemySprite: {fileID: 0}
-  EnemyWeapon: {fileID: 0}
-  EnemyBullet: {fileID: 0}
-  EnemyRigidBody: {fileID: 0}
-  EnemyAnimator: {fileID: 0}
-  Spine_EnemyAnim: {fileID: 0}
-  Spine_EnemyWeaponAnim: {fileID: 0}
-  e_EnemySpriteState: 0
-  b_EnemyFired: 0
-  b_EnemyReload: 0
+  n_hp: 0
+  rigid: {fileID: 0}
+  f_AimDegree: 0
+  f_Speed: 0
+  s_Weapon: 
+  g_Sprite: {fileID: 0}
+  g_Weapon: {fileID: 0}
+  g_Bullet: {fileID: 0}
+  f_SpritelocalScale: 0
+  f_WeaponlocalScale: 0
+  a_Animator: {fileID: 0}
+  spine_CharacterAnim: {fileID: 0}
+  spine_GunAnim: {fileID: 0}
+  b_Fired: 0
+  b_Reload: 0
+  e_SpriteState: 0
   f_Distance: 0
   b_IsSearch: 0
   TowerPrefab: {fileID: 0}
   Target: {fileID: 1953006606613092, guid: cd298e0de01cb4f2d930dfed61a7dd16, type: 2}
-  Tower_Muzzle: {fileID: 0}
+  Tower_Muzzle: {fileID: 1444100256638570}
   EnemyUiPrefab: {fileID: 0}
   TowerBulletImage: {fileID: 0}
 --- !u!114 &114590864039927926

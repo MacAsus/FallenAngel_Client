@@ -294,11 +294,13 @@ public class Player : CharacterGeneral
     {
         if (cur_Weapon.s_GunName.Contains("Hg"))
         {
-            g_Muzzle = GameObject.Find("Hg_Muzzle");
+            // 인스펙터에서 적용
+            // g_Muzzle = GameObject.Find("Hg_Muzzle");
         }
         else if (cur_Weapon.s_GunName.Contains("Ar"))
         {
-            g_Muzzle = GameObject.Find("Ar_Muzzle");
+            // 인스펙터에서 적용
+            // g_Muzzle = GameObject.Find("Ar_Muzzle");
         }
     }
 
