@@ -286,9 +286,9 @@ public class Tower : CharacterGeneral
 
     protected override void Search()
     {
-
         Vector3 distance = new Vector3(9999, 9999);
-        foreach(GameObject player in NetworkUtil.PlayerList) {
+        if (NetworkUtil.PlayerList.Count != 0) {
+            foreach(GameObject player in NetworkUtil.PlayerList) {
             Vector3 playerPos = player.transform.position;
 
             float playerToTowerDist = Vector3.Distance(playerPos, this.transform.position); // "플레이어 - 타워" 사이의 거리
@@ -299,12 +299,13 @@ public class Tower : CharacterGeneral
                 distance = playerPos;
                 f_Distance = minDistToTowerDist;
             }
-        }
+            }
 
-        if(f_Distance <= 5) { // 거리가 5보다 가까운 플레이어가 있으면
-            b_IsSearch = true;
-        } else { // 거리가 5보다 가까운 플레이어가 없으면
-            b_IsSearch = false;
+            if(f_Distance <= 5) { // 거리가 5보다 가까운 플레이어가 있으면
+                b_IsSearch = true;
+            } else { // 거리가 5보다 가까운 플레이어가 없으면
+                b_IsSearch = false;
+            }
         }
     }
 }
