@@ -286,6 +286,11 @@ public class Tower : CharacterGeneral
 
     protected override void Search()
     {
+        if(NetworkUtil.PlayerList.Count != 0) {
+            foreach(GameObject player in NetworkUtil.PlayerList) {
+                Debug.Log("ID: " + player.GetPhotonView().viewID + " pos: " + player.transform.position.x);
+            }
+        }
         //Code...
 
         /*

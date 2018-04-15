@@ -35,7 +35,6 @@ public class PlayerUI : MonoBehaviour
             return;
         }
         
-        Debug.Log("Player UI Update");
         // Reflect the Player Health
         if (PlayerHealthSlider != null)
         {

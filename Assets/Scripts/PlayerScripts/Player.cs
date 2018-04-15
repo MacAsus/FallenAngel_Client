@@ -254,7 +254,6 @@ public class Player : CharacterGeneral
         {
             xyPosTable["x"] = v_NetworkPosition.x;
             xyPosTable["y"] = v_NetworkPosition.y;
-            PhotonNetwork.player.SetCustomProperties(xyPosTable, null, true);
 
             stream.SendNext(v_NetworkPosition); // 현재 위치가 아니라 움직일 위치를 보내주는게 좋음
             stream.SendNext(e_SpriteState);
@@ -308,5 +307,8 @@ public class Player : CharacterGeneral
         this.n_hp -= _f_Damage;
     }
 
-
+    void OnPhotonInstantiate(PhotonMessageInfo info) {
+        NetworkUtil.SetPlayer();
+    }
+    
 }
