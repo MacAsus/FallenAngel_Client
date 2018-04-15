@@ -310,5 +310,9 @@ public class Player : CharacterGeneral
     void OnPhotonInstantiate(PhotonMessageInfo info) {
         NetworkUtil.SetPlayer();
     }
+
+    void OnLeftLobby() {
+        NetworkUtil.SetPlayer();
+    }
     
 }

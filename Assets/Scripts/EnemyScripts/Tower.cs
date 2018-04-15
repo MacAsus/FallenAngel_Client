@@ -286,23 +286,25 @@ public class Tower : CharacterGeneral
 
     protected override void Search()
     {
-        if(NetworkUtil.PlayerList.Count != 0) {
-            foreach(GameObject player in NetworkUtil.PlayerList) {
-                Debug.Log("ID: " + player.GetPhotonView().viewID + " pos: " + player.transform.position.x);
+
+        Vector3 distance = new Vector3(9999, 9999);
+        foreach(GameObject player in NetworkUtil.PlayerList) {
+            Vector3 playerPos = player.transform.position;
+
+            float playerToTowerDist = Vector3.Distance(playerPos, this.transform.position); // "플레이어 - 타워" 사이의 거리
+            float minDistToTowerDist = Vector3.Distance(distance, this.transform.position); // "최소거리 - 타워" 사이의 거리
+
+            // 현 플레이어 - 타워 거리보다 최소거리 - 타워거리가 더 가까우면
+            if(playerToTowerDist < minDistToTowerDist) {
+                distance = playerPos;
+                f_Distance = minDistToTowerDist;
             }
         }
-        //Code...
 
-        /*
-        Target = GameObject.FindWithTag("Player");
-        f_Distance = Vector3.Distance(Target.transform.position, this.transform.position);
-        if (f_Distance <= 5)
-        {
+        if(f_Distance <= 5) { // 거리가 5보다 가까운 플레이어가 있으면
             b_IsSearch = true;
-        }
-        else
-        {
+        } else { // 거리가 5보다 가까운 플레이어가 없으면
             b_IsSearch = false;
-        }*/
+        }
     }
 }
