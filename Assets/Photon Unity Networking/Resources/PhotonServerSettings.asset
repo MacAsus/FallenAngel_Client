@@ -49,4 +49,7 @@ MonoBehaviour:
   - StartRoomRPC
   - FireAnimationNetwork
   - TakeDamage
+  - BruiserDamage
+  - BomberDamage
+  - PlayerTakeDamage
   DisableAutoOpenWizard: 1

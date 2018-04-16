@@ -6,6 +6,7 @@ using Spine.Unity;
 
 public class Player : CharacterGeneral
 {
+
     public static GameObject LocalPlayerInstance;
 
     public GeneralInitialize.GunParameter cur_Weapon;
@@ -300,8 +301,8 @@ public class Player : CharacterGeneral
         }
     }
 
-    [PunRPC]
-    void TakeDamage(float _f_Damage)
+    [PunRPC] //Player 본인이 데미지를 입는 함수
+    void PlayerTakeDamage(float _f_Damage)
     {
         this.n_hp -= _f_Damage;
     }

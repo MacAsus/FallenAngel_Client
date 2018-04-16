@@ -161,13 +161,7 @@ public class Bruiser : CharacterGeneral
             a_Animator.SetBool("Run", false);
         }
     }
-
-    [PunRPC]
-    void TakeDamage(float _f_Damage)
-    {
-        Target.GetComponent<CharacterGeneral>().n_hp -= _f_Damage;
-    }
-
+    
     protected override void OnTriggerEnter2D(Collider2D col)
     {
         var hit = col.gameObject;
@@ -178,7 +172,7 @@ public class Bruiser : CharacterGeneral
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
-                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, 20.0f); //Bruiser에 부딪힐 경우 20의 Damage를 입습니다.
+                hit.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, 20.0f); //Bruiser에 부딪힐 경우 20의 Damage를 입습니다.
             }
         }
         if (col.tag == "Player" && hit.GetComponent<CharacterGeneral>().n_hp == 0)

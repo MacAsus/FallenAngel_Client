@@ -18,7 +18,7 @@ public class BulletGeneral : MonoBehaviour
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
-                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, bulletInfo.f_Damage);
+                hit.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, bulletInfo.f_Damage);
             }
             Destroy(this.gameObject);
         }
