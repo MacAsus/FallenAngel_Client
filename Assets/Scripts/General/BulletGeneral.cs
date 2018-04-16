@@ -24,8 +24,8 @@ public class BulletGeneral : MonoBehaviour
         }
         if (col.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp == 0)
         {
-            // 캐릭터 사망
-            Debug.Log("Player is dead.");
+            // Bullet에 충돌한 Object 사망
+            Debug.Log("Collided Object is dead.");
             hit.GetComponent<CharacterGeneral>().e_SpriteState = CharacterGeneral.SpriteState.Dead;
         }
     }

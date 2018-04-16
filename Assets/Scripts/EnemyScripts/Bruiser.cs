@@ -16,6 +16,7 @@ public class Bruiser : CharacterGeneral
     public GameObject EnemyUiPrefab; //적 UI 프리팹
 
     Vector3 v_TargetPosition = new Vector3(); //타겟 위치 Vector3 값
+    Vector3 v_Accurate = new Vector3(0, 0.5f, 0);
 
     //Photon Value
     Vector3 v_NetworkTargetPos;
@@ -43,7 +44,7 @@ public class Bruiser : CharacterGeneral
 
                 if (Target)
                 {
-                    v_TargetPosition = Target.transform.position;
+                    v_TargetPosition = Target.transform.position + v_Accurate;
                 }
                 // below value should be setted by manually
 
@@ -57,7 +58,7 @@ public class Bruiser : CharacterGeneral
         }
 
         Search(); // Find Nearest Other Players
-        RotateGun(Target.transform.position);
+        RotateGun(Target.transform.position + v_Accurate);
         Trace();
     }
 
@@ -150,7 +151,7 @@ public class Bruiser : CharacterGeneral
         //살아있는 Player 탐색 성공 시 Run 애니메이션 실행
         if (b_IsSearch == true && Target.GetComponent<CharacterGeneral>().n_hp > 0)
         {
-            rigid.velocity = (Target.transform.position - this.transform.position).normalized * (base.f_Speed);
+            rigid.velocity = ((Target.transform.position + v_Accurate) - this.transform.position).normalized * (base.f_Speed);
             a_Animator.SetBool("Run", true);
         }
         //탐색이 되지 않았을 시 Run 애니메이션을 끔
@@ -158,6 +159,33 @@ public class Bruiser : CharacterGeneral
         {
             rigid.velocity = Vector3.zero;
             a_Animator.SetBool("Run", false);
+        }
+    }
+
+    [PunRPC]
+    void TakeDamage(float _f_Damage)
+    {
+        Target.GetComponent<CharacterGeneral>().n_hp -= _f_Damage;
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D col)
+    {
+        var hit = col.gameObject;
+
+        if (col.tag == "Player" && hit.GetComponent<CharacterGeneral>().n_hp > 0)
+        {
+            Debug.Log("===============충돌!!!=========");
+            bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
+            if (IsMine)
+            { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
+                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, 20.0f); //Bruiser에 부딪힐 경우 20의 Damage를 입습니다.
+            }
+        }
+        if (col.tag == "Player" && hit.GetComponent<CharacterGeneral>().n_hp == 0)
+        {
+            // 캐릭터 사망
+            Debug.Log("Player is dead.");
+            hit.GetComponent<CharacterGeneral>().e_SpriteState = CharacterGeneral.SpriteState.Dead;
         }
     }
 }

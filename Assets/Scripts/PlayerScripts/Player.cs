@@ -299,7 +299,7 @@ public class Player : CharacterGeneral
             // g_Muzzle = GameObject.Find("Ar_Muzzle");
         }
     }
-
+    /*
     [PunRPC]
     void TakeDamage(float _f_Damage)
     {
@@ -326,7 +326,7 @@ public class Player : CharacterGeneral
             this.e_SpriteState = CharacterGeneral.SpriteState.Dead;
         }
     }
-
+    */
     void OnPhotonInstantiate(PhotonMessageInfo info) {
         NetworkUtil.SetPlayer();
     }
