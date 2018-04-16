@@ -299,34 +299,13 @@ public class Player : CharacterGeneral
             // g_Muzzle = GameObject.Find("Ar_Muzzle");
         }
     }
-    /*
+
     [PunRPC]
     void TakeDamage(float _f_Damage)
     {
         this.n_hp -= _f_Damage;
     }
-
-    protected override void OnTriggerEnter2D(Collider2D col)
-    {
-        var hit = col.gameObject;
-
-        if (col.tag == "Enemy" && this.n_hp > 0)
-        {
-            Debug.Log("======Player가 Enemy와 충돌!!!======");
-            bool IsMine = this.photonView.isMine;
-            if (IsMine)
-            { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
-                this.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, 5.0f);
-            }
-        }
-        if (col.tag == "Enemy" && this.n_hp == 0)
-        {
-            // 캐릭터 사망
-            Debug.Log("Player is dead.");
-            this.e_SpriteState = CharacterGeneral.SpriteState.Dead;
-        }
-    }
-    */
+    
     void OnPhotonInstantiate(PhotonMessageInfo info) {
         NetworkUtil.SetPlayer();
     }
