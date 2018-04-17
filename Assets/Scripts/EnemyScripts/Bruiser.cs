@@ -111,7 +111,7 @@ public class Bruiser : CharacterGeneral
         Vector3 distance = new Vector3(9999, 9999);
         if (NetworkUtil.PlayerList.Count != 0)
         {
-            Debug.Log("NetworkUtil.PlayerList count " + NetworkUtil.PlayerList.Count);
+            // Debug.Log("NetworkUtil.PlayerList count " + NetworkUtil.PlayerList.Count);
             foreach (GameObject player in NetworkUtil.PlayerList)
             {
                 Vector3 playerPos = player.transform.position;
@@ -130,10 +130,10 @@ public class Bruiser : CharacterGeneral
 
             if (Target != null)
             {
-                Debug.Log("Player pos: " + Target.transform.position.x + " : " + Target.transform.position.y);
+                // Debug.Log("Player pos: " + Target.transform.position.x + " : " + Target.transform.position.y);
             }
 
-            Debug.Log("f_Distance is: " + f_Distance);
+            // Debug.Log("f_Distance is: " + f_Distance);
 
             if (f_Distance <= 5)
             { // 거리가 5보다 가까운 플레이어가 있으면
@@ -172,7 +172,7 @@ public class Bruiser : CharacterGeneral
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
-                hit.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, 20.0f); //Bruiser에 부딪힐 경우 20의 Damage를 입습니다.
+                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, 20.0f); //Bruiser에 부딪힐 경우 20의 Damage를 입습니다.
             }
         }
         if (col.tag == "Player" && hit.GetComponent<CharacterGeneral>().n_hp == 0)

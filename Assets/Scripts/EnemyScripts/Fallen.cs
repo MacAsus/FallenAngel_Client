@@ -137,7 +137,7 @@ public class Fallen : CharacterGeneral
 
     void FireBullet_Second_Pattern()
     {
-        Debug.Log("[Fallen] FireBullet_First_Pattern called");
+        // Debug.Log("[Fallen] FireBullet_First_Pattern called");
         if (Fallen_Muzzle)
         {
             Vector3 v_muzzle = Fallen_Muzzle.transform.position;
@@ -195,7 +195,7 @@ public class Fallen : CharacterGeneral
     //플레이어를 향해 폭탄을 던집니다.
     void FireBullet_Second_Pattern_Network(Vector3 muzzlePos, Vector3 bulletSpeed)
     {
-        Debug.Log("[Fallen] FireBullet_First_Pattern_Network called");
+        // Debug.Log("[Fallen] FireBullet_First_Pattern_Network called");
         GameObject bomb = Instantiate(this.g_Bomb, muzzlePos, Quaternion.identity);
         BombGeneral temp_bomb = bomb.GetComponent<BombGeneral>();
         temp_bomb.s_Victim = "Player";
@@ -324,7 +324,7 @@ public class Fallen : CharacterGeneral
         Vector3 distance = new Vector3(9999, 9999);
         if (NetworkUtil.PlayerList.Count != 0)
         {
-            Debug.Log("NetworkUtil.PlayerList count " + NetworkUtil.PlayerList.Count);
+            // Debug.Log("NetworkUtil.PlayerList count " + NetworkUtil.PlayerList.Count);
             foreach (GameObject player in NetworkUtil.PlayerList)
             {
                 Vector3 playerPos = player.transform.position;
@@ -343,10 +343,10 @@ public class Fallen : CharacterGeneral
 
             if (Target != null)
             {
-                Debug.Log("Player pos: " + Target.transform.position.x + " : " + Target.transform.position.y);
+                // Debug.Log("Player pos: " + Target.transform.position.x + " : " + Target.transform.position.y);
             }
 
-            Debug.Log("f_Distance is: " + f_Distance);
+            // Debug.Log("f_Distance is: " + f_Distance);
 
             if (f_Distance <= 6.5)
             { // 거리가 6.5보다 가까운 플레이어가 있으면
@@ -385,7 +385,7 @@ public class Fallen : CharacterGeneral
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
-                hit.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, 20.0f); //Fallen에 부딪힐 경우 20의 Damage를 입습니다.
+                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, 20.0f); //Fallen에 부딪힐 경우 20의 Damage를 입습니다.
             }
         }
         if (col.tag == "Player" && hit.GetComponent<CharacterGeneral>().n_hp == 0)

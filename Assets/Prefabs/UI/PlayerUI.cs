@@ -22,7 +22,7 @@ public class PlayerUI : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Debug.Log("PlayerUI Started");
+        // Debug.Log("PlayerUI Started");
     }
 
     // Update is called once per frame
@@ -45,7 +45,7 @@ public class PlayerUI : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("Player UI Awake");
+        // Debug.Log("Player UI Awake");
         this.GetComponent<Transform>().SetParent(GameObject.Find("Canvas").GetComponent<Transform>());
     }
 
@@ -73,7 +73,7 @@ public class PlayerUI : MonoBehaviour
         if (PlayerNameText != null)
         {
             PlayerNameText.text = _target.photonView.ownerId + "";
-            Debug.Log("_target.photonView.ownerId: " + _target.photonView.ownerId);
+            // Debug.Log("_target.photonView.ownerId: " + _target.photonView.ownerId);
         }
 
         CharacterController _characterController = _target.GetComponent<CharacterController>();

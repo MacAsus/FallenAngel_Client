@@ -92,7 +92,7 @@ public class RoomWaitingGui : Photon.PunBehaviour
 
     private void OnStartEvent(byte eventcode, object content, int senderid)
     {
-        Debug.Log("OnStartEvent called");
+        // Debug.Log("OnStartEvent called");
         if (eventcode == Events.STARTED_GAME_EVT) // Master Client Started Game
         {
             this.LoadSceneToInGame();

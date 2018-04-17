@@ -300,12 +300,6 @@ public class Player : CharacterGeneral
             // g_Muzzle = GameObject.Find("Ar_Muzzle");
         }
     }
-
-    [PunRPC] //Player 본인이 데미지를 입는 함수
-    void PlayerTakeDamage(float _f_Damage)
-    {
-        this.n_hp -= _f_Damage;
-    }
     
     void OnPhotonInstantiate(PhotonMessageInfo info) {
         NetworkUtil.SetPlayer();
