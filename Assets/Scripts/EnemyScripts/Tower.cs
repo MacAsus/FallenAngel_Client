@@ -116,7 +116,7 @@ public class Tower : CharacterGeneral
 
     protected override void FireBullet()
     {
-        Debug.Log("[Tower] FireBullet called");
+        // Debug.Log("[Tower] FireBullet called");
         if (Tower_Muzzle) {
             Vector3 v_muzzle = Tower_Muzzle.transform.position;
             Vector3 v_bulletSpeed = (Tower_Muzzle.transform.position - (Target.transform.position + v_Accurate)).normalized * cur_EnemyWeapon.f_BulletSpeed;
@@ -131,7 +131,7 @@ public class Tower : CharacterGeneral
     [PunRPC]
     void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed)
     {
-        Debug.Log("[Tower] FireBulletNetwork called");
+        // Debug.Log("[Tower] FireBulletNetwork called");
         GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
         BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
         temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_EnemyWeapon.f_Damage);
@@ -201,7 +201,7 @@ public class Tower : CharacterGeneral
     {
         Vector3 distance = new Vector3(9999, 9999);
         if (NetworkUtil.PlayerList.Count != 0) {
-            Debug.Log("NetworkUtil.PlayerList count " + NetworkUtil.PlayerList.Count);
+            // Debug.Log("NetworkUtil.PlayerList count " + NetworkUtil.PlayerList.Count);
             foreach(GameObject player in NetworkUtil.PlayerList) {
                 Vector3 playerPos = player.transform.position;
                 
@@ -217,10 +217,10 @@ public class Tower : CharacterGeneral
             }
 
             if(Target != null) {
-                Debug.Log("Player pos: " + Target.transform.position.x + " : " + Target.transform.position.y);
+                // Debug.Log("Player pos: " + Target.transform.position.x + " : " + Target.transform.position.y);
             }
 
-            Debug.Log("f_Distance is: " + f_Distance);
+            // Debug.Log("f_Distance is: " + f_Distance);
 
             if(f_Distance <= 5) { // 거리가 5보다 가까운 플레이어가 있으면
                 b_IsSearch = true;
@@ -240,7 +240,7 @@ public class Tower : CharacterGeneral
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
-                hit.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, 10.0f); //Tower에 부딪힐 경우 10의 Damage를 입습니다.
+                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, 10.0f); //Tower에 부딪힐 경우 10의 Damage를 입습니다.
             }
         }
         if (col.tag == "Player" && hit.GetComponent<CharacterGeneral>().n_hp == 0)

@@ -161,7 +161,7 @@ public class GeneralInitialize : MonoBehaviour {
 
             if(Resources.Load("Character/" + jparam.s_JobName) != null)
             {
-                Debug.Log(jparam.s_JobName + " Created");
+                // Debug.Log(jparam.s_JobName + " Created");
                 tempObj = Resources.Load("Character/" + jparam.s_JobName) as GameObject;
                 tempObj.GetComponent<Player>().s_jobname = jparam.s_JobName;
                 tempObj.GetComponent<Player>().n_hp = jparam.f_HP;

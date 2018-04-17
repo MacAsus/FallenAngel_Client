@@ -144,4 +144,10 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     {
 
     }
+
+    [PunRPC] //Player 본인이 데미지를 입는 함수
+    protected void TakeDamage(float _f_Damage)
+    {
+        this.n_hp -= _f_Damage;
+    }
 }

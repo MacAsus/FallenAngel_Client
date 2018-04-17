@@ -120,7 +120,7 @@ public class Bomber : CharacterGeneral
 
     protected override void FireBullet()
     {
-        Debug.Log("[Tower] FireBullet called");
+        // Debug.Log("[Tower] FireBullet called");
         if (Bomber_Muzzle)
         {
             Vector3 v_muzzle = Bomber_Muzzle.transform.position + v_Accurate; //Bomber 자신의 중앙값 위치
@@ -139,7 +139,7 @@ public class Bomber : CharacterGeneral
     void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed)
     {
         Vector3 front = new Vector3(1, 0, 0);
-        Debug.Log("[Tower] FireBulletNetwork called");
+        // Debug.Log("[Tower] FireBulletNetwork called");
         GameObject bullet1 = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
         GameObject bullet2 = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
         GameObject bullet3 = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
@@ -225,7 +225,7 @@ public class Bomber : CharacterGeneral
         Vector3 distance = new Vector3(9999, 9999);
         if (NetworkUtil.PlayerList.Count != 0)
         {
-            Debug.Log("NetworkUtil.PlayerList count " + NetworkUtil.PlayerList.Count);
+            // Debug.Log("NetworkUtil.PlayerList count " + NetworkUtil.PlayerList.Count);
             foreach (GameObject player in NetworkUtil.PlayerList)
             {
                 Vector3 playerPos = player.transform.position;
@@ -244,10 +244,10 @@ public class Bomber : CharacterGeneral
 
             if (Target != null)
             {
-                Debug.Log("Player pos: " + Target.transform.position.x + " : " + Target.transform.position.y);
+                // Debug.Log("Player pos: " + Target.transform.position.x + " : " + Target.transform.position.y);
             }
 
-            Debug.Log("f_Distance is: " + f_Distance);
+            // Debug.Log("f_Distance is: " + f_Distance);
 
             if (f_Distance <= 5)
             { // 거리가 5보다 가까운 플레이어가 있으면
@@ -286,7 +286,7 @@ public class Bomber : CharacterGeneral
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
-                hit.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, 40.0f); //Bomber에 부딪힐 경우 40의 Damage를 입습니다.
+                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, 40.0f); //Bomber에 부딪힐 경우 40의 Damage를 입습니다.
             }
             //**폭발 이펙트**\\
             Destroy(this.gameObject); //Bomber는 소멸합니다.

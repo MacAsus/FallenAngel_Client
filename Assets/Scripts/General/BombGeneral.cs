@@ -13,11 +13,11 @@ public class BombGeneral : MonoBehaviour
 
         if (col.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp > 0)
         {
-            Debug.Log("===============충돌!!!=========");
+            // Debug.Log("===============충돌!!!=========");
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
-                hit.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, 20f);
+                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, 20f);
             }
             //**폭발 이펙트**\\
             Destroy(this.gameObject);
