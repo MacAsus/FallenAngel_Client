@@ -32,8 +32,8 @@ public class Tower : CharacterGeneral
     // Use this for initialization
     void Start()
     {
-        base.n_hp = 100f;
-        base.f_Speed = 0f;
+        n_hp = 100f;
+        f_Speed = 0f;
         Target = GameObject.FindWithTag("Player");
         //임시 테스트용
         GeneralInitialize.GunParameter tempEnemyWeapon =
@@ -156,7 +156,7 @@ public class Tower : CharacterGeneral
     {
         if (b_IsSearch == true)
         {
-            if (!_b_EnemyFired && Target.GetComponent<CharacterGeneral>().n_hp != 0)
+            if (!_b_EnemyFired && Target.GetComponent<CharacterGeneral>().n_hp > 0)
             {
                 FireBullet();
                 spine_GunAnim.state.SetAnimation(0, "Shoot", false);

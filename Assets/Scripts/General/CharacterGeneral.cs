@@ -17,6 +17,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     public Transform g_Sprite; //캐릭터 스프라이트(or spine) Transform
     public Transform g_Weapon; //무기 스프라이트(or spine) Transform
     public GameObject g_Bullet; //총알 prefab (나중에 xml 파싱을 이용하도록 한다)
+    public GameObject g_Bomb; //폭탄 prefab (xml 파싱 X)
 
     public float f_SpritelocalScale; //캐릭터 로컬 스케일(타일과 크기 맞춤을 위함)
     public float f_WeaponlocalScale; //무기 로컬 스케일(타일과 크기 맞춤을 위함)
@@ -35,6 +36,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     protected virtual void InitializeParam()
     {
         g_Bullet = Resources.Load("Bullet") as GameObject;
+        g_Bomb = Resources.Load("Bomb") as GameObject;
         e_SpriteState = SpriteState.Idle;
         rigid = transform.GetComponent<Rigidbody2D>();
         //규칙 : 캐릭터의 스프라이트 or 스파인 정보는 g_Sprite에 저장
