@@ -1,37 +1,47 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Spine;
 using Spine.Unity;
 
 public abstract class CharacterGeneral : Photon.MonoBehaviour
 {
 
-    public float n_hp;    //캐릭터의 체력
-
     public Rigidbody2D rigid;
+
+    public float n_hp;    //캐릭터의 체력
     public float f_AimDegree; //Aim 각도
     public float f_Speed; //캐릭터 무빙 스피드
-
-    public string s_Weapon; //가지고 있는 무기의 이름
-    public Transform g_Sprite; //캐릭터 스프라이트(or spine) Transform
-    public Transform g_Weapon; //무기 스프라이트(or spine) Transform
-    public GameObject g_Bullet; //총알 prefab (나중에 xml 파싱을 이용하도록 한다)
-    public GameObject g_Bomb; //폭탄 prefab (xml 파싱 X)
-
     public float f_SpritelocalScale; //캐릭터 로컬 스케일(타일과 크기 맞춤을 위함)
     public float f_WeaponlocalScale; //무기 로컬 스케일(타일과 크기 맞춤을 위함)
 
+    public string s_Weapon; //가지고 있는 무기의 이름
+    public string s_tag;
+
+    public Transform g_Sprite; //캐릭터 스프라이트(or spine) Transform
+    public Transform g_Weapon; //무기 스프라이트(or spine) Transform
+
+    public GameObject Muzzle; //총구
+    public GameObject g_Bullet; //총알 prefab
+    public GameObject g_Bomb; //폭탄 prefab
+    public GameObject UI; //UI 프리팹
+
+    public Sprite BulletImage; //임시
+
     public Animator a_Animator; //애니메이터
+
     public SkeletonAnimation spine_CharacterAnim; //(캐릭터 애니메이션이 spine일 때) 애니메이터
     public SkeletonAnimation spine_GunAnim; //(총의 애니메이션이 spine일 때) 애니메이터
 
     public enum SpriteState { Idle, Run, Dead }; //캐릭터의 상태 enum
+    public SpriteState e_SpriteState; //애니메이터에게 보내줄 상태(캐릭터의 상태)
 
     public bool b_Fired = false; //애니메이션 Shoot 컨트롤러(Event "Start" 와 "End" 컨트롤)
     public bool b_Reload = false;
-    public SpriteState e_SpriteState; //애니메이터에게 보내줄 상태(캐릭터의 상태)
 
+    //Photon Value
+    protected Vector3 v_NetworkPosition;
+    protected SpriteState e_NetworkSpriteState;
+    protected bool b_NetworkFired;
+    protected double f_LastNetworkDataReceivedTime;
 
     protected virtual void InitializeParam()
     {
@@ -66,13 +76,18 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 
     }
 
-    public virtual void SpineOnevent(TrackEntry trackIndex, Spine.Event e)
+    protected void SpineOnevent(TrackEntry trackIndex, Spine.Event e)
     {
-
+        if (e.Data.name == "Shoot_Start")
+        {
+            b_Fired = true;
+        }
+        else if (e.data.name == "Shoot_End")
+        {
+            b_Fired = false;
+        }
     }
-
-
-    public virtual void GetAimDegree(Vector3 v_TargetPos)
+    protected void GetAimDegree(Vector3 v_TargetPos)
     {
 
         float x = g_Weapon.position.x - v_TargetPos.x;
@@ -81,15 +96,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 
         f_AimDegree = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
     }
-
-
-    protected virtual void UpdatePosition()
-    {
-
-    }
-
-
-    protected virtual void RotateGun(Vector3 v_TargetPos)
+    protected void RotateGun(Vector3 v_TargetPos)
     {
 
         GetAimDegree(v_TargetPos);
@@ -106,46 +113,79 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
             g_Weapon.localScale = new Vector3(g_Weapon.localScale.x, -f_WeaponlocalScale, g_Weapon.localScale.z);
         }
     }
-
-    protected virtual void CharacterAttack()
+    protected void UpdateAnimationControl(SpriteState _e_SpriteState, bool _b_Fired)
     {
-
+        WeaponSpineControl(_b_Fired);
+        if (_e_SpriteState == SpriteState.Idle)
+        {
+            a_Animator.SetBool("Run", false);
+        }
+        if (_e_SpriteState == SpriteState.Run)
+        {
+            a_Animator.SetBool("Run", true);
+        }
     }
-
-    protected virtual void CharacterDead()
+    protected void UpdateNetworkAnimationControl()
     {
-
+        if (e_NetworkSpriteState == SpriteState.Idle)
+        {
+            a_Animator.SetBool("Run", false);
+        }
+        if (e_NetworkSpriteState == SpriteState.Run)
+        {
+            a_Animator.SetBool("Run", true);
+        }
     }
-
-
-    //Sprite 애니메이션 컨트롤
-    protected virtual void UpdateAnimationControl(SpriteState _e_SpriteState, bool _b_Fired)
+    protected void UpdateNetworkedPosition()
     {
+        float pingInSeconds = (float)PhotonNetwork.GetPing() * 0.001f;
+        float timeSinceLastUpdate = (float)(PhotonNetwork.time - f_LastNetworkDataReceivedTime);
+        float totalTimePassed = pingInSeconds + timeSinceLastUpdate;
+        int lerpValue = 20; // lerpValue가 높아질 수록 빠르게 따라잡음
 
+        Vector3 newPosition = Vector3.Lerp(transform.position, v_NetworkPosition, Time.smoothDeltaTime * lerpValue); // 
+
+        if (Vector3.Distance(transform.position, v_NetworkPosition) > 3f)
+        {
+            newPosition = v_NetworkPosition;
+            Debug.Log("Teleport");
+        }
+
+        // Debug.Log("newPosition is" + newPosition.x + " : " + newPosition.y);
+
+        transform.position = newPosition;
     }
-
-    //Spine 애니메이션 없으면 Updata에 넣을 필요 없음
     protected virtual void WeaponSpineControl(bool _b_Fired)
     {
 
     }
-
     protected virtual void FireBullet()
     {
 
     }
+    protected virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+
+    }
     
-    protected virtual void OnTriggerEnter2D(Collider2D col)
+    [PunRPC]
+    protected virtual void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed)
     {
-
+        
     }
-
-    protected virtual void Search()
+    [PunRPC]
+    protected void FireAnimationNetwork()
     {
-
+        if (b_NetworkFired)
+        {
+            spine_GunAnim.state.SetAnimation(0, "Shoot", true);
+        }
+        else
+        {
+            spine_GunAnim.state.SetAnimation(0, "Shoot", false);
+        }
     }
-
-    [PunRPC] //Player 본인이 데미지를 입는 함수
+    [PunRPC]
     protected void TakeDamage(float _f_Damage)
     {
         this.n_hp -= _f_Damage;

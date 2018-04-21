@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Spine;
-using Spine.Unity;
+﻿using UnityEngine;
 
 public class Player : CharacterGeneral
 {
@@ -13,36 +9,24 @@ public class Player : CharacterGeneral
 
     public GeneralInitialize.GunParameter Weapon1, Weapon2;
 
-    public Sprite bulletImage;
-
     public WeaponGeneral weaponScript;
 
-    public GameObject g_Muzzle;
-
-    public GameObject PlayerUiPrefab;
-
-
     public string s_jobname;
-    public int n_Magazine = 10;
 
-    Vector3 v_MousePos = new Vector3();
+    Vector3 v_MousePos;
 
-    // for sending Value
-
-    // by PhotonNetwork Value
-    Vector3 v_NetworkPosition;
+    //Photon Value
     Vector3 v_NetworkMousePos;
-    SpriteState e_NetworkSpriteState;
-    bool b_NetworkFired;
-    double f_LastNetworkDataReceivedTime;
+
     // Use this for initialization
     void Start()
     {
         weaponScript = GetComponent<WeaponGeneral>();
+        s_tag = Util.s_Enemy;
         //디버그용
         //로비에서 총까지 다 구현하면 지울것
         GeneralInitialize.GunParameter tempParam = new GeneralInitialize.GunParameter("Hg_Brownie", 10, 5, "Hg_Norm", 5);
-        bulletImage = tempParam.BulletImage;
+        BulletImage = tempParam.BulletImage;
         //여기까지
         PhotonNetwork.sendRate = 500 / Launcher.MaxPlayersPerRoom;
         PhotonNetwork.sendRateOnSerialize = 500 / Launcher.MaxPlayersPerRoom;
@@ -62,10 +46,9 @@ public class Player : CharacterGeneral
         Weapon2 = tempParam;
         cur_Weapon = tempParam;
 
-        FindMuzzle();
-        if (PlayerUiPrefab != null)
+        if (UI != null)
         {
-            GameObject _uiGo = Instantiate(PlayerUiPrefab) as GameObject;
+            GameObject _uiGo = Instantiate(UI) as GameObject;
             _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
         }
         else
@@ -73,7 +56,6 @@ public class Player : CharacterGeneral
             Debug.LogWarning("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
         }
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -96,8 +78,6 @@ public class Player : CharacterGeneral
                 RotateGun(v_MousePos);
                 ChangeWeapon();
             }
-
-            //GetOtherPlayerPos();
         }
         else
         {
@@ -107,46 +87,11 @@ public class Player : CharacterGeneral
         }
     }
 
-    void UpdateNetworkedPosition()
-    {
-        float pingInSeconds = (float)PhotonNetwork.GetPing() * 0.001f;
-        float timeSinceLastUpdate = (float)(PhotonNetwork.time - f_LastNetworkDataReceivedTime);
-        float totalTimePassed = pingInSeconds + timeSinceLastUpdate;
-        int lerpValue = 20; // lerpValue가 높아질 수록 빠르게 따라잡음
-
-        Vector3 newPosition = Vector3.Lerp(transform.position, v_NetworkPosition, Time.smoothDeltaTime * lerpValue); // 
-
-        if (Vector3.Distance(transform.position, v_NetworkPosition) > 3f)
-        {
-            newPosition = v_NetworkPosition;
-            Debug.Log("Teleport");
-        }
-
-        // Debug.Log("newPosition is" + newPosition.x + " : " + newPosition.y);
-
-        transform.position = newPosition;
-    }
-
-    void UpdateNetworkAnimationControl()
-    {
-        // UpdateAnimationControl(e_NetworkSpriteState, b_NetworkFired);
-        if (e_NetworkSpriteState == SpriteState.Idle)
-        {
-            a_Animator.SetBool("Run", false);
-        }
-        if (e_NetworkSpriteState == SpriteState.Run)
-        {
-            a_Animator.SetBool("Run", true);
-        }
-    }
-
     void UpdateMousePosition()
     {
         RotateGun(v_NetworkMousePos);
     }
-
-    //캐릭터 이동 
-    protected override void UpdatePosition()
+    protected void UpdatePosition()
     {
         int tempx = 0;
         int tempy = 0;
@@ -174,67 +119,14 @@ public class Player : CharacterGeneral
         v_NetworkPosition = new Vector3(rigid.position.x + (f_Speed * tempx * Time.deltaTime), rigid.position.y + (f_Speed * tempy * Time.deltaTime));
         rigid.velocity = new Vector2(f_Speed * tempx, f_Speed * tempy);
     }
-
-    //스파인 이벤트 처리
-    public override void SpineOnevent(TrackEntry trackIndex, Spine.Event e)
-    {
-
-        if (e.Data.name == "Shoot_Start")
-        {
-
-            b_Fired = true;
-
-
-        }
-        else if (e.data.name == "Shoot_End")
-        {
-            b_Fired = false;
-        }
-
-    }
-
-    //애니메이션 컨트롤(weaponSpineControl, fireBullet 모두 처리하는 중)
-    protected override void UpdateAnimationControl(SpriteState _e_SpriteState, bool _b_Fired)
-    {
-        WeaponSpineControl(_b_Fired);
-        if (_e_SpriteState == SpriteState.Idle)
-        {
-            a_Animator.SetBool("Run", false);
-        }
-        if (_e_SpriteState == SpriteState.Run)
-        {
-            a_Animator.SetBool("Run", true);
-        }
-    }
-
     protected override void FireBullet()
     {
         Debug.Log("FireBullet called");
-        Vector3 v_muzzle = g_Muzzle.transform.position;
-        Vector3 v_bulletSpeed = (g_Muzzle.transform.position - g_Weapon.transform.position).normalized * cur_Weapon.f_BulletSpeed;
+        Vector3 v_muzzle = Muzzle.transform.position;
+        Vector3 v_bulletSpeed = (Muzzle.transform.position - g_Weapon.transform.position).normalized * cur_Weapon.f_BulletSpeed;
 
         this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
         this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others);
-    }
-
-    [PunRPC]
-    void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed)
-    {
-        Debug.Log("FireBulletNetwork called");
-        GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
-        BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
-        temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_Weapon.f_Damage);
-        temp_bullet.s_Victim = "Enemy";
-        bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - this.g_Weapon.transform.position).normalized * this.cur_Weapon.f_BulletSpeed;
-    }
-    
-    [PunRPC]
-    void FireAnimationNetwork() {
-        if(b_NetworkFired) {
-            spine_GunAnim.state.SetAnimation(0, "Shoot", true);
-        } else {
-            spine_GunAnim.state.SetAnimation(0, "Shoot", false);
-        }
     }
     protected override void WeaponSpineControl(bool _b_Fired)
     {
@@ -246,8 +138,7 @@ public class Player : CharacterGeneral
             spine_GunAnim.state.SetAnimation(0, "Shoot", false);
         }
     }
-
-    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    protected override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         // Debug.Log("SerializeState Called");
         if (stream.isWriting)
@@ -269,44 +160,34 @@ public class Player : CharacterGeneral
             f_LastNetworkDataReceivedTime = info.timestamp;
         }
     }
-
-    //총 변경
     void ChangeWeapon()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             cur_Weapon = Weapon1;
-            FindMuzzle();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             cur_Weapon = Weapon2;
-            FindMuzzle();
         }
         spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
     }
-
-    //총구 위치 찾기
-    void FindMuzzle()
-    {
-        if (cur_Weapon.s_GunName.Contains("Hg"))
-        {
-            // 인스펙터에서 적용
-            // g_Muzzle = GameObject.Find("Hg_Muzzle");
-        }
-        else if (cur_Weapon.s_GunName.Contains("Ar"))
-        {
-            // 인스펙터에서 적용
-            // g_Muzzle = GameObject.Find("Ar_Muzzle");
-        }
-    }
-    
     void OnPhotonInstantiate(PhotonMessageInfo info) {
         NetworkUtil.SetPlayer();
     }
-
     void OnLeftLobby() {
         NetworkUtil.SetPlayer();
+    }
+
+    [PunRPC]
+    protected override void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed)
+    {
+        Debug.Log("FireBulletNetwork called");
+        GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
+        BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
+        temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_Weapon.f_Damage);
+        temp_bullet.s_Victim = s_tag;
+        bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - this.g_Weapon.transform.position).normalized * this.cur_Weapon.f_BulletSpeed;
     }
     
 }
