@@ -627,6 +627,7 @@ MonoBehaviour:
   e_SpriteState: 0
   b_Fired: 0
   b_Reload: 0
+  myPlayer: {fileID: 0}
   weaponScript: {fileID: 0}
   s_jobname: Attacker
 --- !u!114 &114890852598425288
