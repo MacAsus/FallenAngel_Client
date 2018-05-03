@@ -6,9 +6,10 @@ using UnityEngine.SceneManagement;
 public class SelectWeapon : MonoBehaviour {
 
 	// Use this for initialization
+	private string player_id;
 	void Start () {
 		// 네트워크에서 선택한 캐릭터 받아옴
-		
+		Debug.Log("PhotonNetwork.player.ID" + PhotonNetwork.player.ID);
 	}
 	
 	// Update is called once per frame
@@ -20,25 +21,26 @@ public class SelectWeapon : MonoBehaviour {
 	 * GUI Trigger
 	 *****************/
 	public void ChoiceFirstWeapon() {
-		SendCharacterSelectedMsg();
+		SendWeaponSelectedMsg(1);
 		SceneManager.UnloadSceneAsync("SelectWeapon");
 	}
 
 	public void ChoiceSecondWeapon() {
-		SendCharacterSelectedMsg();
+		SendWeaponSelectedMsg(2);
 		SceneManager.UnloadSceneAsync("SelectWeapon");
 	}
 
 	/*****************
 	 * Custom Method
 	******************/
-    private void SendCharacterSelectedMsg()
+    private void SendWeaponSelectedMsg(int weaponNum)
     {
-        byte evCode = Events.SOMEONE_SELECTED_CHARACTER_EVT;    // Someone Selected Character & Weapon
+
+        byte evtCode = Events.SOMEONE_SELECTED_WEAPON_EVT;    // Someone Selected Weapon
 		RaiseEventOptions options = new RaiseEventOptions();
 		options.Receivers = ReceiverGroup.All;
         bool reliable = true;
-        PhotonNetwork.RaiseEvent(evCode, null, reliable, options);
+        PhotonNetwork.RaiseEvent(evtCode, weaponNum, reliable, options);
 		Debug.Log("SendCharacterSelectedMsg called");
     }
 }

@@ -9,11 +9,13 @@ public class InGame : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		Player = PhotonNetwork.Instantiate("Character/Attacker", new Vector3(0f, 0.426f, 0f), Quaternion.identity, 0);
+      string job = (string)PhotonNetwork.player.CustomProperties["job"];
+      string jobPath = "Character/" + job;
+		  Player = PhotonNetwork.Instantiate(jobPath, new Vector3(0f, 0.426f, 0f), Quaternion.identity, 0);
     }
 	
 	// Update is called once per frame
 	void Update () {
-		PingLabel.GetComponent<Text>().text = "Ping: " + PhotonNetwork.GetPing();
+		  PingLabel.GetComponent<Text>().text = "Ping: " + PhotonNetwork.GetPing();
     }
 }
