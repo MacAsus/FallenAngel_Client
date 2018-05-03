@@ -67,13 +67,14 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         {
             spine_CharacterAnim = g_Sprite.GetComponent<SkeletonAnimation>();
         }
-
         if (g_Weapon != null && g_Weapon.GetComponent<SkeletonAnimation>() != null)
         {
             spine_GunAnim = g_Weapon.GetComponent<SkeletonAnimation>();
             spine_GunAnim.state.Event += SpineOnevent;
         }
 
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerBody"), LayerMask.NameToLayer("PlayerBody"), true);
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("EnemyBody"), LayerMask.NameToLayer("EnemyBody"), true);
     }
 
     protected void SpineOnevent(TrackEntry trackIndex, Spine.Event e)
@@ -82,9 +83,18 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         {
             b_Fired = true;
         }
-        else if (e.data.name == "Shoot_End")
+        if (e.data.name == "Shoot_End")
         {
             b_Fired = false;
+        }
+
+        if (e.Data.name == "Reload_Start")
+        {
+            b_Reload = true;
+        }
+        if (e.data.name == "Reload_End")
+        {
+            b_Reload = false;
         }
     }
     protected void GetAimDegree(Vector3 v_TargetPos)
@@ -113,9 +123,9 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
             g_Weapon.localScale = new Vector3(g_Weapon.localScale.x, -f_WeaponlocalScale, g_Weapon.localScale.z);
         }
     }
-    protected void UpdateAnimationControl(SpriteState _e_SpriteState, bool _b_Fired)
+    protected void UpdateAnimationControl(SpriteState _e_SpriteState, bool _b_Fired, bool _b_Reload)
     {
-        WeaponSpineControl(_b_Fired);
+        WeaponSpineControl(_b_Fired, _b_Reload);
         if (_e_SpriteState == SpriteState.Idle)
         {
             a_Animator.SetBool("Run", false);
@@ -155,7 +165,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 
         transform.position = newPosition;
     }
-    protected virtual void WeaponSpineControl(bool _b_Fired)
+    protected virtual void WeaponSpineControl(bool _b_Fired, bool _b_Reload)
     {
 
     }

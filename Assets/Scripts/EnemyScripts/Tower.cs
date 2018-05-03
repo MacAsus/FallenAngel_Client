@@ -4,9 +4,9 @@ public class Tower : EnemyGeneral
 {
     void Start()
     {
-        n_hp = Util.f_Tower_Hp;
-        f_Speed = Util.f_Tower_Speed;
-        s_tag = Util.s_Player;
+        n_hp = Util.F_TOWER_HP;
+        f_Speed = Util.F_TOWER_SPEED;
+        s_tag = Util.S_PLAYER;
         Target = GameObject.FindWithTag(s_tag);
         //임시 테스트용
         GeneralInitialize.GunParameter tempEnemyWeapon =
@@ -27,10 +27,10 @@ public class Tower : EnemyGeneral
 
                 if(Target)
                 {
-                    v_TargetPosition = Target.transform.position + Util.v_Accruate;
+                    v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
                 }
 
-                UpdateAnimationControl(e_SpriteState, b_Fired);
+                UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
                 RotateGun(v_TargetPosition);
             }
         }
@@ -39,14 +39,14 @@ public class Tower : EnemyGeneral
             UpdateNetworkAnimationControl();
         }
 
-        Search(Util.f_Tower_Search);
+        Search(Util.F_TOWER_SEARCH);
     }
     
     protected override void FireBullet()
     {
         if (Muzzle) {
             Vector3 v_muzzle = Muzzle.transform.position;
-            Vector3 v_bulletSpeed = (Muzzle.transform.position - (Target.transform.position + Util.v_Accruate)).normalized * cur_EnemyWeapon.f_BulletSpeed;
+            Vector3 v_bulletSpeed = (Muzzle.transform.position - (Target.transform.position + Util.V_ACCRUATE)).normalized * cur_EnemyWeapon.f_BulletSpeed;
 
             this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
             this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others);
@@ -54,7 +54,7 @@ public class Tower : EnemyGeneral
             Debug.Log("Muzzle Not Found");
         }
     }
-    protected override void WeaponSpineControl(bool _b_EnemyFired)
+    protected override void WeaponSpineControl(bool _b_EnemyFired, bool _b_EnemyReload)
     {
         if (b_IsSearch == true)
         {
@@ -94,7 +94,7 @@ public class Tower : EnemyGeneral
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             {
-                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, Util.f_Tower_Damage);
+                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, Util.F_TOWER_DAMAGE);
             }
         }
         if (col.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp == 0)
@@ -108,7 +108,7 @@ public class Tower : EnemyGeneral
         GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
         BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
         temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_EnemyWeapon.f_Damage);
-        temp_bullet.s_Victim = Util.s_Player;
+        temp_bullet.s_Victim = Util.S_PLAYER;
         bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - this.g_Weapon.transform.position).normalized * this.cur_EnemyWeapon.f_BulletSpeed;
     }
 

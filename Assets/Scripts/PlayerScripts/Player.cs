@@ -2,6 +2,7 @@
 
 public class Player : CharacterGeneral
 {
+    public GameObject myPlayer;
 
     public static GameObject LocalPlayerInstance;
 
@@ -21,12 +22,13 @@ public class Player : CharacterGeneral
     // Use this for initialization
     void Start()
     {
-        weaponScript = GetComponent<WeaponGeneral>();
-        s_tag = Util.s_Enemy;
+        //weaponScript = GetComponent<WeaponGeneral>();
+        s_tag = Util.S_ENEMY;
         //디버그용
         //로비에서 총까지 다 구현하면 지울것
-        GeneralInitialize.GunParameter tempParam = new GeneralInitialize.GunParameter("Hg_Brownie", 10, 5, "Hg_Norm", 5);
+        GeneralInitialize.GunParameter tempParam = new GeneralInitialize.GunParameter("Hg_Brownie", 10, 5, "Hg_Norm", 15);
         BulletImage = tempParam.BulletImage;
+        cur_Weapon = tempParam;
         //여기까지
         PhotonNetwork.sendRate = 500 / Launcher.MaxPlayersPerRoom;
         PhotonNetwork.sendRateOnSerialize = 500 / Launcher.MaxPlayersPerRoom;
@@ -42,9 +44,9 @@ public class Player : CharacterGeneral
         //    cur_Weapon = Weapon2;
         //}
 
-        Weapon1 = tempParam;
-        Weapon2 = tempParam;
-        cur_Weapon = tempParam;
+        //Weapon1 = tempParam;
+        //Weapon2 = tempParam;
+        //cur_Weapon = tempParam;
 
         if (UI != null)
         {
@@ -74,7 +76,7 @@ public class Player : CharacterGeneral
                 // below value should be setted by manually
 
                 //스파인 애니메이션, 총알의 발사 모두 처리하는 함수
-                UpdateAnimationControl(e_SpriteState, b_Fired);
+                UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
                 RotateGun(v_MousePos);
                 ChangeWeapon();
             }
@@ -84,6 +86,15 @@ public class Player : CharacterGeneral
             UpdateNetworkedPosition();
             UpdateMousePosition(); // Need To Lerp
             UpdateNetworkAnimationControl();
+        }
+    }
+
+    void LateUpdate()
+    {
+        if (photonView.isMine == true)
+        {
+            myPlayer = InGame.Player;
+            Camera.main.transform.position = myPlayer.transform.position - Vector3.forward;
         }
     }
 
@@ -128,14 +139,30 @@ public class Player : CharacterGeneral
         this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
         this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others);
     }
-    protected override void WeaponSpineControl(bool _b_Fired)
+    protected override void WeaponSpineControl(bool _b_Fired, bool _b_Reload)
     {
-
-        if (Input.GetKey(KeyCode.Mouse0) && !_b_Fired) // triggerd by local
+        if(!_b_Fired && !_b_Reload) // 기본 상태일 때
         {
-            // GameObject bullet = weaponScript.FireBullet();
-            FireBullet();
-            spine_GunAnim.state.SetAnimation(0, "Shoot", false);
+            if(Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine >= 0)
+            {
+                FireBullet();
+                spine_GunAnim.state.SetAnimation(0, "Shoot", false);
+                cur_Weapon.f_Magazine--;
+            }
+            if(Input.GetKey(KeyCode.R))
+            {
+                spine_GunAnim.state.SetAnimation(0, "Reload", false);
+                cur_Weapon.f_Magazine = 15; //임시
+            }
+        }
+
+        if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
+        {
+            spine_GunAnim.state.SetAnimation(0, "Idle", true);
+            if (Input.GetKey(KeyCode.Mouse0))
+            {
+                //효과음
+            }
         }
     }
     protected override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

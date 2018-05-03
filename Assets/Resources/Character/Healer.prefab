@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 61335890486043644}
   - component: {fileID: 50225053188711560}
   - component: {fileID: 114824478662532302}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Healer
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -607,9 +607,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigid: {fileID: 0}
-  n_hp: 150
+  n_hp: 100
   f_AimDegree: 0
-  f_Speed: 5
+  f_Speed: 4
   f_SpritelocalScale: 0
   f_WeaponlocalScale: 0
   s_Weapon: 
@@ -628,7 +628,7 @@ MonoBehaviour:
   b_Fired: 0
   b_Reload: 0
   weaponScript: {fileID: 0}
-  s_jobname: Attacker
+  s_jobname: Healer
 --- !u!114 &114890852598425288
 MonoBehaviour:
   m_ObjectHideFlags: 1

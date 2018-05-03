@@ -171,7 +171,7 @@ GameObject:
   - component: {fileID: 61570158108224438}
   - component: {fileID: 50036619847936982}
   - component: {fileID: 114089977757968600}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bruiser
   m_TagString: Enemy
   m_Icon: {fileID: 0}

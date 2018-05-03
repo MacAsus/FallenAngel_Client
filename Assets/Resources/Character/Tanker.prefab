@@ -186,9 +186,9 @@ GameObject:
   - component: {fileID: 50560015154432158}
   - component: {fileID: 114613522434258448}
   - component: {fileID: 61859903610711578}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tanker
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -4,10 +4,10 @@ public class Bruiser : EnemyGeneral {
 
 	// Use this for initialization
 	void Start () {
-        n_hp = Util.f_Bruiser_Hp;
-        f_Speed = Util.f_Bruiser_Speed;
-        Target = GameObject.FindWithTag(Util.s_Player);
-        s_tag = Util.s_Player;
+        n_hp = Util.F_BRUISER_HP;
+        f_Speed = Util.F_BRUISER_SPEED;
+        Target = GameObject.FindWithTag(Util.S_PLAYER);
+        s_tag = Util.S_PLAYER;
         InitializeParam();
 	}
 	
@@ -21,10 +21,10 @@ public class Bruiser : EnemyGeneral {
 
                 if (Target)
                 {
-                    v_TargetPosition = Target.transform.position + Util.v_Accruate;
+                    v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
                 }
 
-                UpdateAnimationControl(e_SpriteState, b_Fired);
+                UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
                 RotateGun(v_TargetPosition);
             }
         }
@@ -33,7 +33,7 @@ public class Bruiser : EnemyGeneral {
             UpdateNetworkAnimationControl();
         }
 
-        Search(Util.f_Bruiser_Search);
+        Search(Util.F_BRUISER_SEARCH);
         Trace();
     }
 
@@ -47,7 +47,7 @@ public class Bruiser : EnemyGeneral {
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             {
-                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, Util.f_Bruiser_Damage);
+                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, Util.F_BRUISER_DAMAGE);
             }
         }
         if (col.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp == 0)
