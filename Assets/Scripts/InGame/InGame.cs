@@ -9,7 +9,7 @@ public class InGame : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-      string job = (string)PhotonNetwork.player.CustomProperties["job"];
+      string job = (string)PhotonNetwork.player.CustomProperties["job"]; // "Attacker" || "Tanker" || "Healer" || "Heavy"
       string jobPath = "Character/" + job;
 		  Player = PhotonNetwork.Instantiate(jobPath, new Vector3(0f, 0.426f, 0f), Quaternion.identity, 0);
     }
