@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//폭탄은 Xml Paser 이용 X -> 고정된 값을 가집니다.
+
 public class BombGeneral : MonoBehaviour
 {
     public string s_Victim = "";

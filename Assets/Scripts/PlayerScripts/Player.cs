@@ -22,13 +22,11 @@ public class Player : CharacterGeneral
     // Use this for initialization
     void Start()
     {
-        //weaponScript = GetComponent<WeaponGeneral>();
         s_tag = Util.S_ENEMY;
         //디버그용
         //로비에서 총까지 다 구현하면 지울것
         GeneralInitialize.GunParameter tempParam = new GeneralInitialize.GunParameter("Hg_Brownie", 10, 5, "Hg_Norm", 15);
         BulletImage = tempParam.BulletImage;
-        cur_Weapon = tempParam;
         //여기까지
         PhotonNetwork.sendRate = 500 / Launcher.MaxPlayersPerRoom;
         PhotonNetwork.sendRateOnSerialize = 500 / Launcher.MaxPlayersPerRoom;
@@ -44,9 +42,9 @@ public class Player : CharacterGeneral
         //    cur_Weapon = Weapon2;
         //}
 
-        //Weapon1 = tempParam;
+        Weapon1 = tempParam;
         //Weapon2 = tempParam;
-        //cur_Weapon = tempParam;
+        cur_Weapon = tempParam;
 
         if (UI != null)
         {
@@ -143,16 +141,37 @@ public class Player : CharacterGeneral
     {
         if(!_b_Fired && !_b_Reload) // 기본 상태일 때
         {
-            if(Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine >= 0)
+            if (cur_Weapon == Weapon1)
             {
-                FireBullet();
-                spine_GunAnim.state.SetAnimation(0, "Shoot", false);
-                cur_Weapon.f_Magazine--;
+                if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine >= 0)
+                {
+                    FireBullet();
+                    spine_GunAnim.state.SetAnimation(0, "Shoot", false);
+                    PlayerSound.instance.Play_Sound_Main_Shoot();
+                    cur_Weapon.f_Magazine--;
+                }
+                if (Input.GetKey(KeyCode.R))
+                {
+                    spine_GunAnim.state.SetAnimation(0, "Reload", false);
+                    PlayerSound.instance.Play_Sound_Main_Reload();
+                    cur_Weapon.f_Magazine = 15; //임시
+                }
             }
-            if(Input.GetKey(KeyCode.R))
+            if (cur_Weapon == Weapon2)
             {
-                spine_GunAnim.state.SetAnimation(0, "Reload", false);
-                cur_Weapon.f_Magazine = 15; //임시
+                if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine >= 0)
+                {
+                    FireBullet();
+                    spine_GunAnim.state.SetAnimation(0, "Shoot", false);
+                    PlayerSound.instance.Play_Sound_Sub_Shoot();
+                    cur_Weapon.f_Magazine--;
+                }
+                if (Input.GetKey(KeyCode.R))
+                {
+                    spine_GunAnim.state.SetAnimation(0, "Reload", false);
+                    PlayerSound.instance.Play_Sound_Sub_Reload();
+                    cur_Weapon.f_Magazine = 15; //임시
+                }
             }
         }
 
@@ -161,7 +180,7 @@ public class Player : CharacterGeneral
             spine_GunAnim.state.SetAnimation(0, "Idle", true);
             if (Input.GetKey(KeyCode.Mouse0))
             {
-                //효과음
+                PlayerSound.instance.Play_Sound_Zero_Shoot();
             }
         }
     }

@@ -4,7 +4,6 @@ using Spine.Unity;
 
 public abstract class CharacterGeneral : Photon.MonoBehaviour
 {
-
     public Rigidbody2D rigid;
 
     public float n_hp;    //캐릭터의 체력

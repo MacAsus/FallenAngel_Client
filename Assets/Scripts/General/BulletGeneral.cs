@@ -20,6 +20,7 @@ public class BulletGeneral : MonoBehaviour
             { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
                 hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, bulletInfo.f_Damage);
             }
+            BulletSound.instance.Play_Sound_Gun_Hit();
             Destroy(this.gameObject);
         }
         if (col.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp == 0)
