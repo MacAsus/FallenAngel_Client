@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public class Tower : EnemyGeneral
+public class TestEnemy : EnemyGeneral
 {
     void Start()
     {
-        n_hp = Util.F_TOWER_HP;
-        f_Speed = Util.F_TOWER_SPEED;
+        n_hp = 100f;
+        f_Speed = 2f;
         s_tag = Util.S_PLAYER;
         Target = GameObject.FindWithTag(s_tag);
         //임시 테스트용
@@ -25,7 +25,7 @@ public class Tower : EnemyGeneral
             {
                 e_SpriteState = SpriteState.Idle;
 
-                if(Target)
+                if (Target)
                 {
                     v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
                 }
@@ -40,17 +40,21 @@ public class Tower : EnemyGeneral
         }
 
         Search(Util.F_TOWER_SEARCH);
+        Trace();
     }
-    
+
     protected override void FireBullet()
     {
-        if (Muzzle) {
+        if (Muzzle)
+        {
             Vector3 v_muzzle = Muzzle.transform.position;
             Vector3 v_bulletSpeed = (Muzzle.transform.position - (Target.transform.position + Util.V_ACCRUATE)).normalized * cur_EnemyWeapon.f_BulletSpeed;
 
             this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
             this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others);
-        } else {
+        }
+        else
+        {
             Debug.Log("Muzzle Not Found");
         }
     }
@@ -100,6 +104,19 @@ public class Tower : EnemyGeneral
         if (col.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp == 0)
         {
             hit.GetComponent<CharacterGeneral>().e_SpriteState = CharacterGeneral.SpriteState.Dead;
+        }
+    }
+    protected override void Trace()
+    {
+        if (b_IsSearch == true && Target.GetComponent<CharacterGeneral>().n_hp > 0)
+        {
+            rigid.velocity = (v_TargetPosition - transform.position).normalized * (f_Speed);
+            a_Animator.SetBool("Run", true);
+        }
+        else
+        {
+            rigid.velocity = Vector3.zero;
+            a_Animator.SetBool("Run", false);
         }
     }
     [PunRPC]
