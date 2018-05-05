@@ -7,11 +7,11 @@ public class DialogueManager : MonoBehaviour {
 
 	public Text nameText;
 	public Text DialogueText;
-	private Queue<string> sentences;
+    private Queue<string> sentences;
     public Animator animator;
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
 		sentences = new Queue<string>();
 	}
 	
@@ -23,14 +23,13 @@ public class DialogueManager : MonoBehaviour {
 	public void StartDialogue(Dialogue dialogue) {
         animator.SetBool("IsOpen", true);
         nameText.text = dialogue.name; 
-
 		sentences.Clear();
-
 		foreach(string sentence in dialogue.sentences) {
 			sentences.Enqueue(sentence);
-		}
+            Debug.Log("sentence is" + sentence);
+        }
 
-		DisplayNextSentence();
+        DisplayNextSentence();
 	}
 
 	IEnumerator TypeSentence(string sentence) {
