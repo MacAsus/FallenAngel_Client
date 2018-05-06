@@ -14,7 +14,6 @@ public class BulletGeneral : MonoBehaviour
 
         if (col.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp > 0)
         {
-            // Debug.Log("===============충돌!!!=========");
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
@@ -25,16 +24,8 @@ public class BulletGeneral : MonoBehaviour
         }
         if (col.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp == 0)
         {
-            // Bullet에 충돌한 Object 사망
-            Debug.Log("Collided Object is dead.");
             hit.GetComponent<CharacterGeneral>().e_SpriteState = CharacterGeneral.SpriteState.Dead;
         }
     }
-    /*
-    //화면 밖으로 나갈시 Bullet 자동삭제
-    void OnBecameInvisible()
-    {
-        Destroy(this.gameObject);
-    }
-    */
+
 }

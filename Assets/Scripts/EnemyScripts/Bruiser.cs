@@ -37,7 +37,7 @@ public class Bruiser : EnemyGeneral {
         Trace();
     }
 
-    protected override void OnTriggerEnter2D(Collider2D col)
+    protected override void OnCollisionEnter2D(Collider2D col)
     {
         var hit = col.gameObject;
 
