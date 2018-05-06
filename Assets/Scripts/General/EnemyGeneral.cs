@@ -50,7 +50,7 @@ public class EnemyGeneral : CharacterGeneral
     {
         
     }
-    protected virtual void OnTriggerEnter2D(Collider2D col)
+    protected virtual void OnCollisionEnter2D(Collider2D col)
     {
 
     }

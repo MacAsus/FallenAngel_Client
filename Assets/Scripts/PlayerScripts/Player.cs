@@ -150,12 +150,12 @@ public class Player : CharacterGeneral
         {
             if (cur_Weapon == Weapon1)
             {
-                if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine >= 0)
+                if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
                 {
                     FireBullet();
                     spine_GunAnim.state.SetAnimation(0, "Shoot", false);
                     PlayerSound.instance.Play_Sound_Main_Shoot();
-                    cur_Weapon.f_Magazine--;
+                    --cur_Weapon.f_Magazine;
                 }
                 if (Input.GetKey(KeyCode.R))
                 {
@@ -166,12 +166,12 @@ public class Player : CharacterGeneral
             }
             if (cur_Weapon == Weapon2)
             {
-                if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine >= 0)
+                if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
                 {
                     FireBullet();
                     spine_GunAnim.state.SetAnimation(0, "Shoot", false);
                     PlayerSound.instance.Play_Sound_Sub_Shoot();
-                    cur_Weapon.f_Magazine--;
+                    --cur_Weapon.f_Magazine;
                 }
                 if (Input.GetKey(KeyCode.R))
                 {
@@ -180,16 +180,16 @@ public class Player : CharacterGeneral
                     cur_Weapon.f_Magazine = 15; //임시
                 }
             }
-        }
-
-        if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
-        {
-            spine_GunAnim.state.SetAnimation(0, "Idle", true);
-            if (Input.GetKey(KeyCode.Mouse0))
+            if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
             {
-                PlayerSound.instance.Play_Sound_Zero_Shoot();
+                if (Input.GetKey(KeyCode.Mouse0))
+                {
+                    PlayerSound.instance.Play_Sound_Zero_Shoot();
+                }
             }
         }
+
+        
     }
     protected override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
