@@ -1,3 +1,7 @@
+v1.89v (28. March 2018)
+    Fixed: warnings (CS0618) due to obsolete OpCustom overload.
+    Updated: To Photon3Unity3d.dll v4.1.2.0. See plugins\release_history.txt.
+
 v1.89 (26. February 2018)
 	Changed: Best Region connection routine now takes in consideration the regions whitelist and correctly handle the saved best region pref, ignoring it if not in the whiteList anymore.
 	Updated: Unity 2018 compatibility update to fix errors and obsolete warnings

@@ -26,6 +26,8 @@ GameObject:
   - component: {fileID: 114122097150411490}
   - component: {fileID: 114112730514098954}
   - component: {fileID: 82127648772516272}
+  - component: {fileID: 114851886963414406}
+  - component: {fileID: 114231660628430616}
   m_Layer: 10
   m_Name: Healer
   m_TagString: Player
@@ -608,6 +610,22 @@ MonoBehaviour:
   scale: 1
   zPosition: 1
   overrideAlpha: 1
+--- !u!114 &114231660628430616
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1179414643600594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23b644f2525c1c4a9fd5b77d9505148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Source: 0
+  MicrophoneType: 0
+  TypeConvert: 0
+  AudioClip: {fileID: 0}
+  LoopAudioClip: 1
 --- !u!114 &114249944337765092
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -746,6 +764,17 @@ MonoBehaviour:
   scale: 1
   zPosition: 1
   overrideAlpha: 1
+--- !u!114 &114851886963414406
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1179414643600594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc001952a941c2743a3739a35bf9c162, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114865626582843344
 MonoBehaviour:
   m_ObjectHideFlags: 1

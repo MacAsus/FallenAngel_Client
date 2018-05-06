@@ -14,6 +14,9 @@ public class Player : CharacterGeneral
 
     public string s_jobname;
 
+    private PhotonVoiceRecorder recorder;
+    private PhotonVoiceSpeaker speaker;
+
     Vector3 v_MousePos;
 
     //Photon Value
@@ -55,6 +58,10 @@ public class Player : CharacterGeneral
         {
             Debug.LogWarning("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
         }
+
+        // Find Photon Voice Recorder And Speaker
+        recorder = this.GetComponent<PhotonVoiceRecorder>();
+        speaker = this.GetComponent<PhotonVoiceSpeaker>();
     }
     // Update is called once per frame
     void Update()

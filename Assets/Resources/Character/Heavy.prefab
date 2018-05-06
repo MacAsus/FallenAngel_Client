@@ -26,6 +26,8 @@ GameObject:
   - component: {fileID: 114058726187939784}
   - component: {fileID: 114696436704100720}
   - component: {fileID: 82102296768740362}
+  - component: {fileID: 114025291080272502}
+  - component: {fileID: 114184378325095414}
   m_Layer: 10
   m_Name: Heavy
   m_TagString: Player
@@ -551,6 +553,17 @@ MonoBehaviour:
   scale: 1
   zPosition: 1
   overrideAlpha: 1
+--- !u!114 &114025291080272502
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1142313630249706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc001952a941c2743a3739a35bf9c162, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114058726187939784
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -590,6 +603,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneRoot: {fileID: 4547780385719510}
   skeletonRenderer: {fileID: 114512416423500226}
+--- !u!114 &114184378325095414
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1142313630249706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23b644f2525c1c4a9fd5b77d9505148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Source: 0
+  MicrophoneType: 0
+  TypeConvert: 0
+  AudioClip: {fileID: 0}
+  LoopAudioClip: 1
 --- !u!114 &114205096399097074
 MonoBehaviour:
   m_ObjectHideFlags: 1

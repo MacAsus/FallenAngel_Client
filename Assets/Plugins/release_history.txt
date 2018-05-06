@@ -8,14 +8,24 @@ https://doc.photonengine.com
 http://forum.photonengine.com
 
 
-*** Version 4.1.1.18 (19. December 2017 - rev4540)
-	Fixed: Exception in QueueOutgoingAcknowledgement() with a lock(). This avoids threading issues between Send- and Receive-thread. This was an issue mostly seen in Photon Voice, which uses the library multi-threaded.
-	Changed: Network Simulation now only stores the actual data of messages, instead of storing an action/delegate.
-	Note: The delegate IL code for Network Simulation was instantiating a "display class" instance and caused GC garbage, even if no simulation was running.
+*** Version 4.1.2.0 ()
+    Internal: The Photon library now re-uses memory for messages and commands. This avoids garbage collection in Unity, which can be a performance problem. 
+    Changed: There is a new method to send operations: PhotonPeer.SendOperation. It uses the SendOptions struct to define the delivery mode, encryption, etc. This replaces the obsolete OpCustom().
+    Added: Optionally, the Serialization Protocol v1.8 can now be used. Consider it a pre-release/test version for which we could use feedback. Set PhotonPeer.SerializationProtocolType.
+    Internal: Replaced foreach with while in SerializeParameterTable, SerializeHashTable and SerializeDictionaryElements in SerializationProtocol v1.6.
+    Internal: Changed EnetPeer to have a CommandQueue. Instead of queueing ExecuteCommand(cmd) delegates, we now queue the commands. This is leaner.
+    Added: PeerBase.MessageBufferPool, MessageBufferPoolGet() and MessageBufferPoolPut(StreamBuffer buff) as a simple memory pool implementation.
+    Added: PhotonPeer.MessageBufferPoolTrim() to give an option to limit the amount of memory buffered.
+    Added: PhotonPeer.MessageBufferPoolGet() as a (brute force) way to externally debug the memory buffer. This is temporary. Don't rely on this.
+    Added: For TCP, a client-side timeout. This is based on checking timestampOfLastReceive in the DispatchIncomingCommands method (timeouts only get called when you dispatch).
+    Internal: Renamed various values for more fitting names.
 LoadBalancing:
-	Changed: FriendInfo.Name is now "UserId", which is up to date with it's usage.
+    Changed: RaiseEvent now has an overload, that uses RaiseEventOptions and SendOptions. The old variant is obsolete but will still work.
 	Changed: CheckUserOnJoin is now set by default. The RoomOptions.CheckUserOnJoin got removed.
+	
 
+*** Version 4.1.1.18 ()
+	Changed: FriendInfo.Name is now "UserId", which is up to date with it's usage.
 
 *** Version 4.1.1.17 (11. October 2017 - rev4465)
 	Fixed: Fetching the server timestamp now works for the "No C# Sockets"-library build for WebSockets. This affected libraries used for XB1 and as a result, the serve time was not synced. E.g. PhotonNetwork.time was locked at 0.
@@ -46,6 +56,7 @@ Chat:
 	Added: ChatClient.SocketImplementationConfig as shortcut to modify PhotonPeer's SocketImplementationConfig. This enables you to setup which IPhotonSocket implementation to use for which network protocol.
 	Changed: ChatPeer.ConfigUnitySockets() to try to find our websocket implementations in the assembly, making the SocketWebTcpCoroutine and SocketWebTcpThread classes optional.
 	Removed: Class "SocketWebTcp" is no longer found by ConfigUnitySockets().
+
 
 *** Version 4.1.1.14 (5. July 2017 - rev4191)
     Changed: SupportClass StartBackgroundCalls method now assigns an ID to each thread/task and enables you to cancel it explicitly via StopBackgroundCalls. CallInBackground is now obsolete due to renaming.

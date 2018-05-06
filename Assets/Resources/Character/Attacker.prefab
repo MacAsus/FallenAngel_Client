@@ -157,6 +157,8 @@ GameObject:
   - component: {fileID: 114594640730234524}
   - component: {fileID: 82921557031078856}
   - component: {fileID: 114362654560922908}
+  - component: {fileID: 114618472063309958}
+  - component: {fileID: 114169263892094182}
   m_Layer: 10
   m_Name: Attacker
   m_TagString: Player
@@ -599,6 +601,22 @@ MonoBehaviour:
   scale: 1
   zPosition: 1
   overrideAlpha: 1
+--- !u!114 &114169263892094182
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1826973267605402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23b644f2525c1c4a9fd5b77d9505148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Source: 0
+  MicrophoneType: 0
+  TypeConvert: 0
+  AudioClip: {fileID: 0}
+  LoopAudioClip: 1
 --- !u!114 &114338665737334222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -700,6 +718,17 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
+--- !u!114 &114618472063309958
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1826973267605402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc001952a941c2743a3739a35bf9c162, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114630477306833116
 MonoBehaviour:
   m_ObjectHideFlags: 1
