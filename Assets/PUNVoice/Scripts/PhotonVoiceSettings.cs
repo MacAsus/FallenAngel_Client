@@ -19,7 +19,7 @@ public class PhotonVoiceSettings : MonoBehaviour
     public bool AutoTransmit = true;            // set in inspector
 
     /// Outgoing audio stream sampling rate (applied per every recoder instance).
-    public POpusCodec.Enums.SamplingRate SamplingRate = POpusCodec.Enums.SamplingRate.Sampling24000;     // set in inspector
+    public POpusCodec.Enums.SamplingRate SamplingRate = POpusCodec.Enums.SamplingRate.Sampling48000;     // set in inspector
 
     /// Outgoing audio stream encoder delay (buffer size in terms of time; applied per every recoder instance).
     public OpusCodec.FrameDuration FrameDuration = OpusCodec.FrameDuration.Frame20ms;   // set in inspector
