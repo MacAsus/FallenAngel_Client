@@ -16,25 +16,21 @@ public class SelectCharacter : MonoBehaviour {
 	}
 
 	public void ChoiceAttacker() {
-		SceneManager.LoadScene("SelectWeapon", LoadSceneMode.Additive);
 		SendCharacterSelectedMsg(Util.S_ATTACKER);
 		SceneManager.UnloadSceneAsync("SelectCharacter");
     }
 
 	public void ChoiceTanker() {
-		SceneManager.LoadScene("SelectWeapon", LoadSceneMode.Additive);
 		SendCharacterSelectedMsg(Util.S_TANKER);
 		SceneManager.UnloadSceneAsync("SelectCharacter");
 	}
 
 	public void ChoiceHealer() {
-		SceneManager.LoadScene("SelectWeapon", LoadSceneMode.Additive);
 		SendCharacterSelectedMsg(Util.S_HEALER);
 		SceneManager.UnloadSceneAsync("SelectCharacter");
 	}
 
 	public void ChoiceHeavy() {
-		SceneManager.LoadScene("SelectWeapon", LoadSceneMode.Additive);
 		SendCharacterSelectedMsg(Util.S_HEAVY);
 		SceneManager.UnloadSceneAsync("SelectCharacter");
 	}

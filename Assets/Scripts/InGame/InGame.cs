@@ -11,7 +11,7 @@ public class InGame : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Player = PhotonNetwork.Instantiate("Character/Attacker", new Vector3(0f, 0.426f, 0f), Quaternion.identity, 0);
+        SpawnCharacter();
         StartDailogue();
     }
 
@@ -19,6 +19,11 @@ public class InGame : MonoBehaviour
     void Update()
     {
         PingLabel.GetComponent<Text>().text = "Ping: " + PhotonNetwork.GetPing();
+    }
+
+    void SpawnCharacter() {
+        string job = (string)PhotonNetwork.player.CustomProperties["job"]; // "Attacker" || "Tanker" || "Healer" || "Heavy"
+        Player = PhotonNetwork.Instantiate("Character/"+job, new Vector3(0f, 0.426f, 0f), Quaternion.identity, 0);
     }
 
     void StartDailogue()

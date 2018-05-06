@@ -103,18 +103,12 @@ public class RoomWaitingGui : Photon.PunBehaviour
         }
         else if (eventcode == Events.SOMEONE_SELECTED_CHARACTER_EVT)
         {
-            string job = (string)content; // "senderid" Selected job
-            Debug.Log("Someone Selected Job!" + job + " " + senderid);
-            setUserJob(job, senderid);
-        } 
-        else if(eventcode == Events.SOMEONE_SELECTED_WEAPON_EVT) {
             if(senderid == PhotonNetwork.player.ID) {
                 CanvasObject.SetActive(true);
             }
-            // int weaponNum = (int)content; // "senderid" Selected weaponNum
-            Debug.Log("Someone Selected Weapon!");
-            Debug.Log(content);
-            // setUserWeapon(weaponNum, senderid);
+            string job = (string)content; // "senderid" Selected job
+            Debug.Log("Someone Selected Job!" + job + " " + senderid);
+            setUserJob(job, senderid);
         }
     }
 
@@ -124,16 +118,6 @@ public class RoomWaitingGui : Photon.PunBehaviour
                 Debug.Log(" I'll set" + i + "To " + job);
                 userSlots[i].userName.GetComponent<Text>().text = job;
                 userSlots[i].job = job;
-                break;
-            }
-        }
-    }
-
-    private void setUserWeapon(int weaponNum, int userID) {
-        for(int i = 0; i < PhotonNetwork.room.PlayerCount; i++) {
-            if(users[i].userID == userID) {
-                userSlots[i].userName.GetComponent<Text>().text += " " + weaponNum;
-                userSlots[i].weaponNum = weaponNum;
                 break;
             }
         }
