@@ -126,13 +126,18 @@ public class Player : CharacterGeneral
             {
                 Muzzle = GameObject.Find("Ar_muzzle");
                 cur_Weapon = Weapon1;
-                spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
+                spine_GunAnim.Skeleton.SetSkin("Ar");
+                spine_GunAnim.Skeleton.SetToSetupPose();
+                spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
+
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 Muzzle = GameObject.Find("Hg_Muzzle");
                 cur_Weapon = Weapon2;
-                spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
+                spine_GunAnim.Skeleton.SetSkin("Hg");
+                spine_GunAnim.Skeleton.SetToSetupPose();
+                spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
             }
         }
     }
