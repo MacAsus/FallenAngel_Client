@@ -9,21 +9,18 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     public float n_hp;    //캐릭터의 체력
     public float f_AimDegree; //Aim 각도
     public float f_Speed; //캐릭터 무빙 스피드
+
     public float f_SpritelocalScale; //캐릭터 로컬 스케일(타일과 크기 맞춤을 위함)
     public float f_WeaponlocalScale; //무기 로컬 스케일(타일과 크기 맞춤을 위함)
 
-    public string s_Weapon; //가지고 있는 무기의 이름
     public string s_tag;
+    public string s_jobname;
 
     public Transform g_Sprite; //캐릭터 스프라이트(or spine) Transform
     public Transform g_Weapon; //무기 스프라이트(or spine) Transform
 
-    public GameObject Muzzle; //총구
-    public GameObject g_Bullet; //총알 prefab
-    public GameObject g_Bomb; //폭탄 prefab
     public GameObject UI; //UI 프리팹
-
-    public Sprite BulletImage; //임시
+    public GameObject Muzzle; //총구 위치
 
     public Animator a_Animator; //애니메이터
 
@@ -44,34 +41,37 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 
     protected virtual void InitializeParam()
     {
-        g_Bullet = Resources.Load("Bullet") as GameObject;
-        g_Bomb = Resources.Load("Bomb") as GameObject;
-        e_SpriteState = SpriteState.Idle;
-        rigid = transform.GetComponent<Rigidbody2D>();
-        //규칙 : 캐릭터의 스프라이트 or 스파인 정보는 g_Sprite에 저장
+        e_SpriteState = SpriteState.Idle; //상태 초기화(Idle)
+
+        rigid = transform.GetComponent<Rigidbody2D>(); //강체 적용
+
         g_Sprite = transform.Find("Sprite");
         if (transform.Find("Weapon") != null)
         {
             g_Weapon = transform.Find("Weapon");
         }
+
         f_SpritelocalScale = g_Sprite.localScale.x;
         f_WeaponlocalScale = g_Sprite.localScale.y;
 
-        //애니메이터 결정
+        //캐릭터 애니메이션 적용
         if (g_Sprite.GetComponent<Animator>() != null)
         {
             a_Animator = g_Sprite.GetComponent<Animator>();
         }
-        else if (g_Sprite.GetComponent<SkeletonAnimation>() != null)
+        if (g_Sprite.GetComponent<SkeletonAnimation>() != null)
         {
             spine_CharacterAnim = g_Sprite.GetComponent<SkeletonAnimation>();
         }
+
+        //무기 애니메이션 적용
         if (g_Weapon != null && g_Weapon.GetComponent<SkeletonAnimation>() != null)
         {
             spine_GunAnim = g_Weapon.GetComponent<SkeletonAnimation>();
             spine_GunAnim.state.Event += SpineOnevent;
         }
 
+        //오브젝트 간 충돌 무시 설정
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerBody"), LayerMask.NameToLayer("PlayerBody"), true);
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("EnemyBody"), LayerMask.NameToLayer("EnemyBody"), true);
     }
@@ -159,8 +159,6 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
             newPosition = v_NetworkPosition;
             Debug.Log("Teleport");
         }
-
-        // Debug.Log("newPosition is" + newPosition.x + " : " + newPosition.y);
 
         transform.position = newPosition;
     }

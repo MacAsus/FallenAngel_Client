@@ -364,8 +364,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 2100000, guid: 82e05746e2f5eb2428ae435688daabdd, type: 2}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -708,7 +707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 11400000, guid: 178f244cbb619ff4aa72d7d4c7461d11, type: 2}
-  initialSkinName: Hg_Brownie
+  initialSkinName: default
   initialFlipX: 0
   initialFlipY: 0
   separatorSlotNames: []
@@ -811,15 +810,12 @@ MonoBehaviour:
   f_Speed: 4
   f_SpritelocalScale: 0
   f_WeaponlocalScale: 0
-  s_Weapon: 
   s_tag: 
+  s_jobname: Healer
   g_Sprite: {fileID: 0}
   g_Weapon: {fileID: 0}
-  Muzzle: {fileID: 1528801552629492}
-  g_Bullet: {fileID: 0}
-  g_Bomb: {fileID: 0}
   UI: {fileID: 1579187010457662, guid: 50e15e9ab486c44bf8841e737f8e4136, type: 2}
-  BulletImage: {fileID: 0}
+  Muzzle: {fileID: 1528801552629492}
   a_Animator: {fileID: 0}
   spine_CharacterAnim: {fileID: 0}
   spine_GunAnim: {fileID: 0}
@@ -827,8 +823,8 @@ MonoBehaviour:
   b_Fired: 0
   b_Reload: 0
   myPlayer: {fileID: 0}
-  weaponScript: {fileID: 0}
-  s_jobname: Healer
+  Main_Bullet: {fileID: 0}
+  Sub_Bullet: {fileID: 0}
 --- !u!212 &212546708429483802
 SpriteRenderer:
   m_ObjectHideFlags: 1

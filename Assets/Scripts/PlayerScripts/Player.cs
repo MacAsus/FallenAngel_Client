@@ -2,108 +2,22 @@
 
 public class Player : CharacterGeneral
 {
-    public GameObject myPlayer;
+    public GameObject myPlayer; //카메라 제어
 
     public static GameObject LocalPlayerInstance;
+    
+    public GameObject Main_Bullet; //주무장 총알 프리팹
+    public GameObject Sub_Bullet; //부무장 총알 프리팹
 
-    public GeneralInitialize.GunParameter cur_Weapon;
+    //무기 및 탄약 정보를 받아옴
+    public GeneralInitialize.GunParameter cur_Weapon, Weapon1, Weapon2;
 
-    public GeneralInitialize.GunParameter Weapon1, Weapon2;
-
-    public WeaponGeneral weaponScript;
-
-    public string s_jobname;
-
-    private PhotonVoiceRecorder recorder;
-    private PhotonVoiceSpeaker speaker;
-
-    Vector3 v_MousePos;
+    protected Vector3 v_MousePos;
 
     //Photon Value
-    Vector3 v_NetworkMousePos;
+    protected Vector3 v_NetworkMousePos;
 
-    // Use this for initialization
-    void Start()
-    {
-        s_tag = Util.S_ENEMY;
-        //디버그용
-        //로비에서 총까지 다 구현하면 지울것
-        GeneralInitialize.GunParameter tempParam = new GeneralInitialize.GunParameter("Hg_Brownie", 10, 5, "Hg_Norm", 15);
-        BulletImage = tempParam.BulletImage;
-        //여기까지
-        PhotonNetwork.sendRate = 500 / Launcher.MaxPlayersPerRoom;
-        PhotonNetwork.sendRateOnSerialize = 500 / Launcher.MaxPlayersPerRoom;
-        InitializeParam();
-
-        //디버그용
-        //위에 코드 지우면 주석 풀것
-        //if(Weapon1 != null)
-        //{
-        //    cur_Weapon = Weapon1;
-        //}else if(Weapon2 != null)
-        //{
-        //    cur_Weapon = Weapon2;
-        //}
-
-        Weapon1 = tempParam;
-        //Weapon2 = tempParam;
-        cur_Weapon = tempParam;
-
-        if (UI != null)
-        {
-            GameObject _uiGo = Instantiate(UI) as GameObject;
-            _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
-        }
-        else
-        {
-            Debug.LogWarning("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
-        }
-
-        // Find Photon Voice Recorder And Speaker
-        recorder = this.GetComponent<PhotonVoiceRecorder>();
-        speaker = this.GetComponent<PhotonVoiceSpeaker>();
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        // if this view is not mine, then do not update
-        if (photonView.isMine == true)
-        {
-            if (e_SpriteState != SpriteState.Dead)
-            {
-                e_SpriteState = SpriteState.Idle;
-
-                v_MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-                // movement synced by Photon View
-                UpdatePosition();
-
-                // below value should be setted by manually
-
-                //스파인 애니메이션, 총알의 발사 모두 처리하는 함수
-                UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
-                RotateGun(v_MousePos);
-                ChangeWeapon();
-            }
-        }
-        else
-        {
-            UpdateNetworkedPosition();
-            UpdateMousePosition(); // Need To Lerp
-            UpdateNetworkAnimationControl();
-        }
-    }
-
-    void LateUpdate()
-    {
-        if (photonView.isMine == true)
-        {
-            myPlayer = InGame.Player;
-            Camera.main.transform.position = myPlayer.transform.position - Vector3.forward;
-        }
-    }
-
-    void UpdateMousePosition()
+    protected void UpdateMousePosition()
     {
         RotateGun(v_NetworkMousePos);
     }
@@ -135,15 +49,7 @@ public class Player : CharacterGeneral
         v_NetworkPosition = new Vector3(rigid.position.x + (f_Speed * tempx * Time.deltaTime), rigid.position.y + (f_Speed * tempy * Time.deltaTime));
         rigid.velocity = new Vector2(f_Speed * tempx, f_Speed * tempy);
     }
-    protected override void FireBullet()
-    {
-        Debug.Log("FireBullet called");
-        Vector3 v_muzzle = Muzzle.transform.position;
-        Vector3 v_bulletSpeed = (Muzzle.transform.position - g_Weapon.transform.position).normalized * cur_Weapon.f_BulletSpeed;
-
-        this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
-        this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others);
-    }
+    
     protected override void WeaponSpineControl(bool _b_Fired, bool _b_Reload)
     {
         if(!_b_Fired && !_b_Reload) // 기본 상태일 때
@@ -153,15 +59,15 @@ public class Player : CharacterGeneral
                 if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
                 {
                     FireBullet();
-                    spine_GunAnim.state.SetAnimation(0, "Shoot", false);
+                    spine_GunAnim.state.SetAnimation(0, "Ar_Shoot", false);
                     PlayerSound.instance.Play_Sound_Main_Shoot();
                     --cur_Weapon.f_Magazine;
                 }
                 if (Input.GetKey(KeyCode.R))
                 {
-                    spine_GunAnim.state.SetAnimation(0, "Reload", false);
+                    spine_GunAnim.state.SetAnimation(0, "Ar_Reload", false);
                     PlayerSound.instance.Play_Sound_Main_Reload();
-                    cur_Weapon.f_Magazine = 15; //임시
+                    cur_Weapon.f_Magazine = Util.F_AR_MAGAZINE;
                 }
             }
             if (cur_Weapon == Weapon2)
@@ -169,15 +75,15 @@ public class Player : CharacterGeneral
                 if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
                 {
                     FireBullet();
-                    spine_GunAnim.state.SetAnimation(0, "Shoot", false);
+                    spine_GunAnim.state.SetAnimation(0, "Hg_Shoot", false);
                     PlayerSound.instance.Play_Sound_Sub_Shoot();
                     --cur_Weapon.f_Magazine;
                 }
                 if (Input.GetKey(KeyCode.R))
                 {
-                    spine_GunAnim.state.SetAnimation(0, "Reload", false);
+                    spine_GunAnim.state.SetAnimation(0, "Hg_Reload", false);
                     PlayerSound.instance.Play_Sound_Sub_Reload();
-                    cur_Weapon.f_Magazine = 15; //임시
+                    cur_Weapon.f_Magazine = Util.F_HG_MAGAZINE;
                 }
             }
             if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
@@ -188,9 +94,8 @@ public class Player : CharacterGeneral
                 }
             }
         }
-
-        
     }
+
     protected override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         // Debug.Log("SerializeState Called");
@@ -213,34 +118,29 @@ public class Player : CharacterGeneral
             f_LastNetworkDataReceivedTime = info.timestamp;
         }
     }
-    void ChangeWeapon()
+    protected void ChangeWeapon()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if(photonView.isMine == true)
         {
-            cur_Weapon = Weapon1;
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                Muzzle = GameObject.Find("Ar_muzzle");
+                cur_Weapon = Weapon1;
+                spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                Muzzle = GameObject.Find("Hg_Muzzle");
+                cur_Weapon = Weapon2;
+                spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
+            }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            cur_Weapon = Weapon2;
-        }
-        spine_GunAnim.skeleton.SetSkin(cur_Weapon.s_GunName);
-    }
-    void OnPhotonInstantiate(PhotonMessageInfo info) {
-        NetworkUtil.SetPlayer();
-    }
-    void OnLeftLobby() {
-        NetworkUtil.SetPlayer();
     }
 
-    [PunRPC]
-    protected override void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed)
-    {
-        Debug.Log("FireBulletNetwork called");
-        GameObject bullet = Instantiate(this.g_Bullet, muzzlePos, Quaternion.identity);
-        BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
-        temp_bullet.bulletInfo = new GeneralInitialize.BulletParameter(gameObject.tag, cur_Weapon.f_Damage);
-        temp_bullet.s_Victim = s_tag;
-        bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - this.g_Weapon.transform.position).normalized * this.cur_Weapon.f_BulletSpeed;
+    public void OnPhotonInstantiate(PhotonMessageInfo info) {
+        NetworkUtil.SetPlayer();
     }
-    
+    public void OnLeftLobby() {
+        NetworkUtil.SetPlayer();
+    }
 }
