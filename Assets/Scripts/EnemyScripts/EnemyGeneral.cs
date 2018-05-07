@@ -7,8 +7,7 @@ public class EnemyGeneral : CharacterGeneral
     public bool b_IsSearch = false;
 
     public GameObject Target;
-
-    public GeneralInitialize.GunParameter cur_EnemyWeapon;
+    public GameObject Bullet;
 
     protected Vector3 v_TargetPosition;
 

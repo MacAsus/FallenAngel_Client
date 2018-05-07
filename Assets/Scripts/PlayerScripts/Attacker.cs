@@ -79,6 +79,51 @@ public class Attacker : Player {
         }
     }
 
+    protected override void WeaponSpineControl(bool _b_Fired, bool _b_Reload)
+    {
+        if (!_b_Fired && !_b_Reload) // 기본 상태일 때
+        {
+            if (cur_Weapon == Weapon1)
+            {
+                if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
+                {
+                    FireBullet();
+                    spine_GunAnim.state.SetAnimation(0, "Ar_Shoot", false);
+                    PlayerSound.instance.Play_Sound_Main_Shoot();
+                    --cur_Weapon.f_Magazine;
+                }
+                if (Input.GetKey(KeyCode.R))
+                {
+                    spine_GunAnim.state.SetAnimation(0, "Ar_Reload", false);
+                    PlayerSound.instance.Play_Sound_Main_Reload();
+                    cur_Weapon.f_Magazine = Util.F_AR_MAGAZINE;
+                }
+            }
+            if (cur_Weapon == Weapon2)
+            {
+                if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
+                {
+                    FireBullet();
+                    spine_GunAnim.state.SetAnimation(0, "Hg_Shoot", false);
+                    PlayerSound.instance.Play_Sound_Sub_Shoot();
+                    --cur_Weapon.f_Magazine;
+                }
+                if (Input.GetKey(KeyCode.R))
+                {
+                    spine_GunAnim.state.SetAnimation(0, "Hg_Reload", false);
+                    PlayerSound.instance.Play_Sound_Sub_Reload();
+                    cur_Weapon.f_Magazine = Util.F_HG_MAGAZINE;
+                }
+            }
+            if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
+            {
+                if (Input.GetKey(KeyCode.Mouse0))
+                {
+                    PlayerSound.instance.Play_Sound_Zero_Shoot();
+                }
+            }
+        }
+    }
     protected override void FireBullet()
     {
         Debug.Log("FireBullet called");
@@ -94,8 +139,7 @@ public class Attacker : Player {
     {
         if (cur_Weapon == Weapon1)
         {
-            Debug.Log("FireBulletNetwork called");
-            GameObject bullet = Instantiate(Main_Bullet, muzzlePos, Quaternion.identity);
+            GameObject bullet = Instantiate(Main_Bullet, muzzlePos, Muzzle.transform.rotation);
             BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
             temp_bullet.bulletInfo = Weapon1;
             temp_bullet.s_Victim = s_tag;
@@ -104,7 +148,6 @@ public class Attacker : Player {
 
         if(cur_Weapon == Weapon2)
         {
-            Debug.Log("FireBulletNetwork called");
             GameObject bullet = Instantiate(Sub_Bullet, muzzlePos, Quaternion.identity);
             BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
             temp_bullet.bulletInfo = Weapon2;
