@@ -15,6 +15,7 @@ public class PlayerSound : MonoBehaviour {
 
     public AudioClip Sound_Main_Shoot; // 주 무기 발사음
     public AudioClip Sound_Sub_Shoot; // 부 무기 발사음
+    public AudioClip Sound_Melee_Shoot; //근거리 무기 발사음
 
     public AudioClip Sound_Melee_Hit; // 근거리 무기 타격음
 
@@ -59,6 +60,10 @@ public class PlayerSound : MonoBehaviour {
     public void Play_Sound_Sub_Shoot()
     {
         myAudio.PlayOneShot(Sound_Sub_Shoot);
+    }
+    public void Play_Sound_Melee_Shoot()
+    {
+        myAudio.PlayOneShot(Sound_Melee_Shoot);
     }
     public void Play_Sound_Zero_Shoot()
     {

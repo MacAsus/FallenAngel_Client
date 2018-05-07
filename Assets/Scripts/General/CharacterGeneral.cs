@@ -96,32 +96,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
             b_Reload = false;
         }
     }
-    protected void GetAimDegree(Vector3 v_TargetPos)
-    {
-
-        float x = g_Weapon.position.x - v_TargetPos.x;
-        float y = g_Weapon.position.y - v_TargetPos.y;
-
-
-        f_AimDegree = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
-    }
-    protected void RotateGun(Vector3 v_TargetPos)
-    {
-
-        GetAimDegree(v_TargetPos);
-        g_Weapon.rotation = Quaternion.Euler(new Vector3(0, 0, f_AimDegree));
-
-        if (f_AimDegree > -90 && f_AimDegree <= 90)
-        {
-            g_Sprite.localScale = new Vector3(f_SpritelocalScale, g_Sprite.localScale.y, g_Sprite.localScale.z);
-            g_Weapon.localScale = new Vector3(g_Weapon.localScale.x, f_WeaponlocalScale, g_Weapon.localScale.z);
-        }
-        else
-        {
-            g_Sprite.localScale = new Vector3(-f_SpritelocalScale, g_Sprite.localScale.y, g_Sprite.localScale.z);
-            g_Weapon.localScale = new Vector3(g_Weapon.localScale.x, -f_WeaponlocalScale, g_Weapon.localScale.z);
-        }
-    }
+    
     protected void UpdateAnimationControl(SpriteState _e_SpriteState, bool _b_Fired, bool _b_Reload)
     {
         WeaponSpineControl(_b_Fired, _b_Reload);

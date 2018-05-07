@@ -49,8 +49,33 @@ public class Player : CharacterGeneral
         v_NetworkPosition = new Vector3(rigid.position.x + (f_Speed * tempx * Time.deltaTime), rigid.position.y + (f_Speed * tempy * Time.deltaTime));
         rigid.velocity = new Vector2(f_Speed * tempx, f_Speed * tempy);
     }
-    
-    
+
+    protected void GetAimDegree(Vector3 v_TargetPos)
+    {
+
+        float x = g_Weapon.position.x - v_TargetPos.x;
+        float y = g_Weapon.position.y - v_TargetPos.y;
+
+
+        f_AimDegree = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
+    }
+    protected void RotateGun(Vector3 v_TargetPos)
+    {
+
+        GetAimDegree(v_TargetPos);
+        g_Weapon.rotation = Quaternion.Euler(new Vector3(0, 0, f_AimDegree));
+
+        if (f_AimDegree > -90 && f_AimDegree <= 90)
+        {
+            g_Sprite.localScale = new Vector3(f_SpritelocalScale, g_Sprite.localScale.y, g_Sprite.localScale.z);
+            g_Weapon.localScale = new Vector3(g_Weapon.localScale.x, f_WeaponlocalScale, g_Weapon.localScale.z);
+        }
+        else
+        {
+            g_Sprite.localScale = new Vector3(-f_SpritelocalScale, g_Sprite.localScale.y, g_Sprite.localScale.z);
+            g_Weapon.localScale = new Vector3(g_Weapon.localScale.x, -f_WeaponlocalScale, g_Weapon.localScale.z);
+        }
+    }
 
     protected override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

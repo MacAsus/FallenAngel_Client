@@ -28,7 +28,7 @@ public class Bruiser : EnemyGeneral
                 }
 
                 UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
-                RotateGun(v_TargetPosition);
+                //RotateGun(v_TargetPosition);
             }
         }
         else
