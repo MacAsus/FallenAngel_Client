@@ -76,11 +76,6 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         }
 
         mySprite = g_Sprite.GetComponent<SpriteRenderer>();
-
-        //오브젝트 간 충돌 무시 설정
-        //Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerBody"), LayerMask.NameToLayer("PlayerBody"));
-        //Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("EnemyBody"), LayerMask.NameToLayer("EnemyBody"));
-        //Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Bullet"), LayerMask.NameToLayer("Bullet"));
     }
 
     protected void SpineOnevent(TrackEntry trackIndex, Spine.Event e)
@@ -189,7 +184,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     {
         this.n_hp -= _f_Damage;
         this.b_UnHit = true;
-        this.GetComponent<BoxCollider2D>().enabled = false;
+       transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
         StartCoroutine("IsDamaged");
     }
 
@@ -208,13 +203,13 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
                 mySprite.color = new Color32(255, 255, 255, 180);
             }
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             count++;
         }
 
         mySprite.color = new Color32(255, 255, 255, 255);
         b_UnHit = false;
-        this.GetComponent<BoxCollider2D>().enabled = true;
+        transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = true;
         yield return null;
     }
 }

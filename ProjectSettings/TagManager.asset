@@ -9,6 +9,8 @@ TagManager:
   - SideObject
   - Bullet
   - GUI
+  - PlayerBullet
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX
@@ -22,7 +24,7 @@ TagManager:
   - EnemyBody
   - PlayerBody
   - Wall
-  - 
+  - Actor
   - 
   - 
   - 
