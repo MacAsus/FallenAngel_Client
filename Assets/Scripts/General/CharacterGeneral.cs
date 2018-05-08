@@ -72,8 +72,9 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         }
 
         //오브젝트 간 충돌 무시 설정
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerBody"), LayerMask.NameToLayer("PlayerBody"), true);
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("EnemyBody"), LayerMask.NameToLayer("EnemyBody"), true);
+        //Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerBody"), LayerMask.NameToLayer("PlayerBody"));
+        //Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("EnemyBody"), LayerMask.NameToLayer("EnemyBody"));
+        //Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Bullet"), LayerMask.NameToLayer("Bullet"));
     }
 
     protected void SpineOnevent(TrackEntry trackIndex, Spine.Event e)

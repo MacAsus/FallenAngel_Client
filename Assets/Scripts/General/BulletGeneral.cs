@@ -8,11 +8,11 @@ public class BulletGeneral : MonoBehaviour
 
     public string s_Victim = "";
 
-    void OnTriggerEnter2D(Collider2D col)
+    void OnCollisionEnter2D(Collision2D col)
     {
         var hit = col.gameObject;
 
-        if (col.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp > 0)
+        if (col.collider.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp > 0)
         {
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
@@ -22,7 +22,7 @@ public class BulletGeneral : MonoBehaviour
             BulletSound.instance.Play_Sound_Gun_Hit();
             Destroy(this.gameObject);
         }
-        if (col.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp == 0)
+        if (col.collider.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp == 0)
         {
             hit.GetComponent<CharacterGeneral>().e_SpriteState = CharacterGeneral.SpriteState.Dead;
         }

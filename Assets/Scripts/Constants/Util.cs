@@ -35,14 +35,14 @@ public class Util : MonoBehaviour {
     /* Ar */
     public static string S_AR_NAME = "Ar";
     public static string S_AR_BULLET_NAME = "Ar_Norm";
-    public static float F_AR_BULLET_SPEED = 10.0f;
+    public static float F_AR_BULLET_SPEED = 20.0f;
     public static float F_AR_BULLET_DAMAGE = 3.0f;
     public static float F_AR_MAGAZINE = 30.0f;
 
     /* Hg */
     public static string S_HG_NAME = "Hg";
     public static string S_HG_BULLET_NAME = "Hg_Norm";
-    public static float F_HG_BULLET_SPEED = 7.0f;
+    public static float F_HG_BULLET_SPEED = 5.0f;
     public static float F_HG_BULLET_DAMAGE = 5.0f;
     public static float F_HG_MAGAZINE = 7.0f;
 

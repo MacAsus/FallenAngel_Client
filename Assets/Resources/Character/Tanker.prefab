@@ -420,7 +420,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.04341495, y: 0.60806906}
@@ -741,6 +741,7 @@ MonoBehaviour:
   Sound_Sub_Reload: {fileID: 0}
   Sound_Main_Shoot: {fileID: 0}
   Sound_Sub_Shoot: {fileID: 0}
+  Sound_Melee_Shoot: {fileID: 0}
   Sound_Melee_Hit: {fileID: 0}
 --- !u!114 &114877699408910824
 MonoBehaviour:
@@ -797,15 +798,12 @@ MonoBehaviour:
   f_Speed: 3
   f_SpritelocalScale: 0
   f_WeaponlocalScale: 0
-  s_Weapon: 
   s_tag: 
+  s_jobname: Tanker
   g_Sprite: {fileID: 0}
   g_Weapon: {fileID: 0}
-  Muzzle: {fileID: 1743795187815268}
-  g_Bullet: {fileID: 0}
-  g_Bomb: {fileID: 0}
   UI: {fileID: 1579187010457662, guid: 50e15e9ab486c44bf8841e737f8e4136, type: 2}
-  BulletImage: {fileID: 0}
+  Muzzle: {fileID: 1743795187815268}
   a_Animator: {fileID: 0}
   spine_CharacterAnim: {fileID: 0}
   spine_GunAnim: {fileID: 0}
@@ -813,8 +811,8 @@ MonoBehaviour:
   b_Fired: 0
   b_Reload: 0
   myPlayer: {fileID: 0}
-  weaponScript: {fileID: 0}
-  s_jobname: Tanker
+  Main_Bullet: {fileID: 0}
+  Sub_Bullet: {fileID: 0}
 --- !u!212 &212088907342579966
 SpriteRenderer:
   m_ObjectHideFlags: 1

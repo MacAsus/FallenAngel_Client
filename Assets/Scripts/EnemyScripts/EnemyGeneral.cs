@@ -24,7 +24,7 @@ public class EnemyGeneral : CharacterGeneral
     {
         
     }
-    protected virtual void OnCollisionEnter2D(Collider2D col)
+    protected virtual void OnCollisionEnter2D(Collision2D col)
     {
 
     }

@@ -40,11 +40,11 @@ public class Bruiser : EnemyGeneral
         Trace();
     }
 
-    protected override void OnCollisionEnter2D(Collider2D col)
+    protected override void OnCollisionEnter2D(Collision2D col)
     {
         var hit = col.gameObject;
 
-        if (col.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp > 0)
+        if (col.collider.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp > 0)
         {
             Debug.Log("===============충돌!!!=========");
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
@@ -53,7 +53,7 @@ public class Bruiser : EnemyGeneral
                 hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, Util.F_BRUISER_DAMAGE);
             }
         }
-        if (col.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp == 0)
+        if (col.collider.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp == 0)
         {
             hit.GetComponent<CharacterGeneral>().e_SpriteState = CharacterGeneral.SpriteState.Dead;
         }
