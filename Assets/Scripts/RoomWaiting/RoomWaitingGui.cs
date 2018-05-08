@@ -21,6 +21,7 @@ public class RoomWaitingGui : Photon.PunBehaviour
 
 
     List<User> users = new List<User>();
+    List<GameObject> userPhotos = new List<GameObject>();
     public List<UserSlot> userSlots = new List<UserSlot>();
 
     /*****************
@@ -118,6 +119,9 @@ public class RoomWaitingGui : Photon.PunBehaviour
                 Debug.Log(" I'll set" + i + "To " + job);
                 userSlots[i].userName.GetComponent<Text>().text = job;
                 userSlots[i].job = job;
+                Sprite jobSprite = Resources.Load("Character/Attacker-OnlyImg") as Sprite;
+                Debug.Log("jobSprite is" + jobSprite);
+                userPhotos[i].GetComponent<Image>().sprite = jobSprite;
                 break;
             }
         }
@@ -178,6 +182,7 @@ public class RoomWaitingGui : Photon.PunBehaviour
         roomStateUI.text = PhotonNetwork.room.PlayerCount + " / " + PhotonNetwork.room.MaxPlayers;
     }
 
+    // Todo: Unity Array로 인스펙터에서 받아오기
     private void _initUserSlot()
     {
         Debug.Log("========_initUserSlot Called ==========");
@@ -192,6 +197,11 @@ public class RoomWaitingGui : Photon.PunBehaviour
         userSlots.Add(slot_user2);
         userSlots.Add(slot_user3);
         userSlots.Add(slot_user4);
+
+        userPhotos.Add(player1_image);
+        userPhotos.Add(player2_image);
+        userPhotos.Add(player3_image);
+        userPhotos.Add(player4_image);
     }
 
 
