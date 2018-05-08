@@ -61,7 +61,8 @@ public class RoomListGui : Photon.PunBehaviour {
 	 * Photon Event
 	*****************/
     public override void OnJoinedLobby() {
-        
+        Debug.Log("Joined Lobby!");
+
     }
 
 	public override void OnFailedToConnectToPhoton(DisconnectCause cause) {

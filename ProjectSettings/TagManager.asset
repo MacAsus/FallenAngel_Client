@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - SideObject
   - Bullet
+  - GUI
   layers:
   - Default
   - TransparentFX
