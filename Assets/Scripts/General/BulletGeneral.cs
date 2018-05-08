@@ -22,7 +22,7 @@ public class BulletGeneral : MonoBehaviour
         }else
         {
             //Debug.Log("Col Tag : " + col.tag);
-            BulletSound.instance.Play_Sound_Gun_Hit();
+            SoundGeneral.instance.Play_Sound_Gun_Hit();
             Destroy(this.gameObject);
         }
     }

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSound : MonoBehaviour {
+public class SoundGeneral : MonoBehaviour
+{
 
-    public static PlayerSound instance = null;
+    public static SoundGeneral instance = null;
 
     public AudioClip Sound_Explosion; // 폭발음
 
@@ -17,6 +18,7 @@ public class PlayerSound : MonoBehaviour {
     public AudioClip Sound_Sub_Shoot; // 부 무기 발사음
     public AudioClip Sound_Melee_Shoot; //근거리 무기 발사음
 
+    public AudioClip Sound_Gun_Hit; // 원거리 무기 타격음
     public AudioClip Sound_Melee_Hit; // 근거리 무기 타격음
 
     private AudioSource myAudio;
@@ -30,14 +32,16 @@ public class PlayerSound : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         myAudio = GetComponent<AudioSource>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     public void Play_Sound_Explosion()
     {
@@ -69,7 +73,10 @@ public class PlayerSound : MonoBehaviour {
     {
         myAudio.PlayOneShot(Sound_Zero_Shoot);
     }
-
+    public void Play_Sound_Gun_Hit()
+    {
+        myAudio.PlayOneShot(Sound_Gun_Hit);
+    }
     public void Play_Sound_Melee_Hit()
     {
         myAudio.PlayOneShot(Sound_Melee_Hit);

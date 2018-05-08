@@ -156,9 +156,9 @@ GameObject:
   - component: {fileID: 50269163636051124}
   - component: {fileID: 114923563202554562}
   - component: {fileID: 82754260197896612}
-  - component: {fileID: 114629590564655202}
   - component: {fileID: 114969467935403252}
   - component: {fileID: 114561722924028842}
+  - component: {fileID: 114553734523688982}
   m_Layer: 12
   m_Name: Attacker
   m_TagString: Player
@@ -985,6 +985,7 @@ MonoBehaviour:
   mySprite: {fileID: 0}
   UI: {fileID: 0}
   Muzzle: {fileID: 1067357607693366}
+  Death_Particle: {fileID: 0}
   a_Animator: {fileID: 0}
   spine_CharacterAnim: {fileID: 0}
   spine_GunAnim: {fileID: 0}
@@ -1035,6 +1036,26 @@ MonoBehaviour:
   scale: 1
   zPosition: 1
   overrideAlpha: 1
+--- !u!114 &114553734523688982
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1481978273425784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4eda3839b617fe646acaa9396db5fb7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sound_Explosion: {fileID: 0}
+  Sound_Zero_Shoot: {fileID: 0}
+  Sound_Main_Reload: {fileID: 8300000, guid: 3ebfad2dd47d9a847a57b4a5b5d92585, type: 3}
+  Sound_Sub_Reload: {fileID: 0}
+  Sound_Main_Shoot: {fileID: 8300000, guid: 81ad888c709fbcf4b9d44e575d8aafc5, type: 3}
+  Sound_Sub_Shoot: {fileID: 8300000, guid: a6b9a42471842734f9cc71a7fdbd2395, type: 3}
+  Sound_Melee_Shoot: {fileID: 0}
+  Sound_Gun_Hit: {fileID: 0}
+  Sound_Melee_Hit: {fileID: 0}
 --- !u!114 &114561722924028842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1083,25 +1104,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneRoot: {fileID: 4608059108886964}
   skeletonRenderer: {fileID: 114802876411419840}
---- !u!114 &114629590564655202
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1481978273425784}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b76b71882d3b4f4ca51091a9be4dbc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Sound_Explosion: {fileID: 0}
-  Sound_Zero_Shoot: {fileID: 0}
-  Sound_Main_Reload: {fileID: 0}
-  Sound_Sub_Reload: {fileID: 0}
-  Sound_Main_Shoot: {fileID: 8300000, guid: 81ad888c709fbcf4b9d44e575d8aafc5, type: 3}
-  Sound_Sub_Shoot: {fileID: 8300000, guid: a6b9a42471842734f9cc71a7fdbd2395, type: 3}
-  Sound_Melee_Shoot: {fileID: 0}
-  Sound_Melee_Hit: {fileID: 0}
 --- !u!114 &114644394848131394
 MonoBehaviour:
   m_ObjectHideFlags: 1

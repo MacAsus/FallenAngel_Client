@@ -21,10 +21,10 @@ GameObject:
   - component: {fileID: 4796023983625182}
   - component: {fileID: 212203997386651228}
   - component: {fileID: 114742619615411182}
-  - component: {fileID: 114455150636397620}
   - component: {fileID: 82603017889609944}
   - component: {fileID: 58250324298239446}
   - component: {fileID: 50881217527936476}
+  - component: {fileID: 114698357120864904}
   m_Layer: 8
   m_Name: Hg_Norm
   m_TagString: Untagged
@@ -160,7 +160,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &114455150636397620
+--- !u!114 &114698357120864904
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -168,11 +168,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1419129930064932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96064d32e36b9ca4587e4dcff580d95a, type: 3}
+  m_Script: {fileID: 11500000, guid: 4eda3839b617fe646acaa9396db5fb7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Sound_Explosion: {fileID: 0}
-  Sound_Gun_Hit: {fileID: 0}
+  Sound_Zero_Shoot: {fileID: 0}
+  Sound_Main_Reload: {fileID: 0}
+  Sound_Sub_Reload: {fileID: 0}
+  Sound_Main_Shoot: {fileID: 0}
+  Sound_Sub_Shoot: {fileID: 0}
+  Sound_Melee_Shoot: {fileID: 0}
+  Sound_Gun_Hit: {fileID: 8300000, guid: 5bc07af90199c7c4aa807e399e854bba, type: 3}
+  Sound_Melee_Hit: {fileID: 0}
 --- !u!114 &114742619615411182
 MonoBehaviour:
   m_ObjectHideFlags: 1

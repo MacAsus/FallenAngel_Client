@@ -25,6 +25,8 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     public GameObject UI; //UI 프리팹
     public GameObject Muzzle; //총구 위치
 
+    public ParticleSystem Death_Particle; //사망 파티클 프리팹
+
     public Animator a_Animator; //애니메이터
 
     public SkeletonAnimation spine_CharacterAnim; //(캐릭터 애니메이션이 spine일 때) 애니메이터
@@ -48,6 +50,8 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         e_SpriteState = SpriteState.Idle; //상태 초기화(Idle)
 
         rigid = transform.GetComponent<Rigidbody2D>(); //강체 적용
+
+        Death_Particle = GetComponent<ParticleSystem>();
 
         g_Sprite = transform.Find("Sprite");
         if (transform.Find("Weapon") != null)
@@ -139,6 +143,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 
         transform.position = newPosition;
     }
+
     protected virtual void WeaponSpineControl(bool _b_Fired, bool _b_Reload)
     {
 
@@ -155,7 +160,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     {
 
     }
-
+    
     [PunRPC]
     protected virtual void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed)
     {
@@ -176,16 +181,34 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     [PunRPC]
     protected void TakeDamage(float _f_Damage)
     {
-        this.n_hp -= _f_Damage;
-        StartCoroutine("IsDamaged");
+        if (this.n_hp > 0 && this.n_hp > _f_Damage)
+        {
+            this.n_hp -= _f_Damage;
+            StartCoroutine("IsDamagedEnemy");
+        }
+        else
+        {
+            this.n_hp = 0;
+            this.a_Animator.SetBool("Death", true);
+            StartCoroutine(Death_Wait_Sec(0.5f));
+        }
     }
     [PunRPC]
     protected void PlayerTakeDamage(float _f_Damage)
     {
-        this.n_hp -= _f_Damage;
-        this.b_UnHit = true;
-       transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
-        StartCoroutine("IsDamaged");
+        if (this.n_hp > 0 && this.n_hp > _f_Damage)
+        {
+            this.n_hp -= _f_Damage;
+            this.b_UnHit = true;
+            transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
+            StartCoroutine("IsDamaged");
+        }
+        else
+        {
+            this.n_hp = 0;
+            this.a_Animator.SetBool("Death", true);
+            StartCoroutine(Death_Wait_Sec(1.0f));
+        }
     }
 
     IEnumerator IsDamaged()
@@ -211,5 +234,26 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         b_UnHit = false;
         transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = true;
         yield return null;
+    }
+    IEnumerator IsDamagedEnemy()
+    {
+        mySprite.color = new Color32(255, 0, 0, 255);
+
+        yield return new WaitForSeconds(0.1f);
+
+        mySprite.color = new Color32(255, 255, 255, 255);
+        yield return null;
+    }
+    IEnumerator Death_Wait_Sec(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        if (!Death_Particle.isPlaying)
+        {
+            Death_Particle.Play();
+        }
+        SoundGeneral.instance.Play_Sound_Explosion();
+        //Instantiate(Death_Particle, transform.position, transform.rotation);
+        Destroy(this.gameObject);
     }
 }

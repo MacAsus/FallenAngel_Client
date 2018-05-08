@@ -26,6 +26,7 @@ public class Tower : EnemyGeneral
             v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
             WeaponSpineControl(b_Fired, b_Reload);
         }
+
         Search(Util.F_TOWER_SEARCH);
     }
 
@@ -53,6 +54,7 @@ public class Tower : EnemyGeneral
             if (!_b_EnemyFired && Target.GetComponent<CharacterGeneral>().n_hp > 0)
             {
                 FireBullet();
+                SoundGeneral.instance.Play_Sound_Main_Shoot();
                 a_Animator.SetBool("Aim", true);
             }
         }
@@ -87,7 +89,6 @@ public class Tower : EnemyGeneral
                 bool IsMine = gameObject.GetComponentInParent<CharacterGeneral>().photonView.isMine;
                 if (IsMine)
                 {
-                    Debug.Log("낄낄");
                     gameObject.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
                 }
             }
@@ -125,6 +126,7 @@ public class Tower : EnemyGeneral
             }
         }
     }
+
     /*
     [PunRPC]
     protected override void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed)
@@ -137,6 +139,6 @@ public class Tower : EnemyGeneral
     }
     */
 
-    
+
 
 }

@@ -89,13 +89,13 @@ public class Attacker : Player {
                 {
                     FireBullet();
                     spine_GunAnim.state.SetAnimation(0, "Ar_Shoot", false);
-                    PlayerSound.instance.Play_Sound_Main_Shoot();
+                    SoundGeneral.instance.Play_Sound_Main_Shoot();
                     --cur_Weapon.f_Magazine;
                 }
                 if (Input.GetKey(KeyCode.R))
                 {
                     spine_GunAnim.state.SetAnimation(0, "Ar_Reload", false);
-                    PlayerSound.instance.Play_Sound_Main_Reload();
+                    SoundGeneral.instance.Play_Sound_Main_Reload();
                     cur_Weapon.f_Magazine = Util.F_AR_MAGAZINE;
                 }
             }
@@ -105,13 +105,13 @@ public class Attacker : Player {
                 {
                     FireBullet();
                     spine_GunAnim.state.SetAnimation(0, "Hg_Shoot", false);
-                    PlayerSound.instance.Play_Sound_Sub_Shoot();
+                    SoundGeneral.instance.Play_Sound_Sub_Shoot();
                     --cur_Weapon.f_Magazine;
                 }
                 if (Input.GetKey(KeyCode.R))
                 {
                     spine_GunAnim.state.SetAnimation(0, "Hg_Reload", false);
-                    PlayerSound.instance.Play_Sound_Sub_Reload();
+                    SoundGeneral.instance.Play_Sound_Sub_Reload();
                     cur_Weapon.f_Magazine = Util.F_HG_MAGAZINE;
                 }
             }
@@ -119,7 +119,7 @@ public class Attacker : Player {
             {
                 if (Input.GetKey(KeyCode.Mouse0))
                 {
-                    PlayerSound.instance.Play_Sound_Zero_Shoot();
+                    SoundGeneral.instance.Play_Sound_Zero_Shoot();
                 }
             }
         }

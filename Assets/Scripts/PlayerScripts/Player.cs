@@ -154,7 +154,7 @@ public class Player : CharacterGeneral
             bool IsMine = gameObject.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             {
-                gameObject.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
+                gameObject.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, col.gameObject.GetComponent<EnemyGeneral>().f_Damage);
             }
         }
         
