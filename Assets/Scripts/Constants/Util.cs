@@ -49,6 +49,8 @@ public class Util : MonoBehaviour {
     //==========태그==========//
     public static string S_PLAYER = "Player";
     public static string S_ENEMY = "Enemy";
+    public static string S_PLAYER_BULLET = "PlayerBullet";
+    public static string S_ENEMY_BULLET = "EnemyBullet";
 
     //==========이름==========//
     public static string S_ATTACKER = "Attacker";

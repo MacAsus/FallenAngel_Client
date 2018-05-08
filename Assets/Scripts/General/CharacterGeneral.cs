@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Spine;
 using Spine.Unity;
+using System.Collections;
 
 public abstract class CharacterGeneral : Photon.MonoBehaviour
 {
@@ -19,6 +20,8 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     public Transform g_Sprite; //캐릭터 스프라이트(or spine) Transform
     public Transform g_Weapon; //무기 스프라이트(or spine) Transform
 
+    public SpriteRenderer mySprite;
+
     public GameObject UI; //UI 프리팹
     public GameObject Muzzle; //총구 위치
 
@@ -32,6 +35,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 
     public bool b_Fired = false; //애니메이션 Shoot 컨트롤러(Event "Start" 와 "End" 컨트롤)
     public bool b_Reload = false;
+    public bool b_UnHit = false;
 
     //Photon Value
     protected Vector3 v_NetworkPosition;
@@ -70,6 +74,8 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
             spine_GunAnim = g_Weapon.GetComponent<SkeletonAnimation>();
             spine_GunAnim.state.Event += SpineOnevent;
         }
+
+        mySprite = g_Sprite.GetComponent<SpriteRenderer>();
 
         //오브젝트 간 충돌 무시 설정
         //Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerBody"), LayerMask.NameToLayer("PlayerBody"));
@@ -150,7 +156,11 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     {
 
     }
-    
+    protected virtual void OnCollisionEnter2D(Collision2D col)
+    {
+
+    }
+
     [PunRPC]
     protected virtual void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed)
     {
@@ -172,5 +182,39 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     protected void TakeDamage(float _f_Damage)
     {
         this.n_hp -= _f_Damage;
+        StartCoroutine("IsDamaged");
+    }
+    [PunRPC]
+    protected void PlayerTakeDamage(float _f_Damage)
+    {
+        this.n_hp -= _f_Damage;
+        this.b_UnHit = true;
+        this.GetComponent<BoxCollider2D>().enabled = false;
+        StartCoroutine("IsDamaged");
+    }
+
+    IEnumerator IsDamaged()
+    {
+        int count = 0;
+
+        while (count < 10)
+        {
+            if (count % 2 == 0)
+            {
+                mySprite.color = new Color32(255, 255, 255, 90);
+            }
+            else
+            {
+                mySprite.color = new Color32(255, 255, 255, 180);
+            }
+
+            yield return new WaitForSeconds(0.2f);
+            count++;
+        }
+
+        mySprite.color = new Color32(255, 255, 255, 255);
+        b_UnHit = false;
+        this.GetComponent<BoxCollider2D>().enabled = true;
+        yield return null;
     }
 }

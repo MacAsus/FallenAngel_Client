@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Tower : EnemyGeneral
 {
@@ -8,6 +9,7 @@ public class Tower : EnemyGeneral
         n_hp = Util.F_TOWER_HP;
         f_Speed = Util.F_TOWER_SPEED;
         s_tag = Util.S_PLAYER;
+        f_Damage = Util.F_TOWER_DAMAGE;
 
         Target = GameObject.FindWithTag(s_tag);
 
@@ -87,15 +89,18 @@ public class Tower : EnemyGeneral
     {
         var hit = col.gameObject;
 
+        //Player와 충돌할 경우
         if (col.collider.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp > 0)
         {
             Debug.Log("===============충돌!!!=========");
             bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             {
-                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, Util.F_TOWER_DAMAGE);
+                hit.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, Util.F_TOWER_DAMAGE);
             }
         }
+
+        //충돌한 대상이 죽었을 경우
         if (col.collider.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp == 0)
         {
             hit.GetComponent<CharacterGeneral>().e_SpriteState = CharacterGeneral.SpriteState.Dead;
@@ -144,4 +149,7 @@ public class Tower : EnemyGeneral
         bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Util.F_HG_BULLET_SPEED;
     }
     */
+
+    
+
 }

@@ -14,13 +14,29 @@ public class BulletGeneral : MonoBehaviour
 
         if (col.collider.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp > 0)
         {
-            bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
-            if (IsMine)
-            { // 자기가 맞았을 경우에만 다른 클라이언트에게 "나 맞았다" RPC 호출
-                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, bulletInfo.f_BulletDamage);
+            if (s_Victim == Util.S_ENEMY)
+            {
+                bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
+                if (IsMine)
+                {
+                    hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, bulletInfo.f_BulletDamage);
+                }
+
+                BulletSound.instance.Play_Sound_Gun_Hit();
+                Destroy(this.gameObject);
             }
-            BulletSound.instance.Play_Sound_Gun_Hit();
-            Destroy(this.gameObject);
+
+            if (s_Victim == Util.S_PLAYER)
+            {
+                bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
+                if (IsMine)
+                {
+                    hit.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, bulletInfo.f_BulletDamage);
+                }
+
+                BulletSound.instance.Play_Sound_Gun_Hit();
+                Destroy(this.gameObject);
+            }
         }
         if (col.collider.tag == s_Victim && hit.GetComponent<CharacterGeneral>().n_hp == 0)
         {

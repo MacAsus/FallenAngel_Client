@@ -3,6 +3,7 @@
 public class EnemyGeneral : CharacterGeneral
 {
     public float f_Distance;
+    public float f_Damage;
 
     public bool b_IsSearch = false;
 
@@ -23,9 +24,5 @@ public class EnemyGeneral : CharacterGeneral
     protected virtual void Trace()
     {
         
-    }
-    protected virtual void OnCollisionEnter2D(Collision2D col)
-    {
-
     }
 }
