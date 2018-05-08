@@ -7,10 +7,13 @@ public class InGame : MonoBehaviour
 {
     public GameObject PingLabel;
     public static GameObject Player;
+    public Texture2D defaultMouse;
 
     // Use this for initialization
     void Start()
     {
+        // 과녁 모양으로 마우스 세팅
+        Cursor.SetCursor(defaultMouse, Vector2.zero, CursorMode.Auto);
         SpawnCharacter();
         StartDailogue();
     }

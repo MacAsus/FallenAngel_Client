@@ -24,9 +24,6 @@ EditorBuildSettings:
     path: Assets/Scenes/SelectCharacter.unity
     guid: 54f0418a7138d4014acd3e3605048fec
   - enabled: 1
-    path: Assets/Scenes/SelectWeapon.unity
-    guid: b3bab29420e7b4211acfc83319e516ec
-  - enabled: 1
     path: Assets/Scenes/GeneralScene.unity
     guid: d16dec0bb27b439498702d445e8dcce3
   - enabled: 1
