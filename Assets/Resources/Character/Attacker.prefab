@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 114629590564655202}
   - component: {fileID: 114969467935403252}
   - component: {fileID: 114561722924028842}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: Attacker
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -240,6 +240,22 @@ GameObject:
   - component: {fileID: 4608059108886964}
   m_Layer: 0
   m_Name: SkeletonUtility-Root
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1775905329095420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4040549189946846}
+  - component: {fileID: 61853475334192104}
+  m_Layer: 10
+  m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -353,6 +369,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4293160381168888}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4040549189946846
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1775905329095420}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4457702053786498}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4062223813514320
 Transform:
@@ -489,6 +518,7 @@ Transform:
   m_Children:
   - {fileID: 4195171356501796}
   - {fileID: 4267464272974806}
+  - {fileID: 4040549189946846}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -675,6 +705,31 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 0.51784533, y: 1.2660487}
+  m_EdgeRadius: 0
+--- !u!61 &61853475334192104
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1775905329095420}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.015993685, y: 0.68719137}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.4038719, y: 1.2461257}
   m_EdgeRadius: 0
 --- !u!82 &82754260197896612
 AudioSource:
@@ -927,6 +982,7 @@ MonoBehaviour:
   s_jobname: Attacker
   g_Sprite: {fileID: 0}
   g_Weapon: {fileID: 0}
+  mySprite: {fileID: 0}
   UI: {fileID: 0}
   Muzzle: {fileID: 1067357607693366}
   a_Animator: {fileID: 0}
@@ -935,9 +991,12 @@ MonoBehaviour:
   e_SpriteState: 0
   b_Fired: 0
   b_Reload: 0
+  b_UnHit: 0
   myPlayer: {fileID: 0}
   Main_Bullet: {fileID: 0}
   Sub_Bullet: {fileID: 0}
+  Muzzle1: {fileID: 1067357607693366}
+  Muzzle2: {fileID: 1784552870566182}
 --- !u!114 &114434462874954590
 MonoBehaviour:
   m_ObjectHideFlags: 1

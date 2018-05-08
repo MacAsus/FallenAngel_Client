@@ -8,7 +8,6 @@ public class Tower : EnemyGeneral
         s_tag = Util.S_PLAYER;
         n_hp = Util.F_TOWER_HP;
         f_Speed = Util.F_TOWER_SPEED;
-        s_tag = Util.S_PLAYER;
         f_Damage = Util.F_TOWER_DAMAGE;
 
         Target = GameObject.FindWithTag(s_tag);
@@ -22,18 +21,11 @@ public class Tower : EnemyGeneral
 
     void Update()
     {
-
-        if (Target)
+        if (Target != null)
         {
             v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
+            WeaponSpineControl(b_Fired, b_Reload);
         }
-
-        UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
-
-
-        UpdateNetworkAnimationControl();
-
-
         Search(Util.F_TOWER_SEARCH);
     }
 
@@ -43,7 +35,6 @@ public class Tower : EnemyGeneral
         {
             Vector3 v_muzzle = Muzzle.transform.position;
             //Vector3 v_bulletSpeed = (Muzzle.transform.position - (Target.transform.position + Util.V_ACCRUATE)).normalized * Util.F_HG_BULLET_SPEED;
-
             GameObject bullet = Instantiate(Bullet, v_muzzle, Quaternion.identity);
             BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
             temp_bullet.bulletInfo = EnemyWeapon;
@@ -85,25 +76,21 @@ public class Tower : EnemyGeneral
             f_LastNetworkDataReceivedTime = info.timestamp;
         }
     }
-    protected override void OnCollisionEnter2D(Collision2D col)
+    void OnTriggerEnter2D(Collider2D col)
     {
         var hit = col.gameObject;
 
-        //Player와 충돌할 경우
-        if (col.collider.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp > 0)
+        if(hit.layer == LayerMask.NameToLayer("Bullet"))
         {
-            Debug.Log("===============충돌!!!=========");
-            bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
-            if (IsMine)
+            if (col.gameObject.GetComponent<BulletGeneral>().s_Victim == Util.S_ENEMY)
             {
-                hit.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, Util.F_TOWER_DAMAGE);
+                bool IsMine = gameObject.GetComponentInParent<CharacterGeneral>().photonView.isMine;
+                if (IsMine)
+                {
+                    Debug.Log("낄낄");
+                    gameObject.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
+                }
             }
-        }
-
-        //충돌한 대상이 죽었을 경우
-        if (col.collider.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp == 0)
-        {
-            hit.GetComponent<CharacterGeneral>().e_SpriteState = CharacterGeneral.SpriteState.Dead;
         }
     }
 

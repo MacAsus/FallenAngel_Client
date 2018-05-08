@@ -8,6 +8,7 @@ public class Player : CharacterGeneral
     
     public GameObject Main_Bullet; //주무장 총알 프리팹
     public GameObject Sub_Bullet; //부무장 총알 프리팹
+    public GameObject Muzzle1, Muzzle2;
 
     //무기 및 탄약 정보를 받아옴
     public GeneralInitialize.GunParameter cur_Weapon, Weapon1, Weapon2;
@@ -21,6 +22,7 @@ public class Player : CharacterGeneral
     {
         RotateGun(v_NetworkMousePos);
     }
+
     protected void UpdatePosition()
     {
         int tempx = 0;
@@ -106,7 +108,7 @@ public class Player : CharacterGeneral
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                Muzzle = GameObject.Find("Ar_muzzle");
+                Muzzle = Muzzle1;
                 cur_Weapon = Weapon1;
                 spine_GunAnim.Skeleton.SetSkin("Ar");
                 spine_GunAnim.Skeleton.SetToSetupPose();
@@ -115,7 +117,7 @@ public class Player : CharacterGeneral
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                Muzzle = GameObject.Find("Hg_Muzzle");
+                Muzzle = Muzzle2;
                 cur_Weapon = Weapon2;
                 spine_GunAnim.Skeleton.SetSkin("Hg");
                 spine_GunAnim.Skeleton.SetToSetupPose();
@@ -130,4 +132,32 @@ public class Player : CharacterGeneral
     public void OnLeftLobby() {
         NetworkUtil.SetPlayer();
     }
+
+    
+    void OnTriggerEnter2D(Collider2D col)
+    {
+
+        if(col.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+        {
+            if (col.gameObject.GetComponent<BulletGeneral>().s_Victim == Util.S_PLAYER)
+            {
+                bool IsMine = gameObject.GetComponent<CharacterGeneral>().photonView.isMine;
+                if (IsMine)
+                {
+                    gameObject.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
+                }
+            }
+        }
+
+        if (col.gameObject.layer == LayerMask.NameToLayer("EnemyBody"))
+        {
+            bool IsMine = gameObject.GetComponent<CharacterGeneral>().photonView.isMine;
+            if (IsMine)
+            {
+                gameObject.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
+            }
+        }
+        
+    }
+
 }
