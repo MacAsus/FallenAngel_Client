@@ -365,6 +365,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1426642390}
+        m_MethodName: OnButtonClickSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &412741174
@@ -622,6 +633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5074e7bfa9d843d9ac2541701848fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BtnClickSound: {fileID: 0}
 --- !u!1 &516999811
 GameObject:
   m_ObjectHideFlags: 0
@@ -934,6 +946,53 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 544117768}
+--- !u!1001 &601947535
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4079752191104660, guid: 8da55f822be62448d82d5a423cb66011, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 413.6066
+      objectReference: {fileID: 0}
+    - target: {fileID: 4079752191104660, guid: 8da55f822be62448d82d5a423cb66011, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 315.02682
+      objectReference: {fileID: 0}
+    - target: {fileID: 4079752191104660, guid: 8da55f822be62448d82d5a423cb66011, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 24.437248
+      objectReference: {fileID: 0}
+    - target: {fileID: 4079752191104660, guid: 8da55f822be62448d82d5a423cb66011, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4079752191104660, guid: 8da55f822be62448d82d5a423cb66011, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4079752191104660, guid: 8da55f822be62448d82d5a423cb66011, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4079752191104660, guid: 8da55f822be62448d82d5a423cb66011, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4079752191104660, guid: 8da55f822be62448d82d5a423cb66011, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 8da55f822be62448d82d5a423cb66011, type: 2}
+  m_IsPrefabParent: 0
+--- !u!82 &601947536 stripped
+AudioSource:
+  m_PrefabParentObject: {fileID: 82749565465192718, guid: 8da55f822be62448d82d5a423cb66011,
+    type: 2}
+  m_PrefabInternal: {fileID: 601947535}
 --- !u!1 &655047207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1697,6 +1756,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1426642390}
+        m_MethodName: OnButtonClickSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1082613264
@@ -2057,6 +2127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5074e7bfa9d843d9ac2541701848fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BtnClickSound: {fileID: 601947536}
 --- !u!1 &1545943909
 GameObject:
   m_ObjectHideFlags: 0
@@ -2292,6 +2363,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1426642390}
         m_MethodName: QuitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1426642390}
+        m_MethodName: OnButtonClickSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
