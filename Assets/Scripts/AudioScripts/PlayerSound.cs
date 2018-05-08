@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundGeneral : MonoBehaviour
-{
+public class PlayerSound : MonoBehaviour {
 
-    public static SoundGeneral instance = null;
-
-    public AudioClip Sound_Explosion; // 폭발음
+    private AudioSource myAudio;
+    public static PlayerSound instance = null;
 
     public AudioClip Sound_Zero_Shoot; // 장탄수 0일시 발사음
 
@@ -18,10 +16,8 @@ public class SoundGeneral : MonoBehaviour
     public AudioClip Sound_Sub_Shoot; // 부 무기 발사음
     public AudioClip Sound_Melee_Shoot; //근거리 무기 발사음
 
-    public AudioClip Sound_Gun_Hit; // 원거리 무기 타격음
     public AudioClip Sound_Melee_Hit; // 근거리 무기 타격음
-
-    private AudioSource myAudio;
+    public AudioClip Sound_Gun_Hit;
 
     void Awake()
     {
@@ -38,15 +34,9 @@ public class SoundGeneral : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void Play_Sound_Explosion()
-    {
-        myAudio.PlayOneShot(Sound_Explosion);
-    }
+    void Update () {
+		
+	}
 
     public void Play_Sound_Main_Reload()
     {
@@ -73,12 +63,12 @@ public class SoundGeneral : MonoBehaviour
     {
         myAudio.PlayOneShot(Sound_Zero_Shoot);
     }
-    public void Play_Sound_Gun_Hit()
-    {
-        myAudio.PlayOneShot(Sound_Gun_Hit);
-    }
     public void Play_Sound_Melee_Hit()
     {
         myAudio.PlayOneShot(Sound_Melee_Hit);
+    }
+    public void Play_Sound_Gun_Hit()
+    {
+        myAudio.PlayOneShot(Sound_Gun_Hit);
     }
 }

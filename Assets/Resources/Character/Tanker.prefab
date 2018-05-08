@@ -186,10 +186,10 @@ GameObject:
   - component: {fileID: 50175675798850602}
   - component: {fileID: 114632198478528722}
   - component: {fileID: 61777437156226726}
-  - component: {fileID: 114783373111413354}
   - component: {fileID: 82018607378730486}
   - component: {fileID: 114579378127966702}
   - component: {fileID: 114476847489942290}
+  - component: {fileID: 114007732845549874}
   m_Layer: 10
   m_Name: Tanker
   m_TagString: Player
@@ -533,6 +533,24 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114007732845549874
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1959284945776234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4370f08156739f468536153a21e8726, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sound_Zero_Shoot: {fileID: 0}
+  Sound_Main_Reload: {fileID: 0}
+  Sound_Sub_Reload: {fileID: 0}
+  Sound_Main_Shoot: {fileID: 0}
+  Sound_Sub_Shoot: {fileID: 0}
+  Sound_Melee_Shoot: {fileID: 0}
+  Sound_Melee_Hit: {fileID: 0}
 --- !u!114 &114069198337529806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -724,25 +742,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneRoot: {fileID: 4628761018979466}
   skeletonRenderer: {fileID: 114143161546148290}
---- !u!114 &114783373111413354
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1959284945776234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b76b71882d3b4f4ca51091a9be4dbc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Sound_Explosion: {fileID: 0}
-  Sound_Zero_Shoot: {fileID: 0}
-  Sound_Main_Reload: {fileID: 0}
-  Sound_Sub_Reload: {fileID: 0}
-  Sound_Main_Shoot: {fileID: 0}
-  Sound_Sub_Shoot: {fileID: 0}
-  Sound_Melee_Shoot: {fileID: 0}
-  Sound_Melee_Hit: {fileID: 0}
 --- !u!114 &114877699408910824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -802,17 +801,22 @@ MonoBehaviour:
   s_jobname: Tanker
   g_Sprite: {fileID: 0}
   g_Weapon: {fileID: 0}
+  mySprite: {fileID: 0}
   UI: {fileID: 1579187010457662, guid: 50e15e9ab486c44bf8841e737f8e4136, type: 2}
   Muzzle: {fileID: 1743795187815268}
+  Death_Particle: {fileID: 0}
   a_Animator: {fileID: 0}
   spine_CharacterAnim: {fileID: 0}
   spine_GunAnim: {fileID: 0}
   e_SpriteState: 0
   b_Fired: 0
   b_Reload: 0
+  b_UnHit: 0
   myPlayer: {fileID: 0}
   Main_Bullet: {fileID: 0}
   Sub_Bullet: {fileID: 0}
+  Muzzle1: {fileID: 0}
+  Muzzle2: {fileID: 0}
 --- !u!212 &212088907342579966
 SpriteRenderer:
   m_ObjectHideFlags: 1

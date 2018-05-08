@@ -24,10 +24,10 @@ GameObject:
   - component: {fileID: 61675468284393672}
   - component: {fileID: 50553625007731212}
   - component: {fileID: 114122097150411490}
-  - component: {fileID: 114112730514098954}
   - component: {fileID: 82127648772516272}
   - component: {fileID: 114851886963414406}
   - component: {fileID: 114231660628430616}
+  - component: {fileID: 114172486129842962}
   m_Layer: 10
   m_Name: Healer
   m_TagString: Player
@@ -533,25 +533,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114112730514098954
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1179414643600594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b76b71882d3b4f4ca51091a9be4dbc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Sound_Explosion: {fileID: 0}
-  Sound_Zero_Shoot: {fileID: 0}
-  Sound_Main_Reload: {fileID: 0}
-  Sound_Sub_Reload: {fileID: 0}
-  Sound_Main_Shoot: {fileID: 0}
-  Sound_Sub_Shoot: {fileID: 0}
-  Sound_Melee_Shoot: {fileID: 0}
-  Sound_Melee_Hit: {fileID: 0}
 --- !u!114 &114122097150411490
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -591,6 +572,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParentPlayer: {fileID: 0}
   g_Muzzle: {fileID: 1528801552629492}
+--- !u!114 &114172486129842962
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1179414643600594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4370f08156739f468536153a21e8726, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sound_Zero_Shoot: {fileID: 0}
+  Sound_Main_Reload: {fileID: 0}
+  Sound_Sub_Reload: {fileID: 0}
+  Sound_Main_Shoot: {fileID: 0}
+  Sound_Sub_Shoot: {fileID: 0}
+  Sound_Melee_Shoot: {fileID: 0}
+  Sound_Melee_Hit: {fileID: 0}
 --- !u!114 &114221962349114046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -815,17 +814,22 @@ MonoBehaviour:
   s_jobname: Healer
   g_Sprite: {fileID: 0}
   g_Weapon: {fileID: 0}
+  mySprite: {fileID: 0}
   UI: {fileID: 1579187010457662, guid: 50e15e9ab486c44bf8841e737f8e4136, type: 2}
   Muzzle: {fileID: 1528801552629492}
+  Death_Particle: {fileID: 0}
   a_Animator: {fileID: 0}
   spine_CharacterAnim: {fileID: 0}
   spine_GunAnim: {fileID: 0}
   e_SpriteState: 0
   b_Fired: 0
   b_Reload: 0
+  b_UnHit: 0
   myPlayer: {fileID: 0}
   Main_Bullet: {fileID: 0}
   Sub_Bullet: {fileID: 0}
+  Muzzle1: {fileID: 0}
+  Muzzle2: {fileID: 0}
 --- !u!212 &212546708429483802
 SpriteRenderer:
   m_ObjectHideFlags: 1

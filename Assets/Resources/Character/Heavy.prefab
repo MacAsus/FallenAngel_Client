@@ -24,10 +24,10 @@ GameObject:
   - component: {fileID: 61959511736893794}
   - component: {fileID: 50527834008872110}
   - component: {fileID: 114058726187939784}
-  - component: {fileID: 114696436704100720}
   - component: {fileID: 82102296768740362}
   - component: {fileID: 114025291080272502}
   - component: {fileID: 114184378325095414}
+  - component: {fileID: 114180910586841512}
   m_Layer: 10
   m_Name: Heavy
   m_TagString: Player
@@ -603,6 +603,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boneRoot: {fileID: 4547780385719510}
   skeletonRenderer: {fileID: 114512416423500226}
+--- !u!114 &114180910586841512
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1142313630249706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4370f08156739f468536153a21e8726, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sound_Zero_Shoot: {fileID: 0}
+  Sound_Main_Reload: {fileID: 0}
+  Sound_Sub_Reload: {fileID: 0}
+  Sound_Main_Shoot: {fileID: 0}
+  Sound_Sub_Shoot: {fileID: 0}
+  Sound_Melee_Shoot: {fileID: 0}
+  Sound_Melee_Hit: {fileID: 0}
 --- !u!114 &114184378325095414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -721,17 +739,22 @@ MonoBehaviour:
   s_jobname: Heavy
   g_Sprite: {fileID: 0}
   g_Weapon: {fileID: 0}
+  mySprite: {fileID: 0}
   UI: {fileID: 1579187010457662, guid: 50e15e9ab486c44bf8841e737f8e4136, type: 2}
   Muzzle: {fileID: 1327539359039028}
+  Death_Particle: {fileID: 0}
   a_Animator: {fileID: 0}
   spine_CharacterAnim: {fileID: 0}
   spine_GunAnim: {fileID: 0}
   e_SpriteState: 0
   b_Fired: 0
   b_Reload: 0
+  b_UnHit: 0
   myPlayer: {fileID: 0}
   Main_Bullet: {fileID: 0}
   Sub_Bullet: {fileID: 0}
+  Muzzle1: {fileID: 0}
+  Muzzle2: {fileID: 0}
 --- !u!114 &114546051775940430
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -770,25 +793,6 @@ MonoBehaviour:
   scale: 1
   zPosition: 1
   overrideAlpha: 1
---- !u!114 &114696436704100720
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1142313630249706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b76b71882d3b4f4ca51091a9be4dbc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Sound_Explosion: {fileID: 0}
-  Sound_Zero_Shoot: {fileID: 0}
-  Sound_Main_Reload: {fileID: 0}
-  Sound_Sub_Reload: {fileID: 0}
-  Sound_Main_Shoot: {fileID: 0}
-  Sound_Sub_Shoot: {fileID: 0}
-  Sound_Melee_Shoot: {fileID: 0}
-  Sound_Melee_Hit: {fileID: 0}
 --- !u!114 &114741682286210224
 MonoBehaviour:
   m_ObjectHideFlags: 1

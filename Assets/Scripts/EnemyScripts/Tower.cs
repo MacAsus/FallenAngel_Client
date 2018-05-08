@@ -10,6 +10,8 @@ public class Tower : EnemyGeneral
         f_Speed = Util.F_TOWER_SPEED;
         f_Damage = Util.F_TOWER_DAMAGE;
 
+        shootDelayTime = 0.5f;
+
         Target = GameObject.FindWithTag(s_tag);
 
         Bullet = Resources.Load("BulletPrefab/" + Util.S_HG_BULLET_NAME) as GameObject;
@@ -21,6 +23,8 @@ public class Tower : EnemyGeneral
 
     void Update()
     {
+        delayTimer += Time.deltaTime;
+
         if (Target != null)
         {
             v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
@@ -49,13 +53,14 @@ public class Tower : EnemyGeneral
 
     protected override void WeaponSpineControl(bool _b_EnemyFired, bool _b_EnemyReload)
     {
-        if (b_IsSearch == true)
+        if (b_IsSearch == true && delayTimer > shootDelayTime)
         {
             if (!_b_EnemyFired && Target.GetComponent<CharacterGeneral>().n_hp > 0)
             {
                 FireBullet();
-                SoundGeneral.instance.Play_Sound_Main_Shoot();
+                EnemySound.instance.Play_Sound_Main_Shoot();
                 a_Animator.SetBool("Aim", true);
+                delayTimer = 0f;
             }
         }
     }
@@ -89,6 +94,7 @@ public class Tower : EnemyGeneral
                 bool IsMine = gameObject.GetComponentInParent<CharacterGeneral>().photonView.isMine;
                 if (IsMine)
                 {
+                    EnemySound.instance.Play_Sound_Gun_Hit();
                     gameObject.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
                 }
             }
@@ -138,7 +144,4 @@ public class Tower : EnemyGeneral
         bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Util.F_HG_BULLET_SPEED;
     }
     */
-
-
-
 }

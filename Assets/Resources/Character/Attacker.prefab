@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 82754260197896612}
   - component: {fileID: 114969467935403252}
   - component: {fileID: 114561722924028842}
-  - component: {fileID: 114553734523688982}
+  - component: {fileID: 114979865405797806}
   m_Layer: 12
   m_Name: Attacker
   m_TagString: Player
@@ -1036,26 +1036,6 @@ MonoBehaviour:
   scale: 1
   zPosition: 1
   overrideAlpha: 1
---- !u!114 &114553734523688982
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1481978273425784}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4eda3839b617fe646acaa9396db5fb7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Sound_Explosion: {fileID: 0}
-  Sound_Zero_Shoot: {fileID: 0}
-  Sound_Main_Reload: {fileID: 8300000, guid: 3ebfad2dd47d9a847a57b4a5b5d92585, type: 3}
-  Sound_Sub_Reload: {fileID: 0}
-  Sound_Main_Shoot: {fileID: 8300000, guid: 81ad888c709fbcf4b9d44e575d8aafc5, type: 3}
-  Sound_Sub_Shoot: {fileID: 8300000, guid: a6b9a42471842734f9cc71a7fdbd2395, type: 3}
-  Sound_Melee_Shoot: {fileID: 0}
-  Sound_Gun_Hit: {fileID: 0}
-  Sound_Melee_Hit: {fileID: 0}
 --- !u!114 &114561722924028842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1266,6 +1246,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc001952a941c2743a3739a35bf9c162, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114979865405797806
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1481978273425784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4370f08156739f468536153a21e8726, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sound_Zero_Shoot: {fileID: 0}
+  Sound_Main_Reload: {fileID: 8300000, guid: 3ebfad2dd47d9a847a57b4a5b5d92585, type: 3}
+  Sound_Sub_Reload: {fileID: 0}
+  Sound_Main_Shoot: {fileID: 8300000, guid: 81ad888c709fbcf4b9d44e575d8aafc5, type: 3}
+  Sound_Sub_Shoot: {fileID: 8300000, guid: a6b9a42471842734f9cc71a7fdbd2395, type: 3}
+  Sound_Melee_Shoot: {fileID: 0}
+  Sound_Melee_Hit: {fileID: 0}
 --- !u!212 &212899230333369902
 SpriteRenderer:
   m_ObjectHideFlags: 1

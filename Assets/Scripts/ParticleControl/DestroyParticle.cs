@@ -5,20 +5,25 @@ using UnityEngine;
 public class DestroyParticle : MonoBehaviour
 {
 
-    ParticleSystem ps;
+    public ParticleSystem ps;
 
-    // Use this for initialization
     void Start()
     {
-        ps = GetComponent<ParticleSystem>();
+
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (ps.IsAlive() == false)
         {
             Destroy(gameObject);
         }
+    }
+
+    public void StartParticle()
+    {
+        //ps.Play();
+        CameraShaking r = new CameraShaking();
+        r.ShakeCamera(1.0f);
     }
 }

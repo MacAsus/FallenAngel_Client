@@ -19,10 +19,9 @@ public class BulletGeneral : MonoBehaviour
         else if(col.gameObject.layer == LayerMask.NameToLayer("PlayerBody") && s_Victim == Util.S_ENEMY)
         {
 
-        }else
+        }
+        else
         {
-            //Debug.Log("Col Tag : " + col.tag);
-            SoundGeneral.instance.Play_Sound_Gun_Hit();
             Destroy(this.gameObject);
         }
     }

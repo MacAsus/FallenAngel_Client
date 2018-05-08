@@ -144,6 +144,7 @@ public class Player : CharacterGeneral
                 bool IsMine = gameObject.GetComponent<CharacterGeneral>().photonView.isMine;
                 if (IsMine)
                 {
+                    PlayerSound.instance.Play_Sound_Gun_Hit();
                     gameObject.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
                 }
             }
@@ -154,6 +155,7 @@ public class Player : CharacterGeneral
             bool IsMine = gameObject.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             {
+                PlayerSound.instance.Play_Sound_Melee_Hit();
                 gameObject.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, col.gameObject.GetComponent<EnemyGeneral>().f_Damage);
             }
         }

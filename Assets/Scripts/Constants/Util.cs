@@ -42,9 +42,9 @@ public class Util : MonoBehaviour {
     /* Hg */
     public static string S_HG_NAME = "Hg";
     public static string S_HG_BULLET_NAME = "Hg_Norm";
-    public static float F_HG_BULLET_SPEED = 5.0f;
+    public static float F_HG_BULLET_SPEED = 10.0f;
     public static float F_HG_BULLET_DAMAGE = 5.0f;
-    public static float F_HG_MAGAZINE = 7.0f;
+    public static float F_HG_MAGAZINE = 10.0f;
 
     //==========태그==========//
     public static string S_PLAYER = "Player";

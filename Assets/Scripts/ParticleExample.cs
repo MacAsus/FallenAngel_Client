@@ -7,19 +7,19 @@ public class ParticleExample : MonoBehaviour {
     public ParticleSystem particle;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
 		
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-
-                particle.Play();
-
-            
-            
-        }
+	void Update ()
+    {
+        
 	}
+
+    void StartParticle()
+    {
+        particle.Play();
+    }
 }

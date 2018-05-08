@@ -25,8 +25,6 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     public GameObject UI; //UI 프리팹
     public GameObject Muzzle; //총구 위치
 
-    public ParticleSystem Death_Particle; //사망 파티클 프리팹
-
     public Animator a_Animator; //애니메이터
 
     public SkeletonAnimation spine_CharacterAnim; //(캐릭터 애니메이션이 spine일 때) 애니메이터
@@ -50,8 +48,6 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         e_SpriteState = SpriteState.Idle; //상태 초기화(Idle)
 
         rigid = transform.GetComponent<Rigidbody2D>(); //강체 적용
-
-        Death_Particle = GetComponent<ParticleSystem>();
 
         g_Sprite = transform.Find("Sprite");
         if (transform.Find("Weapon") != null)
@@ -143,7 +139,10 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 
         transform.position = newPosition;
     }
+    protected void TestParticle()
+    {
 
+    }
     protected virtual void WeaponSpineControl(bool _b_Fired, bool _b_Reload)
     {
 
@@ -247,13 +246,8 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     IEnumerator Death_Wait_Sec(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-
-        if (!Death_Particle.isPlaying)
-        {
-            Death_Particle.Play();
-        }
-        SoundGeneral.instance.Play_Sound_Explosion();
-        //Instantiate(Death_Particle, transform.position, transform.rotation);
+        DestroyParticle dp = new DestroyParticle();
+        dp.StartParticle();
         Destroy(this.gameObject);
     }
 }
