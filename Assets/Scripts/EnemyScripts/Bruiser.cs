@@ -6,56 +6,79 @@ public class Bruiser : EnemyGeneral
     // Use this for initialization
     void Start()
     {
+        s_tag = Util.S_PLAYER;  
         n_hp = Util.F_BRUISER_HP;
         f_Speed = Util.F_BRUISER_SPEED;
+        f_Damage = Util.F_BRUISER_DAMAGE;
         Target = GameObject.FindWithTag(Util.S_PLAYER);
-        s_tag = Util.S_PLAYER;
+
         InitializeParam();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (photonView.isMine == true)
+        if (n_hp > 0)
         {
-            if (e_SpriteState != SpriteState.Dead)
+            if (Target != null)
             {
-                e_SpriteState = SpriteState.Idle;
+                v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
+                WeaponSpineControl(b_Fired, b_Reload);
+            }
 
-                if (Target)
+
+            Search(Util.F_BRUISER_SEARCH);
+            Trace();
+        }
+    }
+    protected override void Search(float dis)
+    {
+        Vector3 distance = new Vector3(9999, 9999);
+        if (NetworkUtil.PlayerList.Count != 0)
+        {
+            foreach (GameObject player in NetworkUtil.PlayerList)
+            {
+                Vector3 playerPos = player.transform.position;
+
+                float playerToTowerDist = Vector3.Distance(playerPos, this.transform.position); // "플레이어 - 타워" 사이의 거리
+                float minDistToTowerDist = Vector3.Distance(distance, this.transform.position); // "최소거리 - 타워" 사이의 거리
+
+                // 현 플레이어 - 타워 거리보다 최소거리 - 타워거리가 더 가까우면
+                if (playerToTowerDist < minDistToTowerDist)
                 {
-                    v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
+                    distance = playerPos;
+                    f_Distance = playerToTowerDist;
+                    Target = player;
                 }
-
-                UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
-                //RotateGun(v_TargetPosition);
+            }
+            if (f_Distance <= dis)
+            {
+                b_IsSearch = true;
+            }
+            else
+            {
+                b_IsSearch = false;
+                a_Animator.SetBool("Aim", false);
             }
         }
-        else
-        {
-            UpdateNetworkAnimationControl();
-        }
-
-        Search(Util.F_BRUISER_SEARCH);
-        Trace();
     }
 
-    protected override void OnCollisionEnter2D(Collision2D col)
+
+    void OnTriggerEnter2D(Collider2D col)
     {
         var hit = col.gameObject;
 
-        if (col.collider.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp > 0)
+        if (hit.layer == LayerMask.NameToLayer("Bullet"))
         {
-            Debug.Log("===============충돌!!!=========");
-            bool IsMine = hit.GetComponent<CharacterGeneral>().photonView.isMine;
-            if (IsMine)
+            if (col.gameObject.GetComponent<BulletGeneral>().s_Victim == Util.S_ENEMY)
             {
-                hit.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, Util.F_BRUISER_DAMAGE);
+                bool IsMine = gameObject.GetComponentInParent<CharacterGeneral>().photonView.isMine;
+                if (IsMine)
+                {
+                    EnemySound.instance.Play_Sound_Gun_Hit();
+                    gameObject.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
+                }
             }
-        }
-        if (col.collider.tag == s_tag && hit.GetComponent<CharacterGeneral>().n_hp == 0)
-        {
-            hit.GetComponent<CharacterGeneral>().e_SpriteState = CharacterGeneral.SpriteState.Dead;
         }
     }
     protected override void Trace()

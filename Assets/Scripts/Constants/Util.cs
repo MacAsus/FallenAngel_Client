@@ -14,8 +14,8 @@ public class Util : MonoBehaviour {
     public static string S_BRUISER_NAME = "Bruiser";
     public static float F_BRUISER_DAMAGE = 20.0f;
     public static float F_BRUISER_SEARCH = 5.0f;
-    public static float F_BRUISER_SPEED = 3.0f;
-    public static float F_BRUISER_HP = 150.0f;
+    public static float F_BRUISER_SPEED = 5.0f;
+    public static float F_BRUISER_HP = 30.0f;
 
     /* Bomber */
     public static string S_BOBMER_NAME = "Bomber";
