@@ -99,10 +99,7 @@ public class RoomScrollList : Photon.PunBehaviour {
         }
         Debug.Log("Total rooms count: " + rooms.Length);
 
-        GameObject.FindWithTag("GUI").GetComponent<LoadingGui>().SetTextStatus("Network Loading Completed");
-        GameObject.FindWithTag("GUI").GetComponent<LoadingGui>().SetSliderPercentage(100);
-        GameObject.FindWithTag("GUI").GetComponent<LoadingGui>().DisableSlider();
-        GameObject.FindWithTag("GUI").GetComponent<LoadingGui>().EnableScreen();
+        GameObject.FindWithTag("GUI").GetComponent<LoadingGui>().CompleteLoading();
 
         RemoveButtons();
         AddButtons ();

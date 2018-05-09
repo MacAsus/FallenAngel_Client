@@ -27,7 +27,9 @@ public class RoomListGui : Photon.PunBehaviour
     // Use this for initialization
     void Start()
     {
-        
+        if(PhotonNetwork.connectionState == ConnectionState.Connected) {
+            GameObject.FindWithTag("GUI").GetComponent<LoadingGui>().CompleteLoading();
+        }
     }
 
     // Update is called once per frame

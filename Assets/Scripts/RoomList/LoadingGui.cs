@@ -16,7 +16,7 @@ public class LoadingGui : MonoBehaviour {
 	void Start() {
 		// 다른곳에 가져다가 놨다가 풀링
 		currentPosition = ScreenGameObj.transform.localPosition;
-		ScreenGameObj.transform.localPosition = new Vector3 (1000, 1000);
+		ScreenGameObj.transform.localPosition = new Vector3 (9000, 9000);
 	}
 
 	public void SetTextStatus(string text) {
@@ -36,4 +36,11 @@ public class LoadingGui : MonoBehaviour {
 		// 원위치로 가져옴
 		ScreenGameObj.transform.localPosition = currentPosition;
 	}
+
+	public void CompleteLoading() {
+        this.SetTextStatus("Network Loading Completed");
+        this.SetSliderPercentage(100);
+        this.DisableSlider();
+        this.EnableScreen();
+    }
 }

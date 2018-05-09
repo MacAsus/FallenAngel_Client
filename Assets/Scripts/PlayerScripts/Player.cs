@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : CharacterGeneral
 {
@@ -29,6 +30,13 @@ public class Player : CharacterGeneral
         int tempy = 0;
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
+            /* Todo: 채팅칠때 캐릭터 움직이지 않도록 해야함
+            if (GameObject.FindWithTag("GUI") && GameObject.FindWithTag("GUI").GetComponent<InputField>())
+            {
+                Debug.Log("GetComponent<InputField>().isActiveAndEnabled is" + GameObject.FindWithTag("GUI").GetComponent<InputField>().isActiveAndEnabled);
+                return;
+            }
+            */
             e_SpriteState = SpriteState.Run;
             if (Input.GetKey(KeyCode.A))
             {

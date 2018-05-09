@@ -7,7 +7,13 @@ public class InGame : MonoBehaviour
 {
     public GameObject PingLabel;
     public static GameObject Player;
+    public GameObject ChatModule;
+    public GameObject ChatInputField;
     public Texture2D defaultMouse;
+    public Text PlayerHP;
+    public Text PlayerMagazine;
+    private bool isChatEnabled = false;
+    public GameObject Map;
 
     // Use this for initialization
     void Start()
@@ -21,12 +27,39 @@ public class InGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Player) {
+            PlayerHP.text = Player.GetComponent<Player>().n_hp+"";
+            PlayerMagazine.text = Player.GetComponent<Player>().cur_Weapon.f_Magazine+" / " + Player.GetComponent<Player>().cur_Weapon.s_GunName;
+        }
         PingLabel.GetComponent<Text>().text = "Ping: " + PhotonNetwork.GetPing();
+
+        // If Space Close Dialogue
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            FindObjectOfType<DialogueManager>().DisplayNextSentence();
+        }
+
+        // If Enter Open Chat
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            if(!isChatEnabled || ChatInputField.GetComponent<InputField>().text == "") {
+                isChatEnabled = !isChatEnabled;
+                ChatModule.SetActive(isChatEnabled);
+                ChatInputField.GetComponent<InputField>().ActivateInputField(); 
+            }
+        }
+
+        // If Tab Open Map
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            OpenMap();
+        } 
     }
 
-    void SpawnCharacter() {
+    void SpawnCharacter()
+    {
         string job = (string)PhotonNetwork.player.CustomProperties["job"]; // "Attacker" || "Tanker" || "Healer" || "Heavy"
-        Player = PhotonNetwork.Instantiate("Character/"+job, new Vector3(0f, 0.426f, 0f), Quaternion.identity, 0);
+        Player = PhotonNetwork.Instantiate("Character/" + job, new Vector3(0f, 0.426f, 0f), Quaternion.identity, 0);
     }
 
     void StartDailogue()
@@ -36,5 +69,13 @@ public class InGame : MonoBehaviour
 
         Dialogue newDialogue = new Dialogue("player", sentences);
         DialogueTrigger.TriggerDialogue(newDialogue);
+    }
+
+    void OpenMap() {
+        if(!Map.activeInHierarchy) {
+            Map.SetActive(true);
+        } else {
+            Map.SetActive(false);
+        }
     }
 }

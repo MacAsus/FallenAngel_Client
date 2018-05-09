@@ -17,13 +17,13 @@ public class ChatInGame : MonoBehaviour, IChatClientListener {
     void Start () {
 		Application.runInBackground = true;
 
-		userName = System.Environment.UserName;
+		userName = System.Environment.UserName + PhotonNetwork.player.ID;
 		currentChannelName = "Channel 001";
 
 		chatClient = new ChatClient(this);
 		chatClient.Connect(ChatSettings.Instance.AppId, "1.0", new ExitGames.Client.Photon.Chat.AuthenticationValues(userName));
 
-		AddLine(string.Format("연결시도", userName));
+		AddLine(string.Format("채팅서버 연결 시도", userName));
 		
 	}
 
@@ -98,8 +98,10 @@ public class ChatInGame : MonoBehaviour, IChatClientListener {
 
 	public void Input_OnEndEdit(string text) {
 		if(chatClient.State == ChatState.ConnectedToFrontEnd) {
-			chatClient.PublishMessage(currentChannelName, inputField.text);
-			inputField.text = "";
+			if(inputField.text != "") {
+				chatClient.PublishMessage(currentChannelName, inputField.text);
+				inputField.text = "";
+			}
 		}
 	}
     

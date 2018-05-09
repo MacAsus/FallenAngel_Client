@@ -27,9 +27,8 @@ public class CreateRoomGui : Photon.PunBehaviour {
 		if(PhotonNetwork.connected) {
             CreateRoom(roomName);
         } else {
-			
-		}
-        
+            Debug.LogError("Photon Does Not Connected");
+        }
     }
 
 	public void CreateRoom(string roomName) {

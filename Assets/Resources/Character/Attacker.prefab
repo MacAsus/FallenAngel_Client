@@ -985,7 +985,6 @@ MonoBehaviour:
   mySprite: {fileID: 0}
   UI: {fileID: 0}
   Muzzle: {fileID: 1067357607693366}
-  Death_Particle: {fileID: 0}
   a_Animator: {fileID: 0}
   spine_CharacterAnim: {fileID: 0}
   spine_GunAnim: {fileID: 0}
@@ -1264,6 +1263,7 @@ MonoBehaviour:
   Sound_Sub_Shoot: {fileID: 8300000, guid: a6b9a42471842734f9cc71a7fdbd2395, type: 3}
   Sound_Melee_Shoot: {fileID: 0}
   Sound_Melee_Hit: {fileID: 0}
+  Sound_Gun_Hit: {fileID: 0}
 --- !u!212 &212899230333369902
 SpriteRenderer:
   m_ObjectHideFlags: 1

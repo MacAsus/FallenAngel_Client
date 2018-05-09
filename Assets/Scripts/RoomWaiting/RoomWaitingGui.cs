@@ -146,7 +146,7 @@ public class RoomWaitingGui : Photon.PunBehaviour
         _initUserSlot();
 
         // Add my Users data (because of joined At the end)
-        var myUser = new User("IsMine!!!", PhotonNetwork.player.ID);
+        var myUser = new User("Player "+PhotonNetwork.player.ID, PhotonNetwork.player.ID);
         users.Add(myUser);
 
         // Add Other Users data
