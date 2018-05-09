@@ -63,6 +63,7 @@ public class RoomScrollList : Photon.PunBehaviour {
             Item item = roomList[i];
             GameObject newButton = roomObjectPool.GetObject();
             newButton.transform.SetParent(contentPanel);
+            newButton.transform.localScale = new Vector3(1f, 1f, 1f);
 
             SampleBtn sampleBtn = newButton.GetComponent<SampleBtn>();
             sampleBtn.Setup(item, this);
