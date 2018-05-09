@@ -64,9 +64,9 @@ public class Tower : EnemyGeneral
             }
         }
     }
-    protected override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        // Debug.Log("SerializeState Called");
+        Debug.Log("SerializeState Called");
         if (stream.isWriting)
         {
             stream.SendNext(e_SpriteState);

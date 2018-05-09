@@ -131,7 +131,7 @@ public class Attacker : Player {
         Vector3 v_bulletSpeed = (Muzzle.transform.position - g_Weapon.transform.position).normalized * cur_Weapon.f_BulletSpeed;
 
         this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
-        this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others);
+        this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others, cur_Weapon.s_GunName);
     }
 
     [PunRPC]

@@ -27,7 +27,7 @@ public class InGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Player) {
+        if(Player && Player.GetComponent<Player>()) {
             PlayerHP.text = Player.GetComponent<Player>().n_hp+"";
             PlayerMagazine.text = Player.GetComponent<Player>().cur_Weapon.f_Magazine+" / " + Player.GetComponent<Player>().cur_Weapon.s_GunName;
         }

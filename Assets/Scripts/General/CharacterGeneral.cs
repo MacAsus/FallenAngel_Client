@@ -151,10 +151,6 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     {
 
     }
-    protected virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-
-    }
     protected virtual void OnCollisionEnter2D(Collision2D col)
     {
 
@@ -166,15 +162,25 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         
     }
     [PunRPC]
-    protected void FireAnimationNetwork()
+    protected void FireAnimationNetwork(string WeaponName)
     {
         if (b_NetworkFired)
         {
-            spine_GunAnim.state.SetAnimation(0, "Shoot", true);
+            if(WeaponName == Util.S_AR_NAME) {
+                spine_GunAnim.state.SetAnimation(0, Util.S_AR_NAME+"_Shoot", true);
+            }
+            else if(WeaponName == Util.S_HG_NAME) {
+                spine_GunAnim.state.SetAnimation(0, Util.S_HG_NAME+"_Shoot", true);
+            }
         }
         else
         {
-            spine_GunAnim.state.SetAnimation(0, "Shoot", false);
+            if(WeaponName == Util.S_AR_NAME) {
+                spine_GunAnim.state.SetAnimation(0, Util.S_AR_NAME+"_Shoot", false);
+            }
+            else if(WeaponName == Util.S_HG_NAME) {
+                spine_GunAnim.state.SetAnimation(0, Util.S_HG_NAME+"_Shoot", false);
+            }
         }
     }
     [PunRPC]

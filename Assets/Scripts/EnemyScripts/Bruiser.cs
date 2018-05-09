@@ -71,7 +71,7 @@ public class Bruiser : EnemyGeneral
             a_Animator.SetBool("Run", false);
         }
     }
-    protected override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         // Debug.Log("SerializeState Called");
         if (stream.isWriting)

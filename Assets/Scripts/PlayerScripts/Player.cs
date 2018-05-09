@@ -87,11 +87,12 @@ public class Player : CharacterGeneral
         }
     }
 
-    protected override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        // Debug.Log("SerializeState Called");
+        Debug.Log("SerializeState Called");
         if (stream.isWriting)
         {
+            Debug.Log("v_NetworkPosition is" + v_NetworkPosition);
             stream.SendNext(v_NetworkPosition); // 현재 위치가 아니라 움직일 위치를 보내주는게 좋음
             stream.SendNext(e_SpriteState);
             stream.SendNext(b_Fired);
