@@ -1,0 +1,27 @@
+
+Tanker.png
+size: 64,32
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+SMG
+  rotate: false
+  xy: 20, 18
+  size: 20, 11
+  orig: 20, 11
+  offset: 0, 0
+  index: -1
+SMG_Hand
+  rotate: false
+  xy: 2, 2
+  size: 5, 5
+  orig: 5, 5
+  offset: 0, 0
+  index: -1
+Shield
+  rotate: false
+  xy: 2, 9
+  size: 16, 20
+  orig: 16, 20
+  offset: 0, 0
+  index: -1
