@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Tower : EnemyGeneral
 {
+
     void Start()
     {
         s_tag = Util.S_PLAYER;
@@ -23,15 +24,17 @@ public class Tower : EnemyGeneral
 
     void Update()
     {
-        delayTimer += Time.deltaTime;
+        if (n_hp > 0) {
+            delayTimer += Time.deltaTime;
 
-        if (Target != null)
-        {
-            v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
-            WeaponSpineControl(b_Fired, b_Reload);
+            if (Target != null)
+            {
+                v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
+                WeaponSpineControl(b_Fired, b_Reload);
+            }
+
+            Search(Util.F_TOWER_SEARCH);
         }
-
-        Search(Util.F_TOWER_SEARCH);
     }
 
     protected override void FireBullet()

@@ -1233,9 +1233,19 @@ Prefab:
       propertyPath: instantiationId
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114563748529365908, guid: a780b304fb8bfb8488c3dd417f9ee3ed,
+        type: 2}
+      propertyPath: ps
+      value: 
+      objectReference: {fileID: 1795128530}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a780b304fb8bfb8488c3dd417f9ee3ed, type: 2}
   m_IsPrefabParent: 0
+--- !u!198 &1795128530 stripped
+ParticleSystem:
+  m_PrefabParentObject: {fileID: 198690317882239044, guid: a780b304fb8bfb8488c3dd417f9ee3ed,
+    type: 2}
+  m_PrefabInternal: {fileID: 1795128529}
 --- !u!1 &2010330387
 GameObject:
   m_ObjectHideFlags: 0
@@ -5700,12 +5710,17 @@ Prefab:
     - target: {fileID: 224537465752597400, guid: 4ce5817523bfe49e1b988cfc510c5bdb,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 224380160785469766, guid: 4ce5817523bfe49e1b988cfc510c5bdb,
         type: 2}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224453497529065608, guid: 4ce5817523bfe49e1b988cfc510c5bdb,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.000007406119
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4ce5817523bfe49e1b988cfc510c5bdb, type: 2}

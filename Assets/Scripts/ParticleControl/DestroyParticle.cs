@@ -14,15 +14,17 @@ public class DestroyParticle : MonoBehaviour
 
     void Update()
     {
+        /*
         if (ps.IsAlive() == false)
         {
             Destroy(gameObject);
         }
+        */
     }
 
     public void StartParticle()
     {
-        //ps.Play();
+        ps.Play();
         CameraShaking r = new CameraShaking();
         r.ShakeCamera(1.0f);
     }

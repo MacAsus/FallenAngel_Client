@@ -183,21 +183,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
             }
         }
     }
-    [PunRPC]
-    protected void TakeDamage(float _f_Damage)
-    {
-        if (this.n_hp > 0 && this.n_hp > _f_Damage)
-        {
-            this.n_hp -= _f_Damage;
-            StartCoroutine("IsDamagedEnemy");
-        }
-        else
-        {
-            this.n_hp = 0;
-            this.a_Animator.SetBool("Death", true);
-            StartCoroutine(Death_Wait_Sec(0.5f));
-        }
-    }
+    
     [PunRPC]
     protected void PlayerTakeDamage(float _f_Damage)
     {
@@ -249,11 +235,10 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         mySprite.color = new Color32(255, 255, 255, 255);
         yield return null;
     }
-    IEnumerator Death_Wait_Sec(float waitTime)
+    public IEnumerator Death_Wait_Sec(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        DestroyParticle dp = new DestroyParticle();
-        dp.StartParticle();
+
         Destroy(this.gameObject);
     }
 }

@@ -8,7 +8,7 @@ public class Util : MonoBehaviour {
     public static float F_TOWER_DAMAGE = 10.0f;
     public static float F_TOWER_SEARCH = 5.0f;
     public static float F_TOWER_SPEED = 0.0f;
-    public static float F_TOWER_HP = 100.0f;
+    public static float F_TOWER_HP = 15.0f;
 
     /* Bruiser */
     public static string S_BRUISER_NAME = "Bruiser";

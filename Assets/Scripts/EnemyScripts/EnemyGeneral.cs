@@ -10,6 +10,8 @@ public class EnemyGeneral : CharacterGeneral
 
     public bool b_IsSearch = false;
 
+
+    public ParticleSystem ps;
     public GameObject Target;
     public GameObject Bullet;
 
@@ -27,5 +29,31 @@ public class EnemyGeneral : CharacterGeneral
     protected virtual void Trace()
     {
         
+    }
+
+    void Start()
+    {
+        ps = GetComponentInChildren<ParticleSystem>();
+        ps.Stop();
+    }
+
+    [PunRPC]
+    protected void TakeDamage(float _f_Damage)
+    {
+        if (this.n_hp > 0 && this.n_hp > _f_Damage)
+        {
+            this.n_hp -= _f_Damage;
+            StartCoroutine("IsDamagedEnemy");
+        }
+        else
+        {
+            this.n_hp = 0;
+            this.a_Animator.SetBool("Death", true);
+            this.transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
+            this.transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
+            ps.Play();
+
+            StartCoroutine(Death_Wait_Sec(0.5f));
+        }
     }
 }
