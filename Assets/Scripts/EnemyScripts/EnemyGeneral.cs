@@ -52,6 +52,7 @@ public class EnemyGeneral : CharacterGeneral
             this.transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
             this.transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
             ps.Play();
+            EnemySound.instance.Play_Sound_Explosion();
 
             StartCoroutine(Death_Wait_Sec(0.5f));
         }

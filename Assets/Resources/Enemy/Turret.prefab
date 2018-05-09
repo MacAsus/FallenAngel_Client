@@ -147,7 +147,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1296679679950070}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.491, y: -0.496, z: -0.22234778}
+  m_LocalPosition: {x: -3.52, y: 26.02, z: -0.22234778}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4943612117403088}
@@ -400,7 +400,7 @@ MonoBehaviour:
   delayTimer: 0
   shootDelayTime: 0
   b_IsSearch: 0
-  ps: {fileID: 0}
+  ps: {fileID: 198690317882239044}
   Target: {fileID: 0}
   Bullet: {fileID: 0}
 --- !u!114 &114706939878763702

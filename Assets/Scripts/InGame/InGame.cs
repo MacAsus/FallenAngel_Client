@@ -59,7 +59,7 @@ public class InGame : MonoBehaviour
     void SpawnCharacter()
     {
         string job = (string)PhotonNetwork.player.CustomProperties["job"]; // "Attacker" || "Tanker" || "Healer" || "Heavy"
-        Player = PhotonNetwork.Instantiate("Character/" + job, new Vector3(0f, 0.426f, 0f), Quaternion.identity, 0);
+        Player = PhotonNetwork.Instantiate("Character/" + job, new Vector3(0f, -4.0f, 0f), Quaternion.identity, 0);
     }
 
     void StartDailogue()
