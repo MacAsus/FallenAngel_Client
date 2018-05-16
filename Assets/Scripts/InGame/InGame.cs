@@ -12,7 +12,7 @@ public class InGame : MonoBehaviour
     public Texture2D defaultMouse;
     public Text PlayerHP;
     public Text PlayerMagazine;
-    private bool isChatEnabled = false;
+    public static bool isChatEnabled = false;
     public GameObject Map;
 
     // Use this for initialization
@@ -53,7 +53,7 @@ public class InGame : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             OpenMap();
-        } 
+        }
     }
 
     void SpawnCharacter()
