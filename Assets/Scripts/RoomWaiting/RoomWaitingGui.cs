@@ -95,7 +95,7 @@ public class RoomWaitingGui : Photon.PunBehaviour
         // Debug.Log("OnStartEvent called");
         if (eventcode == Events.STARTED_GAME_EVT) // Master Client Started Game
         {
-            this.LoadSceneToInGame();
+            this.startGame();
         }
         else if (eventcode == Events.SOMEONE_SELECTED_CHARACTER_EVT)
         {
@@ -128,6 +128,28 @@ public class RoomWaitingGui : Photon.PunBehaviour
                 break;
             }
         }
+    }
+
+    private void startGame() {
+        // If Someone does not select job, then cannot start
+        if(checkIsAllPlayerSelectJob()) {
+            this.LoadSceneToInGame();
+        } else {
+            Alert alert = new Alert("Alert", "All Player Should Select their own job");
+            AlertTriggers.TriggerAlert(alert);
+            Debug.Log("직업선택 안 해서 고 불가함");
+        }
+    }
+
+    private bool checkIsAllPlayerSelectJob() {
+        bool isAllPlayerSelectedJob = true;
+
+        foreach(PhotonPlayer player in PhotonNetwork.playerList) {
+            if (!player.CustomProperties.ContainsKey("job") || string.IsNullOrEmpty((string)player.CustomProperties["job"])) {
+                isAllPlayerSelectedJob = false;
+            }
+        }
+        return isAllPlayerSelectedJob;
     }
 
     private void LoadSceneToInGame()
