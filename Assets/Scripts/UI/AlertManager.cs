@@ -20,10 +20,11 @@ public class AlertManager : MonoBehaviour {
 	}
 
 	public void StartAlert(Alert alert) {
+		Debug.Log("StartAlert Called");
+		Debug.Log("Alert Text is " + alert.sentence + alert.name);
 		nameText.text = alert.name;
 		AlertText.text = "";
 		AlertObj.SetActive(true);
-        Debug.Log("Alert Text is " + alert.sentence + alert.name);
         StartCoroutine(TypeSentence(alert.sentence));
 	}
 	IEnumerator TypeSentence(string sentence) {
