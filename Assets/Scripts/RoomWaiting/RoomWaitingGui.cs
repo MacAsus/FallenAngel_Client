@@ -19,8 +19,6 @@ public class RoomWaitingGui : Photon.PunBehaviour
     public GameObject player4_name;
     public GameObject player4_image;
 
-
-    List<User> users = new List<User>();
     List<GameObject> userPhotos = new List<GameObject>();
     public List<UserSlot> userSlots = new List<UserSlot>();
 
@@ -87,7 +85,7 @@ public class RoomWaitingGui : Photon.PunBehaviour
     {
         byte evCode = Events.STARTED_GAME_EVT;    // start event 0.
         RaiseEventOptions options = new RaiseEventOptions();
-		options.Receivers = ReceiverGroup.All;
+        options.Receivers = ReceiverGroup.All;
         bool reliable = true;
         PhotonNetwork.RaiseEvent(evCode, null, reliable, options);
     }
@@ -97,25 +95,30 @@ public class RoomWaitingGui : Photon.PunBehaviour
         // Debug.Log("OnStartEvent called");
         if (eventcode == Events.STARTED_GAME_EVT) // Master Client Started Game
         {
-            // 현 플레이어의 직업 선택
-            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable (){{"job", userSlots[0].job}};
-            PhotonNetwork.player.SetCustomProperties(hash);
             this.LoadSceneToInGame();
         }
         else if (eventcode == Events.SOMEONE_SELECTED_CHARACTER_EVT)
         {
-            if(senderid == PhotonNetwork.player.ID) {
-                CanvasObject.SetActive(true);
-            }
             string job = (string)content; // "senderid" Selected job
             Debug.Log("Someone Selected Job!" + job + " " + senderid);
             setUserJob(job, senderid);
+
+            // 현 플레이어의 직업 선택을 네트워크에 적용
+            if (senderid == PhotonNetwork.player.ID)
+            {
+                ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable() { { "job", job } };
+                PhotonNetwork.player.SetCustomProperties(hash);
+                CanvasObject.SetActive(true);
+            }
         }
     }
 
-    private void setUserJob(string job, int userID) {
-        for(int i = 0; i < PhotonNetwork.room.PlayerCount; i++) {
-            if(users[i].userID == userID) {
+    private void setUserJob(string job, int userID)
+    {
+        for (int i = 0; i < PhotonNetwork.room.PlayerCount; i++)
+        {
+            if (userSlots[i].userID == userID)
+            {
                 Debug.Log(" I'll set" + i + "To " + job);
                 userSlots[i].userName.GetComponent<Text>().text = job;
                 userSlots[i].job = job;
@@ -137,34 +140,47 @@ public class RoomWaitingGui : Photon.PunBehaviour
     {
         Debug.Log("Room Left!");
         SceneManager.LoadScene("RoomList", LoadSceneMode.Single);
+
+        // Clear User Custom Properties
+        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable() { { "job", null } };
+        PhotonNetwork.player.SetCustomProperties(hash);
     }
 
     private void UpdateUserCount()
     {
-        users = new List<User>();
+        List<PhotonPlayer> playerQueue = new List<PhotonPlayer>();
+
         Debug.Log("========UpdateUserCount Called ==========");
         _initUserSlot();
+        // Add my User data (because of joined At the end)
+        playerQueue.Add(PhotonNetwork.player);
 
-        // Add my Users data (because of joined At the end)
-        var myUser = new User("Player "+PhotonNetwork.player.ID, PhotonNetwork.player.ID);
-        users.Add(myUser);
-
-        // Add Other Users data
-        foreach (PhotonPlayer player in PhotonNetwork.otherPlayers)
+        // Add Other User
+        foreach (PhotonPlayer otherPlayer in PhotonNetwork.otherPlayers)
         {
-            var user = new User(player.NickName + "", player.ID);
-            Debug.Log("player others: " + player.NickName);
-            users.Add(user);
+            playerQueue.Add(otherPlayer);
         }
 
-        // Enable User Slot UI
-        foreach (User user in users)
+        for (int i = 0; i < playerQueue.Count; i++)
         {
-            int idx = users.IndexOf(user);
-            userSlots[idx].userName.GetComponent<Text>().text = user.userName;
-            userSlots[idx].userImg.SetActive(true);
-            userSlots[idx].userName.SetActive(true);
-            userSlots[idx].isVisible = true;
+            PhotonPlayer player = playerQueue[i];
+
+            if (player.CustomProperties.ContainsKey("job") && !string.IsNullOrEmpty((string)player.CustomProperties["job"]))
+            {
+                userSlots[i].job = (string)player.CustomProperties["job"];
+                userSlots[i].userName.GetComponent<Text>().text = userSlots[i].job;
+                Debug.Log("직업이 이썽요!" + userSlots[i].job);
+            }
+            else
+            {
+                userSlots[i].userName.GetComponent<Text>().text = "Player " + player.ID;
+            }
+
+            userSlots[i].userID = player.ID;
+            userSlots[i].userImg.SetActive(true);
+            userSlots[i].userName.SetActive(true);
+            userSlots[i].isVisible = true;
+            Debug.Log("Player " + player.ID);
         }
 
         // Disable User Slot UI
@@ -188,10 +204,10 @@ public class RoomWaitingGui : Photon.PunBehaviour
         Debug.Log("========_initUserSlot Called ==========");
         userSlots.Clear();
 
-        UserSlot slot_user1 = new UserSlot(player1_name, player1_image);
-        UserSlot slot_user2 = new UserSlot(player2_name, player2_image);
-        UserSlot slot_user3 = new UserSlot(player3_name, player3_image);
-        UserSlot slot_user4 = new UserSlot(player4_name, player4_image);
+        UserSlot slot_user1 = new UserSlot(-1, player1_name, player1_image);
+        UserSlot slot_user2 = new UserSlot(-1, player2_name, player2_image);
+        UserSlot slot_user3 = new UserSlot(-1, player3_name, player3_image);
+        UserSlot slot_user4 = new UserSlot(-1, player4_name, player4_image);
 
         userSlots.Add(slot_user1);
         userSlots.Add(slot_user2);
@@ -238,20 +254,9 @@ public class RoomWaitingGui : Photon.PunBehaviour
 }
 
 
-public class User
-{
-    public User(string _userName, int _userID = -1)
-    {
-        userName = _userName;
-        userID = _userID;
-    }
-    public string userName;
-    public int userID;
-}
-
 public class UserSlot
 {
-    public UserSlot(GameObject _userName, GameObject _userImg, bool _isVisible = false)
+    public UserSlot(int _userID, GameObject _userName, GameObject _userImg, bool _isVisible = false)
     {
         userName = _userName;
         userImg = _userImg;
@@ -260,6 +265,7 @@ public class UserSlot
         weaponNum = -1;
     }
 
+    public int userID;
     public GameObject userName;
     public GameObject userImg;
     public bool isVisible;
