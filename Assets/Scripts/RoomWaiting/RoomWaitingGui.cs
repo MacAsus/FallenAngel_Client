@@ -108,9 +108,19 @@ public class RoomWaitingGui : Photon.PunBehaviour
             {
                 ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable() { { "job", job } };
                 PhotonNetwork.player.SetCustomProperties(hash);
+                SendSetCustomPropertiesMsg();
                 CanvasObject.SetActive(true);
             }
         }
+    }
+
+    private void SendSetCustomPropertiesMsg()
+    {
+        byte evCode = Events.SOMEONE_SET_PLAYER_CUSTOM_PROPERTIES_EVT;    // start event 2.
+        RaiseEventOptions options = new RaiseEventOptions();
+        options.Receivers = ReceiverGroup.All;
+        bool reliable = true;
+        PhotonNetwork.RaiseEvent(evCode, null, reliable, options);
     }
 
     private void setUserJob(string job, int userID)
