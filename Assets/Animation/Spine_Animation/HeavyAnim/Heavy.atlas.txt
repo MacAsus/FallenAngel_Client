@@ -1,0 +1,62 @@
+
+Heavy.png
+size: 128,64
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Gatling_Idle
+  rotate: false
+  xy: 2, 39
+  size: 40, 17
+  orig: 40, 17
+  offset: 0, 0
+  index: -1
+Gatling_Spin1
+  rotate: false
+  xy: 2, 20
+  size: 40, 17
+  orig: 40, 17
+  offset: 0, 0
+  index: -1
+Gatling_Spin2
+  rotate: false
+  xy: 44, 39
+  size: 40, 17
+  orig: 40, 17
+  offset: 0, 0
+  index: -1
+GrenadeLauncher
+  rotate: false
+  xy: 86, 40
+  size: 40, 16
+  orig: 40, 16
+  offset: 0, 0
+  index: -1
+GrenadeLauncher_Spin1
+  rotate: false
+  xy: 86, 22
+  size: 40, 16
+  orig: 40, 16
+  offset: 0, 0
+  index: -1
+GrenadeLauncher_Spin2
+  rotate: false
+  xy: 44, 21
+  size: 40, 16
+  orig: 40, 16
+  offset: 0, 0
+  index: -1
+GrenadeLauncher_Spin3
+  rotate: false
+  xy: 86, 4
+  size: 40, 16
+  orig: 40, 16
+  offset: 0, 0
+  index: -1
+GrenadeLauncher_Spin4
+  rotate: false
+  xy: 2, 2
+  size: 40, 16
+  orig: 40, 16
+  offset: 0, 0
+  index: -1
