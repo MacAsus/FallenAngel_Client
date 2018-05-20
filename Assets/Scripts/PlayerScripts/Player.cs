@@ -110,7 +110,7 @@ public class Player : CharacterGeneral
         }
     }
 
-    protected void ChangeWeapon()
+    protected virtual void ChangeWeapon()
     {
         if (photonView.isMine == true)
         {
@@ -118,16 +118,22 @@ public class Player : CharacterGeneral
             {
                 Muzzle = Muzzle1;
                 cur_Weapon = Weapon1;
-                spine_GunAnim.Skeleton.SetSkin("Ar");
+                spine_GunAnim.Skeleton.SetSkin(Weapon1.s_GunName);
                 spine_GunAnim.Skeleton.SetToSetupPose();
                 spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
 
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                Muzzle = Muzzle2;
+                if (Muzzle2 != null)
+                {
+                    Muzzle = Muzzle2;
+                }else
+                {
+                    Muzzle = null;
+                }
                 cur_Weapon = Weapon2;
-                spine_GunAnim.Skeleton.SetSkin("Hg");
+                spine_GunAnim.Skeleton.SetSkin(Weapon2.s_GunName);
                 spine_GunAnim.Skeleton.SetToSetupPose();
                 spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
             }

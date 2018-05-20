@@ -99,7 +99,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         }
     }
     
-    protected void UpdateAnimationControl(SpriteState _e_SpriteState, bool _b_Fired, bool _b_Reload)
+    protected virtual void UpdateAnimationControl(SpriteState _e_SpriteState, bool _b_Fired, bool _b_Reload)
     {
         WeaponSpineControl(_b_Fired, _b_Reload);
         if (_e_SpriteState == SpriteState.Idle)

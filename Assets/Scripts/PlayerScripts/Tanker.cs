@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attacker : Player {
+public class Tanker : Player
+{
 
     private PhotonVoiceRecorder recorder;
     private PhotonVoiceSpeaker speaker;
@@ -11,15 +12,14 @@ public class Attacker : Player {
     {
         s_tag = Util.S_ENEMY;
 
-        Main_Bullet = Resources.Load("BulletPrefab/" + Util.S_AR_BULLET_NAME) as GameObject;
-        Sub_Bullet = Resources.Load("BulletPrefab/" + Util.S_HG_BULLET_NAME) as GameObject;
+        Main_Bullet = Resources.Load("BulletPrefab/" + Util.S_SMG_BULLET_NAME) as GameObject;
 
-        Weapon1 = new GeneralInitialize.GunParameter(Util.S_AR_NAME, Util.S_AR_BULLET_NAME, Util.F_AR_BULLET_SPEED, Util.F_AR_BULLET_DAMAGE, Util.F_AR_MAGAZINE);
-        Weapon2 = new GeneralInitialize.GunParameter(Util.S_HG_NAME, Util.S_HG_BULLET_NAME, Util.F_HG_BULLET_SPEED, Util.F_HG_BULLET_DAMAGE, Util.F_HG_MAGAZINE);
+        Weapon1 = new GeneralInitialize.GunParameter(Util.S_SMG_NAME, Util.S_SMG_BULLET_NAME, Util.F_SMG_BULLET_SPEED, Util.F_SMG_BULLET_DAMAGE, Util.F_SMG_MAGAZINE);
+        Weapon2 = new GeneralInitialize.GunParameter(Util.S_SHIELD_NAME, " " , 0, 0, Util.F_SHIELD_HP);
+        cur_Weapon = Weapon1;
 
 
         InitializeParam();
-
 
         cur_Weapon = Weapon1;
         Muzzle = Muzzle1;
@@ -42,9 +42,9 @@ public class Attacker : Player {
         recorder = this.GetComponent<PhotonVoiceRecorder>();
         speaker = this.GetComponent<PhotonVoiceSpeaker>();
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         // if this view is not mine, then do not update
         if (photonView.isMine == true)
@@ -92,32 +92,20 @@ public class Attacker : Player {
                 if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
                 {
                     FireBullet();
-                    spine_GunAnim.state.SetAnimation(0, "Ar_Shoot", false);
+                    spine_GunAnim.state.SetAnimation(0, "Smg_Shoot", false);
                     PlayerSound.instance.Play_Sound_Main_Shoot();
                     --cur_Weapon.f_Magazine;
                 }
                 if (Input.GetKey(KeyCode.R))
                 {
-                    spine_GunAnim.state.SetAnimation(0, "Ar_Reload", false);
+                    spine_GunAnim.state.SetAnimation(0, "Smg_Reload", false);
                     PlayerSound.instance.Play_Sound_Main_Reload();
-                    cur_Weapon.f_Magazine = Util.F_AR_MAGAZINE;
+                    cur_Weapon.f_Magazine = Util.F_SMG_MAGAZINE;
                 }
             }
             if (cur_Weapon == Weapon2)
             {
-                if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
-                {
-                    FireBullet();
-                    spine_GunAnim.state.SetAnimation(0, "Hg_Shoot", false);
-                    PlayerSound.instance.Play_Sound_Sub_Shoot();
-                    --cur_Weapon.f_Magazine;
-                }
-                if (Input.GetKey(KeyCode.R))
-                {
-                    spine_GunAnim.state.SetAnimation(0, "Hg_Reload", false);
-                    PlayerSound.instance.Play_Sound_Sub_Reload();
-                    cur_Weapon.f_Magazine = Util.F_HG_MAGAZINE;
-                }
+               
             }
             if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
             {
@@ -150,13 +138,9 @@ public class Attacker : Player {
             bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Weapon1.f_BulletSpeed;
         }
 
-        if(cur_Weapon == Weapon2)
+        if (cur_Weapon == Weapon2)
         {
-            GameObject bullet = Instantiate(Sub_Bullet, muzzlePos, Quaternion.identity);
-            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
-            temp_bullet.bulletInfo = Weapon2;
-            temp_bullet.s_Victim = s_tag;
-            bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Weapon2.f_BulletSpeed;
+
         }
     }
 }

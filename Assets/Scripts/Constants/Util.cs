@@ -36,7 +36,7 @@ public class Util : MonoBehaviour {
     public const string S_AR_NAME = "Ar";
     public const string S_AR_BULLET_NAME = "Ar_Norm";
     public const float F_AR_BULLET_SPEED = 20.0f;
-    public const float F_AR_BULLET_DAMAGE = 3.0f;
+    public const float F_AR_BULLET_DAMAGE = 5.0f;
     public const float F_AR_MAGAZINE = 30.0f;
 
     /* Hg */
@@ -45,6 +45,24 @@ public class Util : MonoBehaviour {
     public const float F_HG_BULLET_SPEED = 10.0f;
     public const float F_HG_BULLET_DAMAGE = 5.0f;
     public const float F_HG_MAGAZINE = 10.0f;
+
+    /* Gatling */
+    public const string S_GATLING_NAME = "Gatling";
+    public const string S_GATLING_BULLET_NAME = "Gatling_Norm";
+    public const float F_GATLING_BULLET_SPEED = 30.0f;
+    public const float F_GATLING_BULLET_DAMAGE = 3.0f;
+    public const float F_GATLING_MAGAZINE = 200.0f;
+
+    /* SMG */
+    public const string S_SMG_NAME = "Smg";
+    public const string S_SMG_BULLET_NAME = "Smg_Norm";
+    public const float F_SMG_BULLET_SPEED = 20.0f;
+    public const float F_SMG_BULLET_DAMAGE = 3.0f;
+    public const float F_SMG_MAGAZINE = 15.0f;
+
+    /* Shield */
+    public const string S_SHIELD_NAME = "Shield";
+    public const float F_SHIELD_HP = 100.0f;
 
     //==========태그==========//
     public const string S_PLAYER = "Player";
