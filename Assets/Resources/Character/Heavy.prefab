@@ -27,6 +27,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1296432566240086
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4967748343130858}
+  m_Layer: 0
+  m_Name: BulletInstantiate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1318790018697242
 GameObject:
   m_ObjectHideFlags: 1
@@ -290,7 +305,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.29909998, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4967748343130858}
   m_Father: {fileID: 4648599862459264}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -305,6 +321,19 @@ Transform:
   m_LocalScale: {x: 3.079655, y: 3.079655, z: 1}
   m_Children: []
   m_Father: {fileID: 4351995382121842}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4967748343130858
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1296432566240086}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.106, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4780379807923162}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4975722260346724
@@ -611,7 +640,7 @@ MonoBehaviour:
   myPlayer: {fileID: 0}
   Main_Bullet: {fileID: 0}
   Sub_Bullet: {fileID: 0}
-  Muzzle1: {fileID: 1563208539639218}
+  Muzzle1: {fileID: 1296432566240086}
   Muzzle2: {fileID: 1844695649977178}
   f_FullSpinGauge: 3
 --- !u!114 &114362793001161906
