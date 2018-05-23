@@ -14,12 +14,13 @@ public class InGame : MonoBehaviour
     public Text PlayerMagazine;
     public static bool isChatEnabled = false;
     public GameObject Map;
+    public GameObject OptionModal;
 
     // Use this for initialization
     void Start()
     {
         // 과녁 모양으로 마우스 세팅
-        Cursor.SetCursor(defaultMouse, Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(defaultMouse, new Vector2(defaultMouse.width / 2, defaultMouse.height / 2), CursorMode.Auto);
         SpawnCharacter();
         StartDailogue();
     }
@@ -54,6 +55,12 @@ public class InGame : MonoBehaviour
         {
             OpenMap();
         }
+
+        // If Tab Open Map
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OpenOptionModal();
+        }
     }
 
     void SpawnCharacter()
@@ -76,6 +83,16 @@ public class InGame : MonoBehaviour
             Map.SetActive(true);
         } else {
             Map.SetActive(false);
+        }
+    }
+
+    void OpenOptionModal() {
+        if(!OptionModal.activeInHierarchy) {
+            OptionModal.SetActive(true);
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto); 
+        } else {
+            OptionModal.SetActive(false);
+            Cursor.SetCursor(defaultMouse, new Vector2(defaultMouse.width / 2, defaultMouse.height / 2), CursorMode.Auto);
         }
     }
 }
