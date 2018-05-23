@@ -24,6 +24,7 @@ public class Attacker : Player {
         cur_Weapon = Weapon1;
         Muzzle = Muzzle1;
         spine_GunAnim.Skeleton.SetSkin(Weapon1.s_GunName);
+        b_NeedtoRotate = true;
 
         if (UI != null)
         {
@@ -62,7 +63,7 @@ public class Attacker : Player {
 
                 //스파인 애니메이션, 총알의 발사 모두 처리하는 함수
                 UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
-                RotateGun(v_MousePos);
+                RotateGun(v_MousePos, true);
                 ChangeWeapon();
             }
         }

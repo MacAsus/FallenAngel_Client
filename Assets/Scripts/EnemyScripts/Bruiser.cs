@@ -58,7 +58,6 @@ public class Bruiser : EnemyGeneral
             else
             {
                 b_IsSearch = false;
-                a_Animator.SetBool("Aim", false);
             }
         }
     }

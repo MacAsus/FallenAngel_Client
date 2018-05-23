@@ -50,8 +50,15 @@ public class Util : MonoBehaviour {
     public const string S_GATLING_NAME = "Gatling";
     public const string S_GATLING_BULLET_NAME = "Gatling_Norm";
     public const float F_GATLING_BULLET_SPEED = 30.0f;
-    public const float F_GATLING_BULLET_DAMAGE = 3.0f;
+    public const float F_GATLING_BULLET_DAMAGE = 1.0f;
     public const float F_GATLING_MAGAZINE = 200.0f;
+
+    /* Grenade */
+    public const string S_GRENADE_NAME = "Grenade";
+    public const string S_GRENADE_BULLET_NAME = "Grenade_Norm";
+    public const float F_GRENADE_BULLET_SPEED = 20.0f;
+    public const float F_GRENADE_BULLET_DAMAGE = 3.0f;
+    public const float F_GREANDE_MAGAZINE = 6.0f;
 
     /* SMG */
     public const string S_SMG_NAME = "Smg";

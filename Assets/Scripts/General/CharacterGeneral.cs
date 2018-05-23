@@ -110,6 +110,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         {
             a_Animator.SetBool("Run", true);
         }
+
     }
     protected void UpdateNetworkAnimationControl()
     {

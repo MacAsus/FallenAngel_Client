@@ -2,21 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tanker : Player
-{
+public class Heavy : Player {
+
 
     private PhotonVoiceRecorder recorder;
     private PhotonVoiceSpeaker speaker;
 
+    public float f_FullSpinGauge = 3;
+    private float f_SpinGauge = 0;
+    private bool b_SpinBool = true;
+    private bool b_CoolBool = true;
+    private string s_CurAnimation = " ";
 
     void Start()
     {
         s_tag = Util.S_ENEMY;
 
-        Main_Bullet = Resources.Load("BulletPrefab/" + Util.S_SMG_BULLET_NAME) as GameObject;
+        Main_Bullet = Resources.Load("BulletPrefab/" + Util.S_GATLING_BULLET_NAME) as GameObject;
+        
 
-        Weapon1 = new GeneralInitialize.GunParameter(Util.S_SMG_NAME, Util.S_SMG_BULLET_NAME, Util.F_SMG_BULLET_SPEED, Util.F_SMG_BULLET_DAMAGE, Util.F_SMG_MAGAZINE);
-        Weapon2 = new GeneralInitialize.GunParameter(Util.S_SHIELD_NAME, " " , 0, 0, Util.F_SHIELD_HP);
+        Weapon1 = new GeneralInitialize.GunParameter(Util.S_GATLING_NAME, Util.S_GATLING_BULLET_NAME, Util.F_GATLING_BULLET_SPEED, Util.F_GATLING_BULLET_DAMAGE, Util.F_GATLING_MAGAZINE);
+        Weapon2 = new GeneralInitialize.GunParameter(Util.S_GRENADE_NAME, Util.S_GRENADE_BULLET_NAME, Util.F_GRENADE_BULLET_SPEED, Util.F_GATLING_BULLET_DAMAGE, Util.F_GREANDE_MAGAZINE);
         cur_Weapon = Weapon1;
 
 
@@ -25,6 +31,7 @@ public class Tanker : Player
         cur_Weapon = Weapon1;
         Muzzle = Muzzle1;
         spine_GunAnim.Skeleton.SetSkin(Weapon1.s_GunName);
+
 
         if (UI != null)
         {
@@ -47,6 +54,7 @@ public class Tanker : Player
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(f_SpinGauge);
         // if this view is not mine, then do not update
         if (photonView.isMine == true)
         {
@@ -64,7 +72,7 @@ public class Tanker : Player
                 //스파인 애니메이션, 총알의 발사 모두 처리하는 함수
                 UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
                 RotateGun(v_MousePos, b_NeedtoRotate);
-                
+
                 ChangeWeapon();
             }
         }
@@ -91,36 +99,63 @@ public class Tanker : Player
         {
             if (cur_Weapon == Weapon1)
             {
-                b_SlowRun = false;
-                b_NeedtoRotate = true;
                 if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
                 {
-                    FireBullet();
-                    spine_GunAnim.state.SetAnimation(0, "Smg_Shoot", false);
-                    PlayerSound.instance.Play_Sound_Main_Shoot();
-                    --cur_Weapon.f_Magazine;
+                    b_SlowRun = true;
+
+                    if (s_CurAnimation != "Gatling_Spin")
+                    {
+                        s_CurAnimation = "Gatling_Spin";
+                        spine_GunAnim.state.SetAnimation(0, "Gatling_Spin", true);
+                    }
+                    if ((f_SpinGauge < f_FullSpinGauge) && b_SpinBool)
+                    {
+                        StartCoroutine(GatlingSpin());
+                    }
+                    else if (f_SpinGauge >= f_FullSpinGauge)
+                    {
+                        f_SpinGauge = f_FullSpinGauge;
+                        FireBullet();
+
+                        PlayerSound.instance.Play_Sound_Main_Shoot();
+                        --cur_Weapon.f_Magazine;
+                        StartCoroutine("FireRate", _b_Fired);
+                    }
+
                 }
+                else if (!Input.GetKey(KeyCode.Mouse0))
+                {
+                    b_SlowRun = false;  
+                    
+                    if ((f_SpinGauge > 0) && b_CoolBool)
+                    {
+                        StartCoroutine(GatlingCool());
+                    }else if (f_SpinGauge < 0)
+                    {
+                        f_SpinGauge = 0;
+                    }
+
+                    if (f_SpinGauge == 0)
+                    {
+                        s_CurAnimation = "Idle";
+                        spine_GunAnim.state.ClearTrack(0);
+                        spine_GunAnim.Skeleton.SetToSetupPose();
+                    }
+                }
+                
+
                 if (Input.GetKey(KeyCode.R))
                 {
-                    spine_GunAnim.state.SetAnimation(0, "Smg_Reload", false);
+                    f_SpinGauge = 0;
+                    spine_GunAnim.state.SetAnimation(0, "Gatling_Reload", false);
                     PlayerSound.instance.Play_Sound_Main_Reload();
-                    cur_Weapon.f_Magazine = Util.F_SMG_MAGAZINE;
+                    cur_Weapon.f_Magazine = Util.F_GATLING_MAGAZINE;
                 }
             }
             if (cur_Weapon == Weapon2)
             {
-                b_NeedtoRotate = false;
-
-                if (Input.GetKey(KeyCode.Mouse0))
-                {
-                    spine_GunAnim.state.SetAnimation(0, "ShieldUp", true);
-                    b_SlowRun = true;
-                }else
-                {
-                    spine_GunAnim.state.SetAnimation(0, "Idle", true);
-                    b_SlowRun = false;
-                }
-
+                b_SlowRun = false;
+                f_SpinGauge = 0;
             }
             if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
             {
@@ -134,17 +169,19 @@ public class Tanker : Player
     protected override void UpdateAnimationControl(SpriteState _e_SpriteState, bool _b_Fired, bool _b_Reload)
     {
         base.UpdateAnimationControl(_e_SpriteState, _b_Fired, _b_Reload);
-        if (e_SpriteState == SpriteState.Run)
-        {
-            a_Animator.SetBool("Run_Slow", b_SlowRun);
-        }else
-        {
-            a_Animator.SetBool("Run_Slow", false);
-        }
+        //if (e_SpriteState == SpriteState.Run)
+        //{
+        //    a_Animator.SetBool("Run_Slow", b_SlowRun);
+        //}
+        //else
+        //{
+        //    a_Animator.SetBool("Run_Slow", false);
+        //}
         if (b_SlowRun)
         {
             a_Animator.speed = 0.5f;
-        }else
+        }
+        else
         {
             a_Animator.speed = 1;
         }
@@ -177,4 +214,27 @@ public class Tanker : Player
 
         }
     }
+
+    IEnumerator GatlingSpin()
+    {
+
+        b_SpinBool = false;
+        f_SpinGauge += 1.0f;
+        yield return new WaitForSeconds(0.5f);
+        b_SpinBool = true;
+    }
+    IEnumerator FireRate(bool _b_Fired)
+    {
+        _b_Fired = true;
+        yield return new WaitForSeconds(0.2f);
+        _b_Fired = false;
+    }
+    IEnumerator GatlingCool()
+    {
+        b_CoolBool = false;
+        f_SpinGauge -= 1.0f;
+        yield return new WaitForSeconds(0.5f);
+        b_CoolBool = true;
+    }
+
 }

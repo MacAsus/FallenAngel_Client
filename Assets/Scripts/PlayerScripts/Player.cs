@@ -10,6 +10,9 @@ public class Player : CharacterGeneral
     public GameObject Main_Bullet; //주무장 총알 프리팹
     public GameObject Sub_Bullet; //부무장 총알 프리팹
     public GameObject Muzzle1, Muzzle2;
+    
+    protected bool b_NeedtoRotate = true;
+    protected bool b_SlowRun = false;
 
     //무기 및 탄약 정보를 받아옴
     public GeneralInitialize.GunParameter cur_Weapon, Weapon1, Weapon2;
@@ -21,13 +24,14 @@ public class Player : CharacterGeneral
 
     protected void UpdateMousePosition()
     {
-        RotateGun(v_NetworkMousePos);
+        RotateGun(v_NetworkMousePos, b_NeedtoRotate);
     }
 
-    protected void UpdatePosition()
+    protected virtual void UpdatePosition()
     {
         int tempx = 0;
         int tempy = 0;
+        float temp_speed = f_Speed;
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             // If chat module is enabled, then block user moving
@@ -37,6 +41,7 @@ public class Player : CharacterGeneral
             }
 
             e_SpriteState = SpriteState.Run;
+
             if (Input.GetKey(KeyCode.A))
             {
                 tempx -= 1;
@@ -54,9 +59,12 @@ public class Player : CharacterGeneral
                 tempy -= 1;
             }
         }
-
-        v_NetworkPosition = new Vector3(rigid.position.x + (f_Speed * tempx * Time.deltaTime), rigid.position.y + (f_Speed * tempy * Time.deltaTime));
-        rigid.velocity = new Vector2(f_Speed * tempx, f_Speed * tempy);
+        if (b_SlowRun)
+        {
+            temp_speed = f_Speed / 2;
+        }
+        v_NetworkPosition = new Vector3(rigid.position.x + (temp_speed * tempx * Time.deltaTime), rigid.position.y + (temp_speed * tempy * Time.deltaTime));
+        rigid.velocity = new Vector2(temp_speed * tempx, temp_speed * tempy);
     }
 
     protected void GetAimDegree(Vector3 v_TargetPos)
@@ -68,21 +76,37 @@ public class Player : CharacterGeneral
 
         f_AimDegree = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
     }
-    protected void RotateGun(Vector3 v_TargetPos)
+    protected void RotateGun(Vector3 v_TargetPos, bool b_NeedtoRotate)
     {
 
         GetAimDegree(v_TargetPos);
-        g_Weapon.rotation = Quaternion.Euler(new Vector3(0, 0, f_AimDegree));
+        if (b_NeedtoRotate)
+        {
+            g_Weapon.rotation = Quaternion.Euler(new Vector3(0, 0, f_AimDegree));
 
-        if (f_AimDegree > -90 && f_AimDegree <= 90)
+            if (f_AimDegree > -90 && f_AimDegree <= 90)
+            {
+                g_Sprite.localScale = new Vector3(f_SpritelocalScale, f_SpritelocalScale);
+                g_Weapon.localScale = new Vector3(f_WeaponlocalScale, f_WeaponlocalScale);
+            }
+            else
+            {
+                g_Sprite.localScale = new Vector3(-f_SpritelocalScale, f_SpritelocalScale);
+                g_Weapon.localScale = new Vector3(f_WeaponlocalScale, -f_WeaponlocalScale);
+            }
+        }else
         {
-            g_Sprite.localScale = new Vector3(f_SpritelocalScale, g_Sprite.localScale.y, g_Sprite.localScale.z);
-            g_Weapon.localScale = new Vector3(g_Weapon.localScale.x, f_WeaponlocalScale, g_Weapon.localScale.z);
-        }
-        else
-        {
-            g_Sprite.localScale = new Vector3(-f_SpritelocalScale, g_Sprite.localScale.y, g_Sprite.localScale.z);
-            g_Weapon.localScale = new Vector3(g_Weapon.localScale.x, -f_WeaponlocalScale, g_Weapon.localScale.z);
+            g_Weapon.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            if (f_AimDegree > -90 && f_AimDegree <= 90)
+            {
+                g_Sprite.localScale = new Vector3(f_SpritelocalScale, f_SpritelocalScale);
+                g_Weapon.localScale = new Vector3(f_WeaponlocalScale, f_WeaponlocalScale);
+            }
+            else
+            {
+                g_Sprite.localScale = new Vector3(-f_SpritelocalScale, f_SpritelocalScale);
+                g_Weapon.localScale = new Vector3(-f_WeaponlocalScale, f_WeaponlocalScale);
+            }
         }
     }
 
