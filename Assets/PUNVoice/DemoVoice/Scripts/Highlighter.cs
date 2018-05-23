@@ -69,6 +69,8 @@ namespace ExitGames.Demos.DemoPunVoice {
                     PhotonVoiceNetwork.ClientState == Client.Photon.LoadBalancing.ClientState.Joined;
             bufferLagText.enabled = showSpeakerLag && speaker.IsPlaying && speaker.IsVoiceLinked;
             bufferLagText.text = string.Format("{0}", speaker.CurrentBufferLag);
+
+            Debug.Log("recorderSprite.enabled is" + recorder.IsTransmitting);
         }
 
         private void LateUpdate() {
