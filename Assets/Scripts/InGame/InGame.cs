@@ -12,7 +12,7 @@ public class InGame : MonoBehaviour
     public Texture2D defaultMouse;
     public Text PlayerHP;
     public Text PlayerMagazine;
-    public static bool isChatEnabled = false;
+    public static bool keyboardInputDisabled = false;
     public GameObject Map;
     public GameObject OptionModal;
 
@@ -43,9 +43,9 @@ public class InGame : MonoBehaviour
         // If Enter Open Chat
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            if(!isChatEnabled || ChatInputField.GetComponent<InputField>().text == "") {
-                isChatEnabled = !isChatEnabled;
-                ChatModule.SetActive(isChatEnabled);
+            if(!keyboardInputDisabled || ChatInputField.GetComponent<InputField>().text == "") {
+                keyboardInputDisabled = !keyboardInputDisabled;
+                ChatModule.SetActive(keyboardInputDisabled);
                 ChatInputField.GetComponent<InputField>().ActivateInputField(); 
             }
         }
@@ -89,9 +89,11 @@ public class InGame : MonoBehaviour
     void OpenOptionModal() {
         if(!OptionModal.activeInHierarchy) {
             OptionModal.SetActive(true);
+            keyboardInputDisabled = true;
             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto); 
         } else {
             OptionModal.SetActive(false);
+            keyboardInputDisabled = false;
             Cursor.SetCursor(defaultMouse, new Vector2(defaultMouse.width / 2, defaultMouse.height / 2), CursorMode.Auto);
         }
     }

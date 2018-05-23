@@ -28,10 +28,10 @@ public class PhotonVoiceSettings : MonoBehaviour
     public int Bitrate = 30000;               // set in inspector
 
     /// Enable voice detection (applied per every recoder instance).
-    public bool VoiceDetection = false;                 // set in inspector
+    public bool VoiceDetection = true;                 // set in inspector
 
     /// Voice detection threshold (applied per every recoder instance).
-    public float VoiceDetectionThreshold = 0.01f;       // set in inspector
+    public float VoiceDetectionThreshold = 0.03f;       // set in inspector
 
     /// Remote audio stream playback delay to compensate packets latency variations (applied per every speaker instance). Try 100 - 200 if sound is choppy.
     public int PlayDelayMs = 200;                       // set in inspector

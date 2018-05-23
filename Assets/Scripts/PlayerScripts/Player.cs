@@ -21,6 +21,7 @@ public class Player : CharacterGeneral
 
     //Photon Value
     protected Vector3 v_NetworkMousePos;
+    protected bool b_NetworkIsTransmitting = false;
 
     protected void UpdateMousePosition()
     {
@@ -35,7 +36,7 @@ public class Player : CharacterGeneral
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             // If chat module is enabled, then block user moving
-            if (InGame.isChatEnabled)
+            if (InGame.keyboardInputDisabled)
             {
                 return;
             }
@@ -65,6 +66,17 @@ public class Player : CharacterGeneral
         }
         v_NetworkPosition = new Vector3(rigid.position.x + (temp_speed * tempx * Time.deltaTime), rigid.position.y + (temp_speed * tempy * Time.deltaTime));
         rigid.velocity = new Vector2(temp_speed * tempx, temp_speed * tempy);
+    }
+
+    protected virtual void UpdateRecorderSprite() {
+        PhotonVoiceRecorder recorder = this.GetComponent<HighlightIcon>().recorder;
+        this.GetComponent<HighlightIcon>().recorderSprite.enabled = (recorder != null && recorder.IsTransmitting &&
+                PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined);
+    }
+
+    protected virtual void UpdateNetworkRecorderSprite()
+    {
+        this.GetComponent<HighlightIcon>().recorderSprite.enabled = b_NetworkIsTransmitting;
     }
 
     protected void GetAimDegree(Vector3 v_TargetPos)
@@ -120,6 +132,10 @@ public class Player : CharacterGeneral
             stream.SendNext(e_SpriteState);
             stream.SendNext(b_Fired);
             stream.SendNext(v_MousePos);
+            stream.SendNext(this.GetComponent<HighlightIcon>().recorder != null && this.GetComponent<HighlightIcon>().recorder.IsTransmitting &&
+                PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined);
+            Debug.Log("gogo" + this.GetComponent<HighlightIcon>().recorder != null && this.GetComponent<HighlightIcon>().recorder.IsTransmitting &&
+                PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined);
         }
         else
         {
@@ -128,6 +144,7 @@ public class Player : CharacterGeneral
             e_NetworkSpriteState = (SpriteState)stream.ReceiveNext();
             b_NetworkFired = (bool)stream.ReceiveNext();
             v_NetworkMousePos = (Vector3)stream.ReceiveNext();
+            b_NetworkIsTransmitting = (bool)stream.ReceiveNext();
 
             // RotateGun(_v_MousePos);
             f_LastNetworkDataReceivedTime = info.timestamp;

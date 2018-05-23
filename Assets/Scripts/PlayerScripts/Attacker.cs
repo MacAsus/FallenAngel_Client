@@ -65,6 +65,8 @@ public class Attacker : Player {
                 UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
                 RotateGun(v_MousePos, true);
                 ChangeWeapon();
+                UpdateRecorderSprite();
+                Debug.Log("원하는것 call!!");
             }
         }
         else
@@ -72,6 +74,7 @@ public class Attacker : Player {
             UpdateNetworkedPosition();
             UpdateMousePosition(); // Need To Lerp
             UpdateNetworkAnimationControl();
+            UpdateNetworkRecorderSprite();
         }
     }
 

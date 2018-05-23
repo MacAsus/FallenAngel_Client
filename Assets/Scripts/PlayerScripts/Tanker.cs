@@ -66,6 +66,7 @@ public class Tanker : Player
                 RotateGun(v_MousePos, b_NeedtoRotate);
                 
                 ChangeWeapon();
+                UpdateRecorderSprite();
             }
         }
         else
@@ -73,6 +74,7 @@ public class Tanker : Player
             UpdateNetworkedPosition();
             UpdateMousePosition(); // Need To Lerp
             UpdateNetworkAnimationControl();
+            UpdateNetworkRecorderSprite();
         }
     }
 

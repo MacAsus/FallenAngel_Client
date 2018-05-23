@@ -8,13 +8,13 @@ public class HighlightIcon : MonoBehaviour
     private Canvas canvas;
 
     [SerializeField]
-    private PhotonVoiceRecorder recorder;
+    public PhotonVoiceRecorder recorder;
 
     [SerializeField]
     private PhotonVoiceSpeaker speaker;
 
     [SerializeField]
-    private Image recorderSprite;
+    public Image recorderSprite;
 
     [SerializeField]
     private Image speakerSprite;
@@ -40,14 +40,12 @@ public class HighlightIcon : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        recorderSprite.enabled = recorder != null && recorder.IsTransmitting &&
-                PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined;
-        speakerSprite.enabled = speaker != null && speaker.IsPlaying &&
-                PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined;
+        // recorderSprite.enabled = (recorder != null && recorder.IsTransmitting &&
+                // PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined);
         bufferLagText.enabled = showSpeakerLag && speaker.IsPlaying && speaker.IsVoiceLinked;
         bufferLagText.text = string.Format("{0}", speaker.CurrentBufferLag);
 
-		Debug.Log("recorderSprite.enabled is" + recorder.IsTransmitting);
+		Debug.Log("recorder.IsTransmitting is" + recorder.IsTransmitting);
     }
 
     private void LateUpdate()
@@ -55,6 +53,4 @@ public class HighlightIcon : MonoBehaviour
         if (canvas == null || canvas.worldCamera == null) { return; } // should not happen, throw error
         transform.rotation = Quaternion.Euler(0f, canvas.worldCamera.transform.eulerAngles.y, 0f); //canvas.worldCamera.transform.rotation;
     }
-
-
 }
