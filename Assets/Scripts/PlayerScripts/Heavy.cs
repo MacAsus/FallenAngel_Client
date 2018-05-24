@@ -10,9 +10,11 @@ public class Heavy : Player {
 
     public float f_FullSpinGauge = 3;
     private float f_SpinGauge = 0;
+    private float f_Recoil = 0;
     private bool b_SpinBool = true;
     private bool b_CoolBool = true;
     private string s_CurAnimation = " ";
+    
 
     void Start()
     {
@@ -70,8 +72,10 @@ public class Heavy : Player {
                 // below value should be setted by manually
 
                 //스파인 애니메이션, 총알의 발사 모두 처리하는 함수
-                UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
+                
                 RotateGun(v_MousePos, b_NeedtoRotate);
+                UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
+
 
                 ChangeWeapon();
             }
@@ -114,19 +118,21 @@ public class Heavy : Player {
                     }
                     else if (f_SpinGauge >= f_FullSpinGauge)
                     {
+                        StartCoroutine("FireRate");
                         f_SpinGauge = f_FullSpinGauge;
+                        f_Recoil = Random.Range(-10.0f, 10.0f);
                         FireBullet();
 
                         PlayerSound.instance.Play_Sound_Main_Shoot();
                         --cur_Weapon.f_Magazine;
-                        StartCoroutine("FireRate", _b_Fired);
+
                     }
 
                 }
-                else if (!Input.GetKey(KeyCode.Mouse0))
+                else if (!Input.GetKey(KeyCode.Mouse0) || cur_Weapon.f_Magazine == 0)
                 {
-                    b_SlowRun = false;  
-                    
+                    b_SlowRun = false;
+                    f_Recoil = 0;
                     if ((f_SpinGauge > 0) && b_CoolBool)
                     {
                         StartCoroutine(GatlingCool());
@@ -156,6 +162,7 @@ public class Heavy : Player {
             {
                 b_SlowRun = false;
                 f_SpinGauge = 0;
+                f_Recoil = 0;
             }
             if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
             {
@@ -184,6 +191,50 @@ public class Heavy : Player {
         else
         {
             a_Animator.speed = 1;
+        }
+    }
+
+    protected override void RotateGun(Vector3 v_TargetPos, bool b_NeedtoRotate)
+    {
+        GetAimDegree(v_TargetPos);
+        f_AimDegree += f_Recoil;
+        if (b_NeedtoRotate)
+        {
+            if (f_SpinGauge > 0)
+            {
+                if(Mathf.Round(f_AimDegree) != Mathf.Round(g_Weapon.rotation.z))
+                {
+
+                }
+            }
+            else
+            {
+                g_Weapon.rotation = Quaternion.Euler(new Vector3(0, 0, f_AimDegree));
+            }
+            if (f_AimDegree > -90 && f_AimDegree <= 90)
+            {
+                g_Sprite.localScale = new Vector3(f_SpritelocalScale, f_SpritelocalScale);
+                g_Weapon.localScale = new Vector3(f_WeaponlocalScale, f_WeaponlocalScale);
+            }
+            else
+            {
+                g_Sprite.localScale = new Vector3(-f_SpritelocalScale, f_SpritelocalScale);
+                g_Weapon.localScale = new Vector3(f_WeaponlocalScale, -f_WeaponlocalScale);
+            }
+        }
+        else
+        {
+            g_Weapon.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            if (f_AimDegree > -90 && f_AimDegree <= 90)
+            {
+                g_Sprite.localScale = new Vector3(f_SpritelocalScale, f_SpritelocalScale);
+                g_Weapon.localScale = new Vector3(f_WeaponlocalScale, f_WeaponlocalScale);
+            }
+            else
+            {
+                g_Sprite.localScale = new Vector3(-f_SpritelocalScale, f_SpritelocalScale);
+                g_Weapon.localScale = new Vector3(-f_WeaponlocalScale, f_WeaponlocalScale);
+            }
         }
     }
 
@@ -223,11 +274,11 @@ public class Heavy : Player {
         yield return new WaitForSeconds(0.5f);
         b_SpinBool = true;
     }
-    IEnumerator FireRate(bool _b_Fired)
+    IEnumerator FireRate()
     {
-        _b_Fired = true;
-        yield return new WaitForSeconds(0.2f);
-        _b_Fired = false;
+        b_Fired = true;
+        yield return new WaitForSeconds(0.05f);
+        b_Fired = false;
     }
     IEnumerator GatlingCool()
     {
