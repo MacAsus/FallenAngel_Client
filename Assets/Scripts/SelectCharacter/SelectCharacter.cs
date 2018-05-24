@@ -52,10 +52,10 @@ public class SelectCharacter : Photon.PunBehaviour
                         TankerPanel.GetComponent<Image>().color = Colors.PureRED;
                         break;
                     case Util.S_HEAVY:
-                        HealerPanel.GetComponent<Image>().color = Colors.PureRED;
+                        HeavyPanel.GetComponent<Image>().color = Colors.PureRED;
                         break;
                     case Util.S_HEALER:
-                        HeavyPanel.GetComponent<Image>().color = Colors.PureRED;
+                        HealerPanel.GetComponent<Image>().color = Colors.PureRED;
                         break;
                 }
             }
