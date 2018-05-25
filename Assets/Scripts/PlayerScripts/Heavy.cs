@@ -74,6 +74,7 @@ public class Heavy : Player {
                 RotateGun(v_MousePos, b_NeedtoRotate);
 
                 ChangeWeapon();
+                UpdateRecorderSprite();
             }
         }
         else
@@ -81,6 +82,7 @@ public class Heavy : Player {
             UpdateNetworkedPosition();
             UpdateMousePosition(); // Need To Lerp
             UpdateNetworkAnimationControl();
+            UpdateNetworkRecorderSprite();
         }
     }
 
