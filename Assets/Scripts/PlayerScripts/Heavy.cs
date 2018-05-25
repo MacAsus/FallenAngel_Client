@@ -78,6 +78,7 @@ public class Heavy : Player {
 
 
                 ChangeWeapon();
+                UpdateRecorderSprite();
             }
         }
         else
@@ -85,6 +86,7 @@ public class Heavy : Player {
             UpdateNetworkedPosition();
             UpdateMousePosition(); // Need To Lerp
             UpdateNetworkAnimationControl();
+            UpdateNetworkRecorderSprite();
         }
     }
 

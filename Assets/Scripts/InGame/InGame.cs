@@ -88,6 +88,7 @@ public class InGame : MonoBehaviour
 
     void OpenOptionModal() {
         if(!OptionModal.activeInHierarchy) {
+            this.GetComponent<OptionModal>().Init();
             OptionModal.SetActive(true);
             keyboardInputDisabled = true;
             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto); 
