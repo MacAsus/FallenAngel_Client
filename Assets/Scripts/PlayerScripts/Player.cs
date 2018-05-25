@@ -88,7 +88,7 @@ public class Player : CharacterGeneral
 
         f_AimDegree = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
     }
-    protected void RotateGun(Vector3 v_TargetPos, bool b_NeedtoRotate)
+    protected virtual void RotateGun(Vector3 v_TargetPos, bool b_NeedtoRotate)
     {
 
         GetAimDegree(v_TargetPos);
