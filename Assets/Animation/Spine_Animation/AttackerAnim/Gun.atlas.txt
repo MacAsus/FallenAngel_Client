@@ -1,41 +1,20 @@
 
 Gun.png
-size: 128,64
+size: 64,16
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 AR_0
   rotate: false
-  xy: 2, 16
+  xy: 2, 2
   size: 42, 12
   orig: 42, 12
   offset: 0, 0
   index: -1
 AR_Hand
   rotate: false
-  xy: 70, 58
+  xy: 46, 10
   size: 6, 4
   orig: 6, 4
-  offset: 0, 0
-  index: -1
-Gun_SpinDown
-  rotate: false
-  xy: 2, 30
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Gun_SpinUp
-  rotate: false
-  xy: 36, 30
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-Hand_Pistol_0
-  rotate: false
-  xy: 2, 2
-  size: 25, 12
-  orig: 25, 12
   offset: 0, 0
   index: -1
