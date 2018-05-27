@@ -1588,7 +1588,7 @@ MonoBehaviour:
   PlayerHP: {fileID: 825166441}
   PlayerMagazine: {fileID: 1090854666}
   Map: {fileID: 2138274305}
-  OptionModal: {fileID: 38604344}
+  OptionModalGameObj: {fileID: 38604344}
 --- !u!114 &1598813170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2484,12 +2484,12 @@ Prefab:
     - target: {fileID: 224453497529065608, guid: 4ce5817523bfe49e1b988cfc510c5bdb,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000037723305
+      value: 0.000047627796
       objectReference: {fileID: 0}
     - target: {fileID: 224184109386946832, guid: 4ce5817523bfe49e1b988cfc510c5bdb,
         type: 2}
       propertyPath: m_AnchorMin.y
-      value: 0.00000011920929
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4ce5817523bfe49e1b988cfc510c5bdb, type: 2}

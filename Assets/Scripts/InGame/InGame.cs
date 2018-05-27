@@ -14,7 +14,7 @@ public class InGame : MonoBehaviour
     public Text PlayerMagazine;
     public static bool keyboardInputDisabled = false;
     public GameObject Map;
-    public GameObject OptionModal;
+    public GameObject OptionModalGameObj;
 
     // Use this for initialization
     void Start()
@@ -56,9 +56,10 @@ public class InGame : MonoBehaviour
             OpenMap();
         }
 
-        // If Tab Open Map
+        // If ESC Open Map
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            Debug.Log("오픈 모달!!!");
             OpenOptionModal();
         }
     }
@@ -87,15 +88,17 @@ public class InGame : MonoBehaviour
     }
 
     void OpenOptionModal() {
-        if(!OptionModal.activeInHierarchy) {
+        if(!OptionModalGameObj.activeInHierarchy) {
             this.GetComponent<OptionModal>().Init();
-            OptionModal.SetActive(true);
+            OptionModalGameObj.SetActive(true);
             keyboardInputDisabled = true;
             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto); 
+            OptionModal.IsActive = true;
         } else {
-            OptionModal.SetActive(false);
+            OptionModalGameObj.SetActive(false);
             keyboardInputDisabled = false;
             Cursor.SetCursor(defaultMouse, new Vector2(defaultMouse.width / 2, defaultMouse.height / 2), CursorMode.Auto);
+            OptionModal.IsActive = false;
         }
     }
 }

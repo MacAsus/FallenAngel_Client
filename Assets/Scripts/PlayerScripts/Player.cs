@@ -133,9 +133,7 @@ public class Player : CharacterGeneral
             stream.SendNext(b_Fired);
             stream.SendNext(v_MousePos);
             stream.SendNext(this.GetComponent<HighlightIcon>().recorder != null && this.GetComponent<HighlightIcon>().recorder.IsTransmitting &&
-                PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined);
-            Debug.Log("gogo" + this.GetComponent<HighlightIcon>().recorder != null && this.GetComponent<HighlightIcon>().recorder.IsTransmitting &&
-                PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined);
+                PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined); // 보이스 챗 말풍선 아이콘
         }
         else
         {

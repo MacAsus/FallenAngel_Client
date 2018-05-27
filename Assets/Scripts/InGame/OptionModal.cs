@@ -15,6 +15,7 @@ public class OptionModal : MonoBehaviour
     public Slider VolumeSlider;
     public PhotonVoiceRecorder rec;
     public PhotonVoiceSpeaker speaker;
+    public static bool IsActive = false;
 
     public AudioMixer audioMixer;
     Resolution[] resolutions;
@@ -141,6 +142,8 @@ public class OptionModal : MonoBehaviour
             InGame.Player.GetComponent<PhotonVoiceSpeaker>().GetComponent<GameObject>().SetActive(false);
             InGame.Player.GetComponent<PhotonVoiceRecorder>().GetComponent<GameObject>().SetActive(false);
         }
+
+        IsActive = false;
     }
 
     void MuteVolume() {
