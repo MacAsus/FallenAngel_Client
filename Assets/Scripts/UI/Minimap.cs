@@ -11,11 +11,10 @@ public class Minimap : MonoBehaviour {
     /// </summary>
     void LateUpdate()
 	{
-		Transform player = InGame.Player.GetComponent<Transform>();
-        Vector3 newPosition = player.position;
-        newPosition.y = transform.position.y;
+        Vector3 newPosition = Camera.main.transform.position;
         transform.position = newPosition;
+        Debug.Log("x: " + transform.position.x + "y: " + transform.position.y);
 
-        transform.rotation = Quaternion.Euler(90f, player.eulerAngles.y, 0f);
+        // transform.rotation = Quaternion.Euler(90f, Camera.allCameras[1].transform.eulerAngles.y, 0f);
     }
 }
