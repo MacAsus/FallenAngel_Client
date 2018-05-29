@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attacker : Player {
+public class Healer : Player
+{
 
     private PhotonVoiceRecorder recorder;
     private PhotonVoiceSpeaker speaker;
@@ -11,11 +12,11 @@ public class Attacker : Player {
     {
         s_tag = Util.S_ENEMY;
 
-        Main_Bullet = Resources.Load("BulletPrefab/" + Util.S_AR_BULLET_NAME) as GameObject;
-        //Sub_Bullet = Resources.Load("BulletPrefab/" + Util.S_HG_BULLET_NAME) as GameObject;
+        Main_Bullet = Resources.Load("BulletPrefab/" + Util.S_HG_BULLET_NAME) as GameObject;
+        Sub_Bullet = Resources.Load("BulletPrefab/" + Util.S_HEAL_BULLET_NAME) as GameObject;
 
-        Weapon1 = new GeneralInitialize.GunParameter(Util.S_AR_NAME, Util.S_AR_BULLET_NAME, Util.F_AR_BULLET_SPEED, Util.F_AR_BULLET_DAMAGE, Util.F_AR_MAGAZINE);
-        //Weapon2 = new GeneralInitialize.GunParameter(Util.S_LASER_NAME, " ", 0, Util.F_LASER_DAMAGE, Util.F_LASER);
+        Weapon1 = new GeneralInitialize.GunParameter(Util.S_HG_NAME, Util.S_HG_BULLET_NAME, Util.F_HG_BULLET_SPEED, Util.F_HG_BULLET_DAMAGE, Util.F_HG_MAGAZINE);
+        Weapon2 = new GeneralInitialize.GunParameter(Util.S_HEAL_NAME, Util.S_HEAL_BULLET_NAME, Util.F_HEAL_BULLET_SPEED, Util.F_HEAL_BULLET_DAMAGE, Util.F_HEAL_MAGAZINE);
 
 
         InitializeParam();
@@ -43,9 +44,9 @@ public class Attacker : Player {
         recorder = this.GetComponent<PhotonVoiceRecorder>();
         speaker = this.GetComponent<PhotonVoiceSpeaker>();
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         // if this view is not mine, then do not update
         if (photonView.isMine == true)
@@ -89,7 +90,8 @@ public class Attacker : Player {
 
     protected override void WeaponSpineControl(bool _b_Fired, bool _b_Reload)
     {
-        if(OptionModal.IsActive) { // 옵션창이 켜져있으면 무기 사용 X
+        if (OptionModal.IsActive)
+        { // 옵션창이 켜져있으면 무기 사용 X
             return;
         }
 
@@ -100,15 +102,15 @@ public class Attacker : Player {
                 if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
                 {
                     FireBullet();
-                    spine_GunAnim.state.SetAnimation(0, "Ar_Shoot", false);
+                    spine_GunAnim.state.SetAnimation(0, "Hg_Shoot", false);
                     PlayerSound.instance.Play_Sound_Main_Shoot();
                     --cur_Weapon.f_Magazine;
                 }
                 if (Input.GetKey(KeyCode.R))
                 {
-                    spine_GunAnim.state.SetAnimation(0, "Ar_Reload", false);
+                    spine_GunAnim.state.SetAnimation(0, "Hg_Reload", false);
                     PlayerSound.instance.Play_Sound_Main_Reload();
-                    cur_Weapon.f_Magazine = Util.F_AR_MAGAZINE;
+                    cur_Weapon.f_Magazine = Util.F_HG_MAGAZINE;
                 }
                 if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
                 {
@@ -120,26 +122,35 @@ public class Attacker : Player {
             }
             if (cur_Weapon == Weapon2)
             {
-                if (Input.GetKey(KeyCode.Mouse0) && Skill == true)
+                if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
                 {
                     FireBullet();
-                    spine_GunAnim.state.SetAnimation(0, "Laser_Shoot", false);
+                    spine_GunAnim.state.SetAnimation(0, "Pistol_Shoot", false);
                     PlayerSound.instance.Play_Sound_Sub_Shoot();
                     --cur_Weapon.f_Magazine;
                 }
-                if (Input.GetKey(KeyCode.Mouse0) && Skill == false)
+                if (Input.GetKey(KeyCode.R))
                 {
-                    PlayerSound.instance.Play_Sound_Zero_Shoot();
+                    spine_GunAnim.state.SetAnimation(0, "Pistol_Reload", false);
+                    PlayerSound.instance.Play_Sound_Sub_Reload();
+                    cur_Weapon.f_Magazine = Util.F_HG_MAGAZINE;
                 }
-                if (cur_Weapon.f_Magazine == 0.0f)
+                if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
                 {
+                    if (Input.GetKey(KeyCode.Mouse0))
+                    {
+                        PlayerSound.instance.Play_Sound_Zero_Shoot();
+                    }
+                }
+                if (Input.GetKey(KeyCode.Mouse1))
+                {
+                    //자힐
                     Skill = false;
                     Timer += Time.deltaTime;
-                    if (Timer > Util.F_LASER)
+                    if (Timer > Util.F_HEAL)
                     {
                         Timer = 0;
                         Skill = true;
-                        cur_Weapon.f_Magazine = Util.F_LASER_MAGAZINE;
                     }
                 }
             }

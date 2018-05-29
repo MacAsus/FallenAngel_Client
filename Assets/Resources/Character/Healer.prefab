@@ -959,6 +959,7 @@ MonoBehaviour:
   b_Fired: 0
   b_Reload: 0
   b_UnHit: 0
+  Skill: 1
   myPlayer: {fileID: 0}
   Main_Bullet: {fileID: 0}
   Sub_Bullet: {fileID: 0}

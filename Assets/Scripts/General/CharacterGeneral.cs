@@ -170,18 +170,14 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
             if(WeaponName == Util.S_AR_NAME) {
                 spine_GunAnim.state.SetAnimation(0, Util.S_AR_NAME+"_Shoot", true);
             }
-            else if(WeaponName == Util.S_HG_NAME) {
-                spine_GunAnim.state.SetAnimation(0, Util.S_HG_NAME+"_Shoot", true);
-            }
+            
         }
         else
         {
             if(WeaponName == Util.S_AR_NAME) {
                 spine_GunAnim.state.SetAnimation(0, Util.S_AR_NAME+"_Shoot", false);
             }
-            else if(WeaponName == Util.S_HG_NAME) {
-                spine_GunAnim.state.SetAnimation(0, Util.S_HG_NAME+"_Shoot", false);
-            }
+            
         }
     }
     

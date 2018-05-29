@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class Player : CharacterGeneral
 {
+    public bool Skill = true;
+    public float Timer = 0.0f;
+
     public GameObject myPlayer; //카메라 제어
 
     public static GameObject LocalPlayerInstance;
