@@ -144,7 +144,7 @@ public class Healer : Player
                 }
                 if (Input.GetKey(KeyCode.Mouse1))
                 {
-                    //자힐
+                    this.gameObject.GetComponent<PhotonView>().RPC("PlayerHealing", PhotonTargets.All, Util.F_HEAL_SELF);
                     Skill = false;
                     Timer += Time.deltaTime;
                     if (Timer > Util.F_HEAL)
@@ -180,7 +180,12 @@ public class Healer : Player
 
         if (cur_Weapon == Weapon2)
         {
-            //레이저
+            GameObject bullet = Instantiate(Sub_Bullet, muzzlePos, Muzzle.transform.rotation);
+            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
+            temp_bullet.bulletInfo = Weapon2;
+            temp_bullet.s_Victim = s_tag;
+            temp_bullet.s_Help = Util.S_PLAYER;
+            bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Weapon1.f_BulletSpeed;
         }
     }
 }

@@ -55,4 +55,5 @@ MonoBehaviour:
   - FireBullet_First_Pattern_Network
   - FireBullet_Second_Pattern_Network
   - FireBullet_Third_Pattern_Network
+  - PlayerHealing
   DisableAutoOpenWizard: 1

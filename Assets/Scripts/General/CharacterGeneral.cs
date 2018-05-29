@@ -7,7 +7,8 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 {
     public Rigidbody2D rigid;
 
-    public float n_hp;    //캐릭터의 체력
+    public float n_hp;    //캐릭터의 체력(실제 체력)
+    public float f_MaxHp; //캐릭터의 최대체력
     public float f_AimDegree; //Aim 각도
     public float f_Speed; //캐릭터 무빙 스피드
 
@@ -75,6 +76,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
             spine_GunAnim.state.Event += SpineOnevent;
         }
 
+        f_MaxHp = n_hp; //최대체력 설정
         mySprite = g_Sprite.GetComponent<SpriteRenderer>();
     }
 
@@ -181,25 +183,9 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         }
     }
     
-    [PunRPC]
-    protected void PlayerTakeDamage(float _f_Damage)
-    {
-        if (this.n_hp > 0 && this.n_hp > _f_Damage)
-        {
-            this.n_hp -= _f_Damage;
-            this.b_UnHit = true;
-            transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
-            StartCoroutine("IsDamaged");
-        }
-        else
-        {
-            this.n_hp = 0;
-            this.a_Animator.SetBool("Death", true);
-            StartCoroutine(Death_Wait_Sec(1.0f));
-        }
-    }
+    
 
-    IEnumerator IsDamaged()
+    protected IEnumerator IsDamaged()
     {
         int count = 0;
 
@@ -223,7 +209,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = true;
         yield return null;
     }
-    IEnumerator IsDamagedEnemy()
+    protected IEnumerator IsDamagedEnemy()
     {
         mySprite.color = new Color32(255, 0, 0, 255);
 
@@ -232,7 +218,18 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         mySprite.color = new Color32(255, 255, 255, 255);
         yield return null;
     }
-    public IEnumerator Death_Wait_Sec(float waitTime)
+
+    protected IEnumerator IsHealing()
+    {
+        mySprite.color = new Color32(0, 255, 0, 255);
+
+        yield return new WaitForSeconds(0.1f);
+
+        mySprite.color = new Color32(255, 255, 255, 255);
+        yield return null;
+    }
+
+    protected IEnumerator Death_Wait_Sec(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
 

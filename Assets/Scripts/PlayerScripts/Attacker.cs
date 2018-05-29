@@ -95,6 +95,17 @@ public class Attacker : Player {
 
         if (!_b_Fired && !_b_Reload) // 기본 상태일 때
         {
+            if (Weapon2.f_Magazine == 0.0f)
+            {
+                Skill = false;
+                Timer += Time.deltaTime;
+                if (Timer >= Util.F_LASER)
+                {
+                    Timer = 0;
+                    Skill = true;
+                    Weapon2.f_Magazine = Util.F_LASER_MAGAZINE;
+                }
+            }
             if (cur_Weapon == Weapon1)
             {
                 if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
@@ -130,17 +141,6 @@ public class Attacker : Player {
                 if (Input.GetKey(KeyCode.Mouse0) && Skill == false)
                 {
                     PlayerSound.instance.Play_Sound_Zero_Shoot();
-                }
-                if (cur_Weapon.f_Magazine == 0.0f)
-                {
-                    Skill = false;
-                    Timer += Time.deltaTime;
-                    if (Timer > Util.F_LASER)
-                    {
-                        Timer = 0;
-                        Skill = true;
-                        cur_Weapon.f_Magazine = Util.F_LASER_MAGAZINE;
-                    }
                 }
             }
         }

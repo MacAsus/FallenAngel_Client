@@ -60,7 +60,7 @@ public class Util : MonoBehaviour {
     public const string S_GRENADE_NAME = "Grenade";
     public const string S_GRENADE_BULLET_NAME = "Grenade_Norm";
     public const float F_GRENADE_BULLET_SPEED = 10.0f;
-    public const float F_GRENADE_BULLET_DAMAGE = 50.0f;
+    public const float F_GRENADE_BULLET_DAMAGE = 5.0f;
     public const float F_GRENADE_MAGAZINE = 6.0f;
 
     //탱커
@@ -77,18 +77,20 @@ public class Util : MonoBehaviour {
 
     //힐러
     /* Hg */
-    public const string S_HG_NAME = "Sr";
-    public const string S_HG_BULLET_NAME = "Sr_Norm";
+    public const string S_HG_NAME = "Hg";
+    public const string S_HG_BULLET_NAME = "Hg_Norm";
     public const float F_HG_BULLET_SPEED = 18.0f;
     public const float F_HG_BULLET_DAMAGE = 5.0f;
     public const float F_HG_MAGAZINE = 7.0f;
 
     /* Heal */
-    public const string S_HEAL_NAME = "Heal";
+    public const string S_HEAL_NAME = "Pistol";
     public const string S_HEAL_BULLET_NAME = "Heal_Norm";
     public const float F_HEAL_BULLET_SPEED = 8.0f;
     public const float F_HEAL_BULLET_DAMAGE = 5.0f;
     public const float F_HEAL_MAGAZINE = 7.0f;
+
+    public const float F_HEAL_SELF = 30.0f; //자힐
 
     //==========태그==========//
     public const string S_PLAYER = "Player";

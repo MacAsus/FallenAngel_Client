@@ -91,6 +91,11 @@ public class Tanker : Player
 
     protected override void WeaponSpineControl(bool _b_Fired, bool _b_Reload)
     {
+        if (OptionModal.IsActive)
+        { // 옵션창이 켜져있으면 무기 사용 X
+            return;
+        }
+
         if (!_b_Fired && !_b_Reload) // 기본 상태일 때
         {
             if (cur_Weapon == Weapon1)

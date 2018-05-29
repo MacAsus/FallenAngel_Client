@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   s_Victim: 
+  s_Help: 
 --- !u!212 &212467668010475722
 SpriteRenderer:
   m_ObjectHideFlags: 1

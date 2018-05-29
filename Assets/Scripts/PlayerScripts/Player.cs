@@ -190,22 +190,34 @@ public class Player : CharacterGeneral
     }
 
     
-    void OnTriggerEnter2D(Collider2D col)
+    protected virtual void OnTriggerEnter2D(Collider2D col)
     {
-
-        if(col.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+        //총알과 충돌
+        if (col.gameObject.layer == LayerMask.NameToLayer("Bullet"))
         {
+            //데미지
             if (col.gameObject.GetComponent<BulletGeneral>().s_Victim == Util.S_PLAYER)
             {
                 bool IsMine = gameObject.GetComponent<CharacterGeneral>().photonView.isMine;
                 if (IsMine)
                 {
-                    PlayerSound.instance.Play_Sound_Gun_Hit();
                     gameObject.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
+                }
+            }
+            
+            //체력회복
+            if (col.gameObject.GetComponent<BulletGeneral>().s_Help == Util.S_PLAYER && col.gameObject.transform.Find("Trigger").tag != Util.S_HEALER)
+            {
+                bool IsMine = gameObject.GetComponent<CharacterGeneral>().photonView.isMine;
+                if (IsMine)
+                {
+                    //총알의 데미지만큼 체력 회복
+                    gameObject.GetComponent<PhotonView>().RPC("PlayerHealing", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
                 }
             }
         }
 
+        //Player가 적과 닿았을 경우
         if (col.gameObject.layer == LayerMask.NameToLayer("EnemyBody"))
         {
             bool IsMine = gameObject.GetComponent<CharacterGeneral>().photonView.isMine;
@@ -215,7 +227,38 @@ public class Player : CharacterGeneral
                 gameObject.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, col.gameObject.GetComponentInParent<EnemyGeneral>().f_Damage);
             }
         }
-        
     }
 
+    [PunRPC]
+    protected void PlayerTakeDamage(float _f_Damage)
+    {
+        if (this.n_hp > 0 && this.n_hp > _f_Damage)
+        {
+            this.n_hp -= _f_Damage;
+            this.b_UnHit = true;
+            transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
+            StartCoroutine("IsDamaged");
+        }
+        else
+        {
+            this.n_hp = 0;
+            this.a_Animator.SetBool("Death", true);
+            StartCoroutine(Death_Wait_Sec(1.0f));
+        }
+    }
+
+    [PunRPC]
+    protected void PlayerHealing(float _f_Heal)
+    {
+        if (this.n_hp > 0)
+        {
+            this.n_hp += _f_Heal;
+            StartCoroutine("IsHealing");
+
+            if (this.n_hp + _f_Heal >= f_MaxHp)
+            {
+                n_hp = f_MaxHp;
+            }
+        }
+    }
 }

@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 114691614560027622}
   - component: {fileID: 114724529472642710}
   - component: {fileID: 114817493617274628}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: Heavy
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -690,6 +690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigid: {fileID: 0}
   n_hp: 150
+  f_MaxHp: 0
   f_AimDegree: 0
   f_Speed: 3
   f_SpritelocalScale: 0
@@ -708,6 +709,8 @@ MonoBehaviour:
   b_Fired: 0
   b_Reload: 0
   b_UnHit: 0
+  Skill: 1
+  Timer: 0
   myPlayer: {fileID: 0}
   Main_Bullet: {fileID: 0}
   Sub_Bullet: {fileID: 0}

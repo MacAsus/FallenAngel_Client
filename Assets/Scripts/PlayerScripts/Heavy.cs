@@ -97,6 +97,22 @@ public class Heavy : Player {
 
     protected override void WeaponSpineControl(bool _b_Fired, bool _b_Reload)
     {
+        if (OptionModal.IsActive)
+        { // 옵션창이 켜져있으면 무기 사용 X
+            return;
+        }
+
+        if (Weapon2.f_Magazine == 0.0f)
+        {
+            Skill = false;
+            Timer += Time.deltaTime;
+            if (Timer >= Util.F_GRENADE)
+            {
+                Timer = 0;
+                Skill = true;
+                Weapon2.f_Magazine = Util.F_GRENADE_MAGAZINE;
+            }
+        }
         if (!_b_Fired && !_b_Reload) // 기본 상태일 때
         {
             if (cur_Weapon == Weapon1)
@@ -164,6 +180,8 @@ public class Heavy : Player {
             if (cur_Weapon == Weapon2)
             {
                 b_SlowRun = false;
+                //b_SpinBool = true;
+                //b_CoolBool = true;
                 f_SpinGauge = 0;
                 f_Recoil = 0;
 
@@ -177,17 +195,6 @@ public class Heavy : Player {
                 if (Input.GetKey(KeyCode.Mouse0) && Skill == false)
                 {
                     PlayerSound.instance.Play_Sound_Zero_Shoot();
-                }
-                if (cur_Weapon.f_Magazine == 0.0f)
-                {
-                    Skill = false;
-                    Timer += Time.deltaTime;
-                    if (Timer > Util.F_GRENADE)
-                    {
-                        Timer = 0;
-                        Skill = true;
-                        cur_Weapon.f_Magazine = Util.F_GRENADE_MAGAZINE;
-                    }
                 }
             }
         }

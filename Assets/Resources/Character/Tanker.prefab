@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4082223987995044}
   - component: {fileID: 61640933795089804}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -633,7 +633,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
 --- !u!33 &33230017126589488
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -709,7 +709,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7, y: 1.25}
+  m_Size: {x: 0.6, y: 1.25}
   m_EdgeRadius: 0
 --- !u!61 &61642852011464316
 BoxCollider2D:
@@ -1291,6 +1291,7 @@ MonoBehaviour:
   b_Reload: 0
   b_UnHit: 0
   Skill: 1
+  Timer: 0
   myPlayer: {fileID: 0}
   Main_Bullet: {fileID: 0}
   Sub_Bullet: {fileID: 0}

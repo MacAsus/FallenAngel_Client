@@ -6,7 +6,8 @@ public class BulletGeneral : MonoBehaviour
 {
     public GeneralInitialize.GunParameter bulletInfo;
 
-    public string s_Victim = "";
+    public string s_Victim = ""; //데미지를 입힐 상대방 태그
+    public string s_Help = ""; //힐링을 입힐 상대방 태그
 
     void OnTriggerEnter2D(Collider2D col)
     {
