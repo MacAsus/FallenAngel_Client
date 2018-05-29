@@ -250,6 +250,7 @@ public class Player : CharacterGeneral
     [PunRPC]
     protected void PlayerHealing(float _f_Heal)
     {
+        Debug.Log("PlayerHealing 호출!!!");
         if (this.n_hp > 0)
         {
             this.n_hp += _f_Heal;

@@ -67,7 +67,7 @@ public class Healer : Player
                 RotateGun(v_MousePos, true);
                 ChangeWeapon();
                 UpdateRecorderSprite();
-                Debug.Log("원하는것 call!!");
+                //Debug.Log("원하는것 call!!");
             }
         }
         else
@@ -94,9 +94,24 @@ public class Healer : Player
         { // 옵션창이 켜져있으면 무기 사용 X
             return;
         }
-
+        if (Skill == false)
+        {
+            Timer += Time.deltaTime;
+            if (Timer > Util.F_HEAL)
+            {
+                Timer = 0;
+                Skill = true;
+            }
+        }
         if (!_b_Fired && !_b_Reload) // 기본 상태일 때
         {
+            if (Input.GetKey(KeyCode.Mouse1) && Skill == true)
+            {
+                Debug.Log("Skill 호출!!!");
+                this.gameObject.GetComponent<PhotonView>().RPC("PlayerHealing", PhotonTargets.All, Util.F_HEAL_SELF);
+                Skill = false;
+
+            }
             if (cur_Weapon == Weapon1)
             {
                 if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
@@ -140,17 +155,6 @@ public class Healer : Player
                     if (Input.GetKey(KeyCode.Mouse0))
                     {
                         PlayerSound.instance.Play_Sound_Zero_Shoot();
-                    }
-                }
-                if (Input.GetKey(KeyCode.Mouse1))
-                {
-                    this.gameObject.GetComponent<PhotonView>().RPC("PlayerHealing", PhotonTargets.All, Util.F_HEAL_SELF);
-                    Skill = false;
-                    Timer += Time.deltaTime;
-                    if (Timer > Util.F_HEAL)
-                    {
-                        Timer = 0;
-                        Skill = true;
                     }
                 }
             }

@@ -13,7 +13,7 @@ public class Minimap : MonoBehaviour {
 	{
         Vector3 newPosition = Camera.main.transform.position;
         transform.position = newPosition;
-        Debug.Log("x: " + transform.position.x + "y: " + transform.position.y);
+        //Debug.Log("x: " + transform.position.x + "y: " + transform.position.y);
 
         // transform.rotation = Quaternion.Euler(90f, Camera.allCameras[1].transform.eulerAngles.y, 0f);
     }
