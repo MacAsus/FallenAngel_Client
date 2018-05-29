@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 50979807117885072}
   m_Layer: 8
   m_Name: Grenade_Norm
-  m_TagString: Untagged
+  m_TagString: Grenade
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   s_Victim: 
+  s_Help: 
 --- !u!212 &212617564605460702
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -56,4 +56,8 @@ MonoBehaviour:
   - FireBullet_Second_Pattern_Network
   - FireBullet_Third_Pattern_Network
   - PlayerHealing
+  - Burning
+  - TakeDamageGrenade
+  - TakeDamageLaser
+  - ShieldTakeDamage
   DisableAutoOpenWizard: 1

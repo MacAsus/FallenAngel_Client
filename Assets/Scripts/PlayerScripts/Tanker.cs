@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Tanker : Player
 {
-
+    public bool b_IsShieldUpdate = true; //UpdateShieldHp 함수의 작동 가능 여부
+    public float f_ShieldHp; //디버깅용
     private PhotonVoiceRecorder recorder;
     private PhotonVoiceSpeaker speaker;
 
@@ -19,14 +20,11 @@ public class Tanker : Player
         Weapon2 = new GeneralInitialize.GunParameter(Util.S_SHIELD_NAME, " " , 0, 0, Util.F_SHIELD_HP);
         cur_Weapon = Weapon1;
 
-
         InitializeParam();
 
         cur_Weapon = Weapon1;
         Muzzle = Muzzle1;
         spine_GunAnim.Skeleton.SetSkin(Weapon1.s_GunName);
-
-        transform.Find("Shield").GetComponent<BoxCollider2D>().enabled = false;
 
         if (UI != null)
         {
@@ -69,6 +67,7 @@ public class Tanker : Player
                 
                 ChangeWeapon();
                 UpdateRecorderSprite();
+                f_ShieldHp = Weapon2.f_Magazine; //디버깅용
             }
         }
         else
@@ -95,14 +94,29 @@ public class Tanker : Player
         { // 옵션창이 켜져있으면 무기 사용 X
             return;
         }
+        if (Weapon2.f_Magazine <= 0.0f)
+        {
+            Skill = false;
+            PlayerSound.instance.Play_Sound_Melee_Hit();
 
+            Timer += Time.deltaTime;
+            if (Timer > Util.F_SHIELD)
+            {
+                Timer = 0;
+                Skill = true;
+                Weapon2.f_Magazine = Util.F_SHIELD_HP;
+            }
+        }
+        if (b_IsShieldUpdate == true)
+        {
+            UpdateShieldHp();
+        }
         if (!_b_Fired && !_b_Reload) // 기본 상태일 때
         {
             if (cur_Weapon == Weapon1)
             {
                 b_SlowRun = false;
                 b_NeedtoRotate = true;
-                UpdateShieldHp();
                 if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
                 {
                     FireBullet();
@@ -133,32 +147,16 @@ public class Tanker : Player
                     spine_GunAnim.state.SetAnimation(0, "ShieldUp", true);
                     PlayerSound.instance.Play_Sound_Melee_Shoot();
                     b_SlowRun = true;
-                    transform.Find("Shield").GetComponent<BoxCollider2D>().enabled = true;
+                    b_IsShieldUpdate = false;
                 }
                 else if (Input.GetKey(KeyCode.Mouse0) && Skill == false)
                 {
-                    UpdateShieldHp();
                     //금지 사운드
-                }
-                //방패가 깨지는 경우
-                else if (Weapon2.f_Magazine <= 0.0f)
-                {
-                    Skill = false;
-                    PlayerSound.instance.Play_Sound_Melee_Hit();
-
-                    Timer += Time.deltaTime;
-                    if (Timer > Util.F_SHIELD)
-                    {
-                        Timer = 0;
-                        Skill = true;
-                        cur_Weapon.f_Magazine = Util.F_SHIELD_HP;
-                    }
                 }
                 else
                 {
                     spine_GunAnim.state.SetAnimation(0, "Idle", true);
                     b_SlowRun = false;
-                    UpdateShieldHp();
                 }
             }
         }
@@ -216,6 +214,30 @@ public class Tanker : Player
                 Weapon2.f_Magazine = Util.F_SHIELD_HP;
                 break;
             }
+        }
+    }
+
+    [PunRPC]
+    protected void ShieldTakeDamage(float _f_Damage)
+    {
+        if (Weapon2.f_Magazine > 0 && Weapon2.f_Magazine > _f_Damage)
+        {
+            Weapon2.f_Magazine -= _f_Damage;
+        }
+        else
+        {
+            Weapon2.f_Magazine = 0;
+        }
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D col)
+    {
+        base.OnTriggerEnter2D(col);
+
+        //방어태세
+        if (b_SlowRun)
+        {
+            gameObject.GetComponent<PhotonView>().RPC("ShieldTakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
         }
     }
 }
