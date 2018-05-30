@@ -23,6 +23,12 @@ public class InGame : MonoBehaviour
         Cursor.SetCursor(defaultMouse, new Vector2(defaultMouse.width / 2, defaultMouse.height / 2), CursorMode.Auto);
         SpawnCharacter();
         StartDailogue();
+
+
+        this.GetComponent<BossHPSystem>().EnableHpSlider();
+        this.GetComponent<BossHPSystem>().SetMaxBossHP(30);
+        this.GetComponent<BossHPSystem>().SetBossText("Boss");
+
     }
 
     // Update is called once per frame
