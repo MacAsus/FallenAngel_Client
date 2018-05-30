@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Healer : Player
 {
-
     private PhotonVoiceRecorder recorder;
     private PhotonVoiceSpeaker speaker;
 
@@ -67,6 +66,7 @@ public class Healer : Player
                 RotateGun(v_MousePos, true);
                 ChangeWeapon();
                 UpdateRecorderSprite();
+                HealSelf();
                 //Debug.Log("원하는것 call!!");
             }
         }
@@ -105,13 +105,6 @@ public class Healer : Player
         }
         if (!_b_Fired && !_b_Reload) // 기본 상태일 때
         {
-            if (Input.GetKey(KeyCode.Mouse1) && Skill == true)
-            {
-                Debug.Log("Skill 호출!!!");
-                this.gameObject.GetComponent<PhotonView>().RPC("PlayerHealing", PhotonTargets.All, Util.F_HEAL_SELF);
-                Skill = false;
-
-            }
             if (cur_Weapon == Weapon1)
             {
                 if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
@@ -190,6 +183,23 @@ public class Healer : Player
             temp_bullet.s_Victim = s_tag;
             temp_bullet.s_Help = Util.S_PLAYER;
             bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Weapon1.f_BulletSpeed;
+        }
+    }
+
+    protected void HealSelf()
+    {
+        if (Skill == true)
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                Debug.Log("Skill 호출!!!");
+                this.gameObject.GetComponent<PhotonView>().RPC("PlayerHealing", PhotonTargets.All, Util.F_HEAL_SELF);
+                Skill = false;
+            }
+        }
+        else
+        {
+            //금지 사운드
         }
     }
 }

@@ -253,13 +253,15 @@ public class Player : CharacterGeneral
         Debug.Log("PlayerHealing 호출!!!");
         if (this.n_hp > 0)
         {
-            this.n_hp += _f_Heal;
-            StartCoroutine("IsHealing");
-
             if (this.n_hp + _f_Heal >= f_MaxHp)
             {
                 n_hp = f_MaxHp;
             }
+            else
+            {
+                this.n_hp += _f_Heal;
+            }
         }
+        StartCoroutine("IsHealing");
     }
 }
