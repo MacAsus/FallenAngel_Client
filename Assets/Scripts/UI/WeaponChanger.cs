@@ -19,7 +19,7 @@ public class WeaponChanger : MonoBehaviour
     void Update()
     {
         gunName = InGame.Player.GetComponent<Player>().cur_Weapon.s_GunName;
-		Debug.Log("gunName is " + gunName);
+		//Debug.Log("gunName is " + gunName);
         switch (gunName)
         {
 			// 어태커
