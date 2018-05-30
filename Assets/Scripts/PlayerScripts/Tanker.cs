@@ -9,6 +9,7 @@ public class Tanker : Player
     private PhotonVoiceRecorder recorder;
     private PhotonVoiceSpeaker speaker;
 
+    public BoxCollider2D Shield;
 
     void Start()
     {
@@ -20,11 +21,15 @@ public class Tanker : Player
         Weapon2 = new GeneralInitialize.GunParameter(Util.S_SHIELD_NAME, " " , 0, 0, Util.F_SHIELD_HP);
         cur_Weapon = Weapon1;
 
+        Shield = transform.Find("Shield").GetComponent<BoxCollider2D>();
+
         InitializeParam();
 
         cur_Weapon = Weapon1;
         Muzzle = Muzzle1;
         spine_GunAnim.Skeleton.SetSkin(Weapon1.s_GunName);
+
+        Shield.enabled = false;
 
         if (UI != null)
         {
@@ -67,7 +72,7 @@ public class Tanker : Player
                 
                 ChangeWeapon();
                 UpdateRecorderSprite();
-                f_ShieldHp = Weapon2.f_Magazine; //디버깅용
+                f_ShieldHp = Weapon2.f_Magazine; //현재 쉴드 게이지
             }
         }
         else
@@ -148,15 +153,18 @@ public class Tanker : Player
                     PlayerSound.instance.Play_Sound_Melee_Shoot();
                     b_SlowRun = true;
                     b_IsShieldUpdate = false;
+                    Shield.enabled = true;
                 }
                 else if (Input.GetKey(KeyCode.Mouse0) && Skill == false)
                 {
+                    Shield.enabled = false;
                     //금지 사운드
                 }
                 else
                 {
                     spine_GunAnim.state.SetAnimation(0, "Idle", true);
                     b_SlowRun = false;
+                    Shield.enabled = false;
                 }
             }
         }
@@ -218,26 +226,22 @@ public class Tanker : Player
     }
 
     [PunRPC]
-    protected void ShieldTakeDamage(float _f_Damage)
+    protected override void PlayerTakeDamage(float _f_Damage)
     {
-        if (Weapon2.f_Magazine > 0 && Weapon2.f_Magazine > _f_Damage)
+        if (Shield.enabled == false)
         {
-            Weapon2.f_Magazine -= _f_Damage;
+            base.PlayerTakeDamage(_f_Damage);
         }
         else
         {
-            Weapon2.f_Magazine = 0;
-        }
-    }
-
-    protected override void OnTriggerEnter2D(Collider2D col)
-    {
-        base.OnTriggerEnter2D(col);
-
-        //방어태세
-        if (b_SlowRun)
-        {
-            gameObject.GetComponent<PhotonView>().RPC("ShieldTakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
+            if (Weapon2.f_Magazine > 0 && Weapon2.f_Magazine > _f_Damage)
+            {
+                Weapon2.f_Magazine -= _f_Damage;
+            }
+            else if (Weapon2.f_Magazine - _f_Damage <= 0)
+            {
+                Weapon2.f_Magazine = 0;
+            }
         }
     }
 }

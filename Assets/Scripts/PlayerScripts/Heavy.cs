@@ -230,7 +230,7 @@ public class Heavy : Player {
             {
                 if(Mathf.Round(f_AimDegree) != Mathf.Round(g_Weapon.rotation.z))
                 {
-
+                    
                 }
             }
             else

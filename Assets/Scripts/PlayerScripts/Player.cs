@@ -230,7 +230,7 @@ public class Player : CharacterGeneral
     }
 
     [PunRPC]
-    protected void PlayerTakeDamage(float _f_Damage)
+    protected virtual void PlayerTakeDamage(float _f_Damage)
     {
         if (this.n_hp > 0 && this.n_hp > _f_Damage)
         {
