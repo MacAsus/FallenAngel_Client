@@ -45,7 +45,7 @@ public class HighlightIcon : MonoBehaviour
         bufferLagText.enabled = showSpeakerLag && speaker.IsPlaying && speaker.IsVoiceLinked;
         bufferLagText.text = string.Format("{0}", speaker.CurrentBufferLag);
 
-		Debug.Log("recorder.IsTransmitting is" + recorder.IsTransmitting);
+		//Debug.Log("recorder.IsTransmitting is" + recorder.IsTransmitting);
     }
 
     private void LateUpdate()

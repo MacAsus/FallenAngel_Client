@@ -12,10 +12,10 @@ public class Attacker : Player {
         s_tag = Util.S_ENEMY;
 
         Main_Bullet = Resources.Load("BulletPrefab/" + Util.S_AR_BULLET_NAME) as GameObject;
-        Sub_Bullet = Resources.Load("BulletPrefab/" + Util.S_HG_BULLET_NAME) as GameObject;
+        //Sub_Bullet = Resources.Load("BulletPrefab/" + Util.S_HG_BULLET_NAME) as GameObject;
 
         Weapon1 = new GeneralInitialize.GunParameter(Util.S_AR_NAME, Util.S_AR_BULLET_NAME, Util.F_AR_BULLET_SPEED, Util.F_AR_BULLET_DAMAGE, Util.F_AR_MAGAZINE);
-        Weapon2 = new GeneralInitialize.GunParameter(Util.S_HG_NAME, Util.S_HG_BULLET_NAME, Util.F_HG_BULLET_SPEED, Util.F_HG_BULLET_DAMAGE, Util.F_HG_MAGAZINE);
+        //Weapon2 = new GeneralInitialize.GunParameter(Util.S_LASER_NAME, " ", 0, Util.F_LASER_DAMAGE, Util.F_LASER);
 
 
         InitializeParam();
@@ -95,6 +95,17 @@ public class Attacker : Player {
 
         if (!_b_Fired && !_b_Reload) // 기본 상태일 때
         {
+            if (Weapon2.f_Magazine == 0.0f)
+            {
+                Skill = false;
+                Timer += Time.deltaTime;
+                if (Timer >= Util.F_LASER)
+                {
+                    Timer = 0;
+                    Skill = true;
+                    Weapon2.f_Magazine = Util.F_LASER_MAGAZINE;
+                }
+            }
             if (cur_Weapon == Weapon1)
             {
                 if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
@@ -110,26 +121,24 @@ public class Attacker : Player {
                     PlayerSound.instance.Play_Sound_Main_Reload();
                     cur_Weapon.f_Magazine = Util.F_AR_MAGAZINE;
                 }
+                if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
+                {
+                    if (Input.GetKey(KeyCode.Mouse0))
+                    {
+                        PlayerSound.instance.Play_Sound_Zero_Shoot();
+                    }
+                }
             }
             if (cur_Weapon == Weapon2)
             {
-                if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
+                if (Input.GetKey(KeyCode.Mouse0) && Skill == true)
                 {
                     FireBullet();
-                    spine_GunAnim.state.SetAnimation(0, "Hg_Shoot", false);
+                    spine_GunAnim.state.SetAnimation(0, "Laser_Shoot", false);
                     PlayerSound.instance.Play_Sound_Sub_Shoot();
                     --cur_Weapon.f_Magazine;
                 }
-                if (Input.GetKey(KeyCode.R))
-                {
-                    spine_GunAnim.state.SetAnimation(0, "Hg_Reload", false);
-                    PlayerSound.instance.Play_Sound_Sub_Reload();
-                    cur_Weapon.f_Magazine = Util.F_HG_MAGAZINE;
-                }
-            }
-            if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
-            {
-                if (Input.GetKey(KeyCode.Mouse0))
+                if (Input.GetKey(KeyCode.Mouse0) && Skill == false)
                 {
                     PlayerSound.instance.Play_Sound_Zero_Shoot();
                 }
@@ -158,13 +167,9 @@ public class Attacker : Player {
             bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Weapon1.f_BulletSpeed;
         }
 
-        if(cur_Weapon == Weapon2)
+        if (cur_Weapon == Weapon2)
         {
-            GameObject bullet = Instantiate(Sub_Bullet, muzzlePos, Quaternion.identity);
-            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
-            temp_bullet.bulletInfo = Weapon2;
-            temp_bullet.s_Victim = s_tag;
-            bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Weapon2.f_BulletSpeed;
+            //레이저
         }
     }
 }

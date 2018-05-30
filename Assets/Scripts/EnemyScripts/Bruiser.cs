@@ -62,24 +62,6 @@ public class Bruiser : EnemyGeneral
         }
     }
 
-
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        var hit = col.gameObject;
-
-        if (hit.layer == LayerMask.NameToLayer("Bullet"))
-        {
-            if (col.gameObject.GetComponent<BulletGeneral>().s_Victim == Util.S_ENEMY)
-            {
-                bool IsMine = gameObject.GetComponentInParent<CharacterGeneral>().photonView.isMine;
-                if (IsMine)
-                {
-                    EnemySound.instance.Play_Sound_Gun_Hit();
-                    gameObject.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
-                }
-            }
-        }
-    }
     protected override void Trace()
     {
         if (b_IsSearch == true && Target.GetComponent<CharacterGeneral>().n_hp > 0)

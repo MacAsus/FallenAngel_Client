@@ -15,9 +15,13 @@ public class Tower : EnemyGeneral
 
         Target = GameObject.FindWithTag(s_tag);
 
-        Bullet = Resources.Load("BulletPrefab/" + Util.S_HG_BULLET_NAME) as GameObject;
+        //Bullet = Resources.Load("BulletPrefab/" + Util.S__BULLET_NAME) as GameObject;
+        //EnemyWeapon = new GeneralInitialize.GunParameter(Util.S__NAME, Util.S__BULLET_NAME, Util.F__BULLET_SPEED, Util.F__BULLET_DAMAGE, Util.F__MAGAZINE);
 
-        EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_HG_NAME, Util.S_HG_BULLET_NAME, Util.F_HG_BULLET_SPEED, Util.F_HG_BULLET_DAMAGE, Util.F_HG_MAGAZINE);
+        //디버깅용
+        Bullet = Resources.Load("BulletPrefab/" + Util.S_SMG_BULLET_NAME) as GameObject;
+        EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_SMG_NAME, Util.S_SMG_BULLET_NAME, Util.F_SMG_BULLET_SPEED, Util.F_SMG_BULLET_DAMAGE, Util.F_SMG_MAGAZINE);
+        //여기까지
 
         InitializeParam();
     }
@@ -34,23 +38,6 @@ public class Tower : EnemyGeneral
             }
 
             Search(Util.F_TOWER_SEARCH);
-        }
-    }
-
-    protected override void FireBullet()
-    {
-        if (Muzzle)
-        {
-            Vector3 v_muzzle = Muzzle.transform.position;
-            //Vector3 v_bulletSpeed = (Muzzle.transform.position - (Target.transform.position + Util.V_ACCRUATE)).normalized * Util.F_HG_BULLET_SPEED;
-            GameObject bullet = Instantiate(Bullet, v_muzzle, Quaternion.identity);
-            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
-            temp_bullet.bulletInfo = EnemyWeapon;
-            temp_bullet.s_Victim = s_tag;
-            bullet.GetComponent<Rigidbody2D>().velocity = (v_TargetPosition - v_muzzle).normalized * EnemyWeapon.f_BulletSpeed;
-
-            //this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
-            //this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others);
         }
     }
 
@@ -86,24 +73,7 @@ public class Tower : EnemyGeneral
             f_LastNetworkDataReceivedTime = info.timestamp;
         }
     }
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        var hit = col.gameObject;
-
-        if(hit.layer == LayerMask.NameToLayer("Bullet"))
-        {
-            if (col.gameObject.GetComponent<BulletGeneral>().s_Victim == Util.S_ENEMY)
-            {
-                bool IsMine = gameObject.GetComponentInParent<CharacterGeneral>().photonView.isMine;
-                if (IsMine)
-                {
-                    EnemySound.instance.Play_Sound_Gun_Hit();
-                    gameObject.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
-                }
-            }
-        }
-    }
-
+    
     protected override void Search(float dis)
     {
         Vector3 distance = new Vector3(9999, 9999);
@@ -136,7 +106,18 @@ public class Tower : EnemyGeneral
         }
     }
 
-    /*
+    protected override void FireBullet()
+    {
+        if (Muzzle)
+        {
+            Vector3 v_muzzle = Muzzle.transform.position;
+            Vector3 v_bulletSpeed = (Muzzle.transform.position - (Target.transform.position + Util.V_ACCRUATE)).normalized * Util.F_HG_BULLET_SPEED;
+
+            this.photonView.RPC("FireBulletNetwork", PhotonTargets.All, v_muzzle, v_bulletSpeed);
+            this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others);
+        }
+    }
+
     [PunRPC]
     protected override void FireBulletNetwork(Vector3 muzzlePos, Vector3 bulletSpeed)
     {
@@ -146,5 +127,5 @@ public class Tower : EnemyGeneral
         temp_bullet.s_Victim = s_tag;
         bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Util.F_HG_BULLET_SPEED;
     }
-    */
+    
 }

@@ -1,0 +1,27 @@
+
+Medic.png
+size: 128,16
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Hg
+  rotate: false
+  xy: 32, 2
+  size: 20, 11
+  orig: 20, 11
+  offset: 0, 0
+  index: -1
+Pistol
+  rotate: false
+  xy: 2, 3
+  size: 28, 10
+  orig: 28, 10
+  offset: 0, 0
+  index: -1
+Pistol_Piston
+  rotate: false
+  xy: 54, 3
+  size: 14, 10
+  orig: 14, 10
+  offset: 0, 0
+  index: -1

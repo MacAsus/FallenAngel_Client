@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Heavy : Player {
 
-
     private PhotonVoiceRecorder recorder;
     private PhotonVoiceSpeaker speaker;
 
@@ -21,19 +20,16 @@ public class Heavy : Player {
         s_tag = Util.S_ENEMY;
 
         Main_Bullet = Resources.Load("BulletPrefab/" + Util.S_GATLING_BULLET_NAME) as GameObject;
-        
+        Sub_Bullet = Resources.Load("BulletPrefab/" + Util.S_GRENADE_BULLET_NAME) as GameObject;
 
         Weapon1 = new GeneralInitialize.GunParameter(Util.S_GATLING_NAME, Util.S_GATLING_BULLET_NAME, Util.F_GATLING_BULLET_SPEED, Util.F_GATLING_BULLET_DAMAGE, Util.F_GATLING_MAGAZINE);
-        Weapon2 = new GeneralInitialize.GunParameter(Util.S_GRENADE_NAME, Util.S_GRENADE_BULLET_NAME, Util.F_GRENADE_BULLET_SPEED, Util.F_GATLING_BULLET_DAMAGE, Util.F_GREANDE_MAGAZINE);
-        cur_Weapon = Weapon1;
-
+        Weapon2 = new GeneralInitialize.GunParameter(Util.S_GRENADE_NAME, Util.S_GRENADE_BULLET_NAME, Util.F_GRENADE_BULLET_SPEED, Util.F_GRENADE_BULLET_DAMAGE, Util.F_GRENADE_MAGAZINE);
 
         InitializeParam();
 
         cur_Weapon = Weapon1;
         Muzzle = Muzzle1;
         spine_GunAnim.Skeleton.SetSkin(Weapon1.s_GunName);
-
 
         if (UI != null)
         {
@@ -101,6 +97,22 @@ public class Heavy : Player {
 
     protected override void WeaponSpineControl(bool _b_Fired, bool _b_Reload)
     {
+        if (OptionModal.IsActive)
+        { // 옵션창이 켜져있으면 무기 사용 X
+            return;
+        }
+
+        if (Weapon2.f_Magazine == 0.0f)
+        {
+            Skill = false;
+            Timer += Time.deltaTime;
+            if (Timer >= Util.F_GRENADE)
+            {
+                Timer = 0;
+                Skill = true;
+                Weapon2.f_Magazine = Util.F_GRENADE_MAGAZINE;
+            }
+        }
         if (!_b_Fired && !_b_Reload) // 기본 상태일 때
         {
             if (cur_Weapon == Weapon1)
@@ -150,8 +162,6 @@ public class Heavy : Player {
                         spine_GunAnim.Skeleton.SetToSetupPose();
                     }
                 }
-                
-
                 if (Input.GetKey(KeyCode.R))
                 {
                     f_SpinGauge = 0;
@@ -159,16 +169,30 @@ public class Heavy : Player {
                     PlayerSound.instance.Play_Sound_Main_Reload();
                     cur_Weapon.f_Magazine = Util.F_GATLING_MAGAZINE;
                 }
+                if (cur_Weapon.f_Magazine == 0)
+                {
+                    if (Input.GetKey(KeyCode.Mouse0))
+                    {
+                        PlayerSound.instance.Play_Sound_Zero_Shoot();
+                    }
+                }
             }
             if (cur_Weapon == Weapon2)
             {
                 b_SlowRun = false;
+                //b_SpinBool = true;
+                //b_CoolBool = true;
                 f_SpinGauge = 0;
                 f_Recoil = 0;
-            }
-            if (cur_Weapon.f_Magazine == 0) // 장탄수가 0일 때
-            {
-                if (Input.GetKey(KeyCode.Mouse0))
+
+                if (Input.GetKey(KeyCode.Mouse0) && Skill == true)
+                {
+                    FireBullet();
+                    spine_GunAnim.state.SetAnimation(0, "Grenade_Spin", false);
+                    PlayerSound.instance.Play_Sound_Sub_Shoot();
+                    --cur_Weapon.f_Magazine;
+                }
+                if (Input.GetKey(KeyCode.Mouse0) && Skill == false)
                 {
                     PlayerSound.instance.Play_Sound_Zero_Shoot();
                 }
@@ -264,13 +288,16 @@ public class Heavy : Player {
 
         if (cur_Weapon == Weapon2)
         {
-
+            GameObject bullet = Instantiate(Sub_Bullet, muzzlePos, Muzzle.transform.rotation);
+            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
+            temp_bullet.bulletInfo = Weapon2;
+            temp_bullet.s_Victim = s_tag;
+            bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Weapon2.f_BulletSpeed;
         }
     }
 
     IEnumerator GatlingSpin()
     {
-
         b_SpinBool = false;
         f_SpinGauge += 1.0f;
         yield return new WaitForSeconds(0.5f);
@@ -289,5 +316,4 @@ public class Heavy : Player {
         yield return new WaitForSeconds(0.5f);
         b_CoolBool = true;
     }
-
 }
