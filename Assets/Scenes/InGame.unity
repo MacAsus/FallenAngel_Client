@@ -736,7 +736,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 24
+  m_Text: 
 --- !u!222 &357520197
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2330,6 +2330,7 @@ GameObject:
   - component: {fileID: 1598813171}
   - component: {fileID: 1598813172}
   - component: {fileID: 1598813173}
+  - component: {fileID: 1598813174}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -2430,6 +2431,18 @@ MonoBehaviour:
   skillFilter: {fileID: 1435852172}
   coolTimeCounter: {fileID: 357520196}
   coolTime: 10
+--- !u!114 &1598813174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1598813167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df7dd596cc3bb44b2b3d999422cccab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WeaponImg: {fileID: 2057262800}
 --- !u!1 &1613333814
 GameObject:
   m_ObjectHideFlags: 0
@@ -2441,7 +2454,7 @@ GameObject:
   - component: {fileID: 1613333817}
   - component: {fileID: 1613333816}
   m_Layer: 5
-  m_Name: Image
+  m_Name: WeaponImageBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3646,7 +3659,7 @@ Prefab:
     - target: {fileID: 224537465752597400, guid: 4ce5817523bfe49e1b988cfc510c5bdb,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 224380160785469766, guid: 4ce5817523bfe49e1b988cfc510c5bdb,
         type: 2}
@@ -3787,7 +3800,7 @@ GameObject:
   - component: {fileID: 2057262801}
   - component: {fileID: 2057262800}
   m_Layer: 5
-  m_Name: Image
+  m_Name: WeaponImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

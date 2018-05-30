@@ -67,6 +67,7 @@ public class InGame : MonoBehaviour
     void SpawnCharacter()
     {
         string job = (string)PhotonNetwork.player.CustomProperties["job"]; // "Attacker" || "Tanker" || "Healer" || "Heavy"
+        Debug.Log("Job is " + job);
         Player = PhotonNetwork.Instantiate("Character/" + job, new Vector3(0f, -4.0f, 0f), Quaternion.identity, 0);
     }
 
