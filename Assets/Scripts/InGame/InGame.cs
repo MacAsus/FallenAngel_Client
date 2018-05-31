@@ -23,6 +23,12 @@ public class InGame : MonoBehaviour
         Cursor.SetCursor(defaultMouse, new Vector2(defaultMouse.width / 2, defaultMouse.height / 2), CursorMode.Auto);
         SpawnCharacter();
         StartDailogue();
+
+
+        this.GetComponent<BossHPSystem>().EnableHpSlider();
+        this.GetComponent<BossHPSystem>().SetMaxBossHP(30);
+        this.GetComponent<BossHPSystem>().SetBossText("Boss");
+
     }
 
     // Update is called once per frame
@@ -67,6 +73,7 @@ public class InGame : MonoBehaviour
     void SpawnCharacter()
     {
         string job = (string)PhotonNetwork.player.CustomProperties["job"]; // "Attacker" || "Tanker" || "Healer" || "Heavy"
+        Debug.Log("Job is " + job);
         Player = PhotonNetwork.Instantiate("Character/" + job, new Vector3(0f, -4.0f, 0f), Quaternion.identity, 0);
     }
 

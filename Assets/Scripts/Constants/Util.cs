@@ -110,6 +110,10 @@ public class Util : MonoBehaviour {
     public const float F_HEAL = 10.0f;
     public const float F_GRENADE = 10.0f;
 
+    //==========버프 및 디버프==========//
+    public const float F_BURNING = 1.0f;
+    public const float F_DOUBLE = 2.0f;
+
     //몬스터 탄약
 
     //==========기타==========//

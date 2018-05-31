@@ -209,6 +209,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = true;
         yield return null;
     }
+
     protected IEnumerator IsDamagedEnemy()
     {
         mySprite.color = new Color32(255, 0, 0, 255);

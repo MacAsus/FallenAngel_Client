@@ -13,7 +13,8 @@ public class Heavy : Player {
     private bool b_SpinBool = true;
     private bool b_CoolBool = true;
     private string s_CurAnimation = " ";
-    
+
+    private Vector3 v_TerminalBulletPos;
 
     void Start()
     {
@@ -52,7 +53,6 @@ public class Heavy : Player {
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(f_SpinGauge);
         // if this view is not mine, then do not update
         if (photonView.isMine == true)
         {
@@ -61,6 +61,11 @@ public class Heavy : Player {
                 e_SpriteState = SpriteState.Idle;
 
                 v_MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    v_TerminalBulletPos = v_MousePos;
+                }
 
                 // movement synced by Photon View
                 UpdatePosition();
@@ -71,8 +76,6 @@ public class Heavy : Player {
                 
                 RotateGun(v_MousePos, b_NeedtoRotate);
                 UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
-
-
                 ChangeWeapon();
                 UpdateRecorderSprite();
             }
@@ -230,7 +233,7 @@ public class Heavy : Player {
             {
                 if(Mathf.Round(f_AimDegree) != Mathf.Round(g_Weapon.rotation.z))
                 {
-
+                    
                 }
             }
             else

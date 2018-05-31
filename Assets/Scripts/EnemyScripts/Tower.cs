@@ -125,7 +125,7 @@ public class Tower : EnemyGeneral
         BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
         temp_bullet.bulletInfo = EnemyWeapon;
         temp_bullet.s_Victim = s_tag;
-        bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Util.F_HG_BULLET_SPEED;
+        bullet.GetComponent<Rigidbody2D>().velocity = (Target.transform.position - muzzlePos).normalized * Util.F_HG_BULLET_SPEED;
     }
     
 }

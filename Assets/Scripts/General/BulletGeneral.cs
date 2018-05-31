@@ -15,7 +15,7 @@ public class BulletGeneral : MonoBehaviour
 
         if(col.gameObject.layer == LayerMask.NameToLayer("EnemyBody") && s_Victim == Util.S_PLAYER)
         {
-        
+            
         }
         else if(col.gameObject.layer == LayerMask.NameToLayer("PlayerBody") && s_Victim == Util.S_ENEMY)
         {

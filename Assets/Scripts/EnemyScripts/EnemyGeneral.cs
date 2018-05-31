@@ -6,11 +6,11 @@ public class EnemyGeneral : CharacterGeneral
     public float f_Distance;
     public float f_Damage;
     public float delayTimer = 0f;
-
     public float shootDelayTime; //Enemy 총알 생성 속도
 
     public bool b_IsSearch = false;
 
+    public float f_Multiple = 1.0f;
 
     public ParticleSystem ps;
     public GameObject Target;
@@ -48,25 +48,25 @@ public class EnemyGeneral : CharacterGeneral
             //데미지
             if (hit.GetComponent<BulletGeneral>().s_Victim == Util.S_ENEMY)
             {
-                //헤비의 유탄에 맞을 경우
+                //유탄에 맞을 경우
                 if (hit.tag == Util.S_GRENADE_NAME)
                 {
                     bool IsMine = gameObject.GetComponentInParent<CharacterGeneral>().photonView.isMine;
                     if (IsMine)
                     {
                         EnemySound.instance.Play_Sound_Gun_Hit();
-                        gameObject.GetComponent<PhotonView>().RPC("TakeDamageGrenade", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
+                        gameObject.GetComponent<PhotonView>().RPC("TakeDamageGrenade", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage * f_Multiple);
                     }
                 }
 
-                //어태커의 레이저에 맞을 경우
+                //레이저에 맞을 경우
                 else if (hit.tag == Util.S_LASER_NAME)
                 {
                     bool IsMine = gameObject.GetComponentInParent<CharacterGeneral>().photonView.isMine;
                     if (IsMine)
                     {
                         EnemySound.instance.Play_Sound_Gun_Hit();
-                        gameObject.GetComponent<PhotonView>().RPC("TakeDamageLaser", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
+                        gameObject.GetComponent<PhotonView>().RPC("TakeDamageLaser", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage * f_Multiple);
                     }
                 }
 
@@ -77,13 +77,14 @@ public class EnemyGeneral : CharacterGeneral
                     if (IsMine)
                     {
                         EnemySound.instance.Play_Sound_Gun_Hit();
-                        gameObject.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage);
+                        gameObject.GetComponent<PhotonView>().RPC("TakeDamage", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage * f_Multiple);
                     }
                 }
             }
         }
     }
 
+    //일반 공격
     [PunRPC]
     protected void TakeDamage(float _f_Damage)
     {
@@ -105,13 +106,14 @@ public class EnemyGeneral : CharacterGeneral
         }
     }
 
+    //특수 공격(레이저)
     [PunRPC]
     protected void TakeDamageLaser(float _f_Damage)
     {
         if (this.n_hp > 0 && this.n_hp > _f_Damage)
         {
             this.n_hp -= _f_Damage;
-            StartCoroutine("IsDamagedEnemy");
+            StartCoroutine("Weaken");
         }
         else
         {
@@ -126,6 +128,7 @@ public class EnemyGeneral : CharacterGeneral
         }
     }
 
+    //특수 공격(유탄)
     [PunRPC]
     protected void TakeDamageGrenade(float _f_Damage)
     {
@@ -148,30 +151,50 @@ public class EnemyGeneral : CharacterGeneral
         }
     }
 
-    protected IEnumerator Burning(float _f_Damage)
+    //타오름 효과
+    protected IEnumerator Burning()
     {
         float Timer = 0;
-        if (this.n_hp > 0 && this.n_hp > _f_Damage)
+        yield return new WaitForSeconds(1.0f);
+        if (this.n_hp > 0 && this.n_hp > Util.F_BURNING)
         {
-            while (Timer >= 5.0f)
+            while (true)
             {
-                Timer += Time.deltaTime;
-                this.n_hp -= _f_Damage;
+                Timer += 1.0f;
+                this.n_hp -= Util.F_BURNING;
                 StartCoroutine("IsDamagedEnemy");
-                yield return new WaitForSeconds(Time.deltaTime);
+
+                if (this.n_hp - Util.F_BURNING <= 0)
+                {
+                    //불탐 효과로는 적을 죽일수 없음
+                    this.n_hp = 1;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(1.0f);
+                }
+
+                if (Timer == 5.0f)
+                {
+                    break;
+                }
             }
         }
-        else
-        {
-            this.n_hp = 0;
-            this.a_Animator.SetBool("Death", true);
-            this.transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
-            this.transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
-            ps.Play();
-            EnemySound.instance.Play_Sound_Explosion();
 
-            StartCoroutine(Death_Wait_Sec(0.5f));
-        }
+        yield return null;
+    }
+
+    //레이저 효과
+    protected IEnumerator Weaken()
+    {
+        mySprite.color = new Color32(0, 0, 255, 255);
+        f_Multiple = Util.F_DOUBLE;
+
+        yield return new WaitForSeconds(Util.F_LASER);
+
+        mySprite.color = new Color32(255, 255, 255, 255);
+        f_Multiple = 1.0f;
+
         yield return null;
     }
 }
