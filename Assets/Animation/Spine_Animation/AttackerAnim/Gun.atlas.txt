@@ -1,20 +1,34 @@
 
 Gun.png
-size: 64,16
+size: 128,32
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 AR_0
   rotate: false
-  xy: 2, 2
+  xy: 78, 11
   size: 42, 12
   orig: 42, 12
   offset: 0, 0
   index: -1
 AR_Hand
-  rotate: false
-  xy: 46, 10
+  rotate: true
+  xy: 122, 17
   size: 6, 4
   orig: 6, 4
+  offset: 0, 0
+  index: -1
+Laser
+  rotate: false
+  xy: 2, 2
+  size: 36, 21
+  orig: 36, 21
+  offset: 0, 0
+  index: -1
+Laser_Gauge
+  rotate: false
+  xy: 40, 2
+  size: 36, 21
+  orig: 36, 21
   offset: 0, 0
   index: -1
