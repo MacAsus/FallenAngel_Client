@@ -95,6 +95,11 @@ public class Heavy : Player {
         {
             myPlayer = InGame.Player;
             Camera.main.transform.position = myPlayer.transform.position - Vector3.forward;
+
+            //if (b_UnHit == true)
+            //{
+            //    CameraShaking.instance.ShakeCamera(0.5f);
+            //}
         }
     }
 

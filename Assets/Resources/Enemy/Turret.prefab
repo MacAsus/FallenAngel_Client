@@ -377,6 +377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigid: {fileID: 0}
   n_hp: 0
+  f_MaxHp: 0
   f_AimDegree: 0
   f_Speed: 0
   f_SpritelocalScale: 0
@@ -400,6 +401,7 @@ MonoBehaviour:
   delayTimer: 0
   shootDelayTime: 0
   b_IsSearch: 0
+  f_Multiple: 1
   ps: {fileID: 198690317882239044}
   Target: {fileID: 0}
   Bullet: {fileID: 0}
