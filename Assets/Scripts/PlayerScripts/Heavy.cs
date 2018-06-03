@@ -61,12 +61,12 @@ public class Heavy : Player {
                 e_SpriteState = SpriteState.Idle;
 
                 v_MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
+                
                 if (Input.GetMouseButtonDown(0))
                 {
                     v_TerminalBulletPos = v_MousePos;
                 }
-
+                
                 // movement synced by Photon View
                 UpdatePosition();
 
@@ -225,6 +225,7 @@ public class Heavy : Player {
 
     protected override void RotateGun(Vector3 v_TargetPos, bool b_NeedtoRotate)
     {
+        
         GetAimDegree(v_TargetPos);
         f_AimDegree += f_Recoil;
         if (b_NeedtoRotate)
@@ -233,7 +234,7 @@ public class Heavy : Player {
             {
                 if(Mathf.Round(f_AimDegree) != Mathf.Round(g_Weapon.rotation.z))
                 {
-                    
+                    g_Weapon.rotation = Quaternion.Euler(new Vector3(0, 0, f_AimDegree));
                 }
             }
             else
@@ -291,11 +292,54 @@ public class Heavy : Player {
 
         if (cur_Weapon == Weapon2)
         {
-            GameObject bullet = Instantiate(Sub_Bullet, muzzlePos, Muzzle.transform.rotation);
-            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
+            GameObject Grenade = Instantiate(Sub_Bullet, muzzlePos, Muzzle.transform.rotation);
+            BulletGeneral temp_bullet = Grenade.GetComponent<BulletGeneral>();
             temp_bullet.bulletInfo = Weapon2;
             temp_bullet.s_Victim = s_tag;
-            bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Weapon2.f_BulletSpeed;
+            Grenade.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Weapon2.f_BulletSpeed;
+        }
+    }
+
+    protected override void ChangeWeapon()
+    {
+        if (photonView.isMine == true)
+        {
+            //개틀링건이 가열중일 때 무기교체 시
+            if (cur_Weapon == Weapon1 && f_SpinGauge > 0)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    f_SpinGauge = 0;
+                    spine_GunAnim.state.SetAnimation(0, "Gatling_Spin", false);
+                    Muzzle = Muzzle2;
+                    cur_Weapon = Weapon2;
+                    spine_GunAnim.Skeleton.SetSkin(Weapon2.s_GunName);
+                    spine_GunAnim.Skeleton.SetToSetupPose();
+                    spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
+                }
+            }
+            //개틀링건이 가열중이지 않을 때 무기교체 시
+            else if (cur_Weapon == Weapon1 && f_SpinGauge == 0)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    Muzzle = Muzzle2;
+                    cur_Weapon = Weapon2;
+                    spine_GunAnim.Skeleton.SetSkin(Weapon2.s_GunName);
+                    spine_GunAnim.Skeleton.SetToSetupPose();
+                    spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
+                }
+            }
+            //일반상태
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                Muzzle = Muzzle1;
+                cur_Weapon = Weapon1;
+                spine_GunAnim.Skeleton.SetSkin(Weapon1.s_GunName);
+                spine_GunAnim.Skeleton.SetToSetupPose();
+                spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
+
+            }
         }
     }
 
