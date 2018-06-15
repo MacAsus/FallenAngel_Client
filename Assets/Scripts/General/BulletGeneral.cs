@@ -13,8 +13,11 @@ public class BulletGeneral : MonoBehaviour
 
     void Start()
     {
-        CollisionParticle = GetComponentInChildren<ParticleSystem>();
-        CollisionParticle.Stop();
+        if (CollisionParticle != null)
+        {
+            CollisionParticle = GetComponentInChildren<ParticleSystem>();
+            CollisionParticle.Stop();
+        }
     }
 
     void OnTriggerEnter2D(Collider2D col)

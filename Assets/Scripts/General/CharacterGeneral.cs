@@ -44,6 +44,12 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     protected bool b_NetworkFired;
     protected double f_LastNetworkDataReceivedTime;
 
+    private void Update()
+    {
+        g_Sprite.GetComponent<SpriteRenderer>().sortingOrder = (int)transform.position.y;
+        g_Weapon.gameObject.GetComponent<MeshRenderer>().sortingOrder = (int)transform.position.y + 1;
+    }
+
     protected virtual void InitializeParam()
     {
         e_SpriteState = SpriteState.Idle; //상태 초기화(Idle)

@@ -81,8 +81,15 @@ public class Tower : EnemyGeneral
         {
             foreach (GameObject player in NetworkUtil.PlayerList)
             {
-                Vector3 playerPos = player.transform.position;
-
+                Vector3 playerPos;
+                if (player != null)
+                {
+                    playerPos = player.transform.position;
+                }
+                else
+                {
+                    continue;
+                }
                 float playerToTowerDist = Vector3.Distance(playerPos, this.transform.position); // "플레이어 - 타워" 사이의 거리
                 float minDistToTowerDist = Vector3.Distance(distance, this.transform.position); // "최소거리 - 타워" 사이의 거리
 
