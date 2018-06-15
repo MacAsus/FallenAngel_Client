@@ -243,6 +243,7 @@ public class Player : CharacterGeneral
         {
             this.n_hp = 0;
             this.a_Animator.SetBool("Death", true);
+            e_SpriteState = SpriteState.Dead;
             StartCoroutine(Death_Wait_Sec(1.0f));
         }
     }
