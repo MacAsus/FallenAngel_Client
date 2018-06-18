@@ -60,4 +60,5 @@ MonoBehaviour:
   - TakeDamageGrenade
   - TakeDamageLaser
   - ShieldTakeDamage
+  - PlayerHitMove
   DisableAutoOpenWizard: 1

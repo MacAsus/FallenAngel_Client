@@ -46,11 +46,20 @@ public class BulletGeneral : MonoBehaviour
         //총알이 벽과 충돌할 경우
         else if (hit.layer == LayerMask.NameToLayer("Wall") || hit.tag == "Wall")
         {
-            if (this.gameObject.tag == "Grenade")
+            if (this.gameObject.tag != "Laser")
             {
-                CollisionParticle.Play();
+                if (this.gameObject.tag == "Grenade")
+                {
+                    CollisionParticle.Play();
+                }
+                Destroy(this.gameObject);
             }
-            Destroy(this.gameObject);
         }
     }
+    //[PunRPC]
+    //public void PlayerHitMove(GameObject My)
+    //{
+    //    //var hit = col.gameObject;
+    //    My.GetComponentInParent<Rigidbody2D>().velocity = ((My.transform.position + Util.V_ACCRUATE) - this.gameObject.transform.position).normalized * 30.0f;
+    //}
 }

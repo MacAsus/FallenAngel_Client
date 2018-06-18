@@ -19,6 +19,7 @@ public class Player : CharacterGeneral
     
     protected bool b_NeedtoRotate = true;
     protected bool b_SlowRun = false;
+    protected bool b_Knock = false;
 
     //무기 및 탄약 정보를 받아옴
     public GeneralInitialize.GunParameter cur_Weapon, Weapon1, Weapon2;
@@ -39,39 +40,43 @@ public class Player : CharacterGeneral
         int tempx = 0;
         int tempy = 0;
         float temp_speed = f_Speed;
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        if (!b_Knock)
         {
-            // If chat module is enabled, then block user moving
-            if (InGame.keyboardInputDisabled)
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
             {
-                return;
-            }
+                // If chat module is enabled, then block user moving
+                if (InGame.keyboardInputDisabled)
+                {
+                    return;
+                }
 
-            e_SpriteState = SpriteState.Run;
+                e_SpriteState = SpriteState.Run;
 
-            if (Input.GetKey(KeyCode.A))
-            {
-                tempx -= 1;
+                if (Input.GetKey(KeyCode.A))
+                {
+                    tempx -= 1;
+                }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    tempx += 1;
+                }
+                if (Input.GetKey(KeyCode.W))
+                {
+                    tempy += 1;
+                }
+                if (Input.GetKey(KeyCode.S))
+                {
+                    tempy -= 1;
+                }
             }
-            if (Input.GetKey(KeyCode.D))
+            if (b_SlowRun)
             {
-                tempx += 1;
+                temp_speed = f_Speed / 2;
             }
-            if (Input.GetKey(KeyCode.W))
-            {
-                tempy += 1;
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                tempy -= 1;
-            }
+            v_NetworkPosition = new Vector3(rigid.position.x + (temp_speed * tempx * Time.deltaTime), rigid.position.y + (temp_speed * tempy * Time.deltaTime));
+
+            rigid.velocity = new Vector2(temp_speed * tempx, temp_speed * tempy);
         }
-        if (b_SlowRun)
-        {
-            temp_speed = f_Speed / 2;
-        }
-        v_NetworkPosition = new Vector3(rigid.position.x + (temp_speed * tempx * Time.deltaTime), rigid.position.y + (temp_speed * tempy * Time.deltaTime));
-        rigid.velocity = new Vector2(temp_speed * tempx, temp_speed * tempy);
     }
 
     protected virtual void UpdateRecorderSprite() {
@@ -227,8 +232,13 @@ public class Player : CharacterGeneral
             bool IsMine = gameObject.GetComponent<CharacterGeneral>().photonView.isMine;
             if (IsMine)
             {
+                Vector3 temp_Dir = Vector3.Normalize(transform.position - col.transform.position);
                 //PlayerSound.instance.Play_Sound_Melee_Hit();
+                //gameObject.GetComponent<PhotonView>().RPC("PlayerHitMove", PhotonTargets.All, (this.gameObject.GetComponentInParent<Player>().transform.position + Util.V_ACCRUATE) - col.gameObject.GetComponentInParent<EnemyGeneral>().transform.position);
+                // PlayerHitMove((this.gameObject.GetComponentInParent<Player>().transform.position + Util.V_ACCRUATE) - col.gameObject.GetComponentInParent<EnemyGeneral>().transform.position);
+                PlayerHitMove(temp_Dir);
                 gameObject.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, col.gameObject.GetComponentInParent<EnemyGeneral>().f_Damage);
+                
             }
         }
     }
@@ -269,4 +279,20 @@ public class Player : CharacterGeneral
         }
         StartCoroutine("IsHealing");
     }
+
+    //[PunRPC]
+    protected void PlayerHitMove(Vector3 dir)
+    {
+        StartCoroutine(KnockBackTimer(0.25f));
+        this.gameObject.GetComponentInParent<Rigidbody2D>().velocity = dir.normalized * 15.0f;
+
+    }
+
+    IEnumerator KnockBackTimer(float time)
+    {
+        b_Knock = true;
+        yield return new WaitForSeconds(time);
+        b_Knock = false;
+    }
+
 }

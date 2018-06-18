@@ -67,7 +67,7 @@ public class EnemyGeneral : CharacterGeneral
                     if (IsMine && b_IsPossibleLaserHit == true)
                     {
                         EnemySound.instance.Play_Sound_Gun_Hit();
-                        gameObject.GetComponent<PhotonView>().RPC("TakeDamageLaser", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage * f_Multiple);
+                        gameObject.GetComponent<PhotonView>().RPC("TakeDamageLaser", PhotonTargets.All, col.gameObject.GetComponentInChildren<BulletGeneral>().bulletInfo.f_BulletDamage * f_Multiple);
                     }
                 }
 

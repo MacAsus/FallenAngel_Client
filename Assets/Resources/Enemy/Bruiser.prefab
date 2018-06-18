@@ -185,7 +185,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &61172753700476462
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -292,6 +292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigid: {fileID: 0}
   n_hp: 0
+  f_MaxHp: 0
   f_AimDegree: 0
   f_Speed: 0
   f_SpritelocalScale: 0
@@ -315,6 +316,8 @@ MonoBehaviour:
   delayTimer: 0
   shootDelayTime: 0
   b_IsSearch: 0
+  b_IsPossibleLaserHit: 1
+  f_Multiple: 1
   ps: {fileID: 198297682225918868}
   Target: {fileID: 0}
   Bullet: {fileID: 0}
