@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LaserScript : MonoBehaviour {
     public Transform LaserBody;
-    public float LaserLength = 30;
+    public float LaserLength = 15;
     int n_Layer;
     //public Transform DirTransform;
     //Vector3 dir;

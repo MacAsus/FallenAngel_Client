@@ -7,6 +7,10 @@ public class Attacker : Player {
     private PhotonVoiceRecorder recorder;
     private PhotonVoiceSpeaker speaker;
 
+    public GameObject myLaser;
+
+    private bool b_IsLaserShoot = false;
+
     void Start()
     {
         s_tag = Util.S_ENEMY;
@@ -25,6 +29,7 @@ public class Attacker : Player {
         Muzzle = Muzzle1;
         spine_GunAnim.Skeleton.SetSkin(Weapon1.s_GunName);
         b_NeedtoRotate = true;
+        myLaser.SetActive(false);
 
         if (UI != null)
         {
@@ -64,7 +69,12 @@ public class Attacker : Player {
                 //스파인 애니메이션, 총알의 발사 모두 처리하는 함수
                 UpdateAnimationControl(e_SpriteState, b_Fired, b_Reload);
                 RotateGun(v_MousePos, true);
-                ChangeWeapon();
+
+                if (b_IsLaserShoot == false)
+                {
+                    ChangeWeapon();
+                }
+                
                 UpdateRecorderSprite();
                 Debug.Log("원하는것 call!!");
             }
@@ -95,17 +105,6 @@ public class Attacker : Player {
 
         if (!_b_Fired && !_b_Reload) // 기본 상태일 때
         {
-            if (Weapon2.f_Magazine == 0.0f)
-            {
-                Skill = false;
-                Timer += Time.deltaTime;
-                if (Timer >= Util.F_LASER)
-                {
-                    Timer = 0;
-                    Skill = true;
-                    Weapon2.f_Magazine = Util.F_LASER_MAGAZINE;
-                }
-            }
             if (cur_Weapon == Weapon1)
             {
                 if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
@@ -136,7 +135,10 @@ public class Attacker : Player {
                     FireBullet();
                     spine_GunAnim.state.SetAnimation(0, "Laser_Shoot", false);
                     PlayerSound.instance.Play_Sound_Sub_Shoot();
-                    --cur_Weapon.f_Magazine;
+                    cur_Weapon.f_Magazine = 0.0f;
+                    Skill = false;
+                    
+                    StartCoroutine("LaserTime");
                 }
                 if (Input.GetKey(KeyCode.Mouse0) && Skill == false)
                 {
@@ -169,13 +171,35 @@ public class Attacker : Player {
 
         if (cur_Weapon == Weapon2)
         {
-            GameObject bullet = Instantiate(Sub_Bullet, muzzlePos, Muzzle.transform.rotation);
-            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
-            temp_bullet.bulletInfo = Weapon2;
-            temp_bullet.s_Victim = s_tag;
-            //bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * 20.0f;
-            //StartCoroutine(Death_Wait_Sec(1.0f));
-            //Destroy(bullet);
+            b_IsLaserShoot = true;
+            StartCoroutine("LaserShootTime");   
         }
+    }
+
+    protected IEnumerator LaserTime()
+    {
+        yield return new WaitForSeconds(Util.F_LASER);
+
+        Skill = true;
+        Weapon2.f_Magazine = Util.F_LASER_MAGAZINE;
+
+        yield return null;
+    }
+
+    protected IEnumerator LaserShootTime()
+    {
+        
+        BulletGeneral temp_bullet = myLaser.GetComponentInChildren<BulletGeneral>();
+        temp_bullet.bulletInfo = Weapon2;
+        temp_bullet.s_Victim = s_tag;
+        myLaser.SetActive(true);
+
+        yield return new WaitForSeconds(Util.F_LASER_SHOOT_TIME);
+
+        b_Fired = false;
+        b_IsLaserShoot = false;
+        myLaser.SetActive(false);
+
+        yield return null;
     }
 }

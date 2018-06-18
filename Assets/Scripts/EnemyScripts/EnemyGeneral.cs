@@ -9,6 +9,7 @@ public class EnemyGeneral : CharacterGeneral
     public float shootDelayTime; //Enemy 총알 생성 속도
 
     public bool b_IsSearch = false;
+    public bool b_IsPossibleLaserHit = true;
 
     public float f_Multiple = 1.0f;
 
@@ -63,7 +64,7 @@ public class EnemyGeneral : CharacterGeneral
                 else if (hit.tag == Util.S_LASER_NAME)
                 {
                     bool IsMine = gameObject.GetComponentInParent<CharacterGeneral>().photonView.isMine;
-                    if (IsMine)
+                    if (IsMine && b_IsPossibleLaserHit == true)
                     {
                         EnemySound.instance.Play_Sound_Gun_Hit();
                         gameObject.GetComponent<PhotonView>().RPC("TakeDamageLaser", PhotonTargets.All, col.gameObject.GetComponent<BulletGeneral>().bulletInfo.f_BulletDamage * f_Multiple);
@@ -114,6 +115,7 @@ public class EnemyGeneral : CharacterGeneral
         {
             this.n_hp -= _f_Damage;
             StartCoroutine("Weaken");
+            StartCoroutine("LaserHitCoolTime");
         }
         else
         {
@@ -196,5 +198,14 @@ public class EnemyGeneral : CharacterGeneral
         f_Multiple = 1.0f;
 
         yield return null;
+    }
+
+    protected IEnumerator LaserHitCoolTime()
+    {
+        b_IsPossibleLaserHit = false;
+
+        yield return new WaitForSeconds(Util.F_LASER_HIT_COOLTIME);
+
+        b_IsPossibleLaserHit = true;
     }
 }

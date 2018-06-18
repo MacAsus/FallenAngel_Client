@@ -106,6 +106,8 @@ public class Util : MonoBehaviour {
 
     //==========쿨타임==========//
     public const float F_LASER = 5.0f;
+    public const float F_LASER_HIT_COOLTIME = 1.0f;
+    public const float F_LASER_SHOOT_TIME = 2.0f;
     public const float F_SHIELD = 5.0f;
     public const float F_HEAL = 10.0f;
     public const float F_GRENADE = 10.0f;

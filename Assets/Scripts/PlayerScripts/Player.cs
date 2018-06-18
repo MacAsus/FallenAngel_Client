@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Spine;
+using Spine.Unity;
+using System.Collections;
 
 public class Player : CharacterGeneral
 {
@@ -163,7 +166,7 @@ public class Player : CharacterGeneral
                 spine_GunAnim.Skeleton.SetSkin(Weapon1.s_GunName);
                 spine_GunAnim.Skeleton.SetToSetupPose();
                 spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
-
+                b_Fired = false;
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
@@ -178,6 +181,7 @@ public class Player : CharacterGeneral
                 spine_GunAnim.Skeleton.SetSkin(Weapon2.s_GunName);
                 spine_GunAnim.Skeleton.SetToSetupPose();
                 spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
+                b_Fired = false;
             }
         }
     }
