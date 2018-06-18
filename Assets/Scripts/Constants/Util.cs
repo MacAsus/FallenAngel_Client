@@ -45,7 +45,7 @@ public class Util : MonoBehaviour {
     public const string S_LASER_NAME = "Laser";
     public const string S_LASER_BULLET_NAME = "Laser_Norm";
     //public const float F_LASER_BULLET_SPEED = ;
-    public const float F_LASER_DAMAGE = 30.0f;
+    public const float F_LASER_DAMAGE = 3.0f;
     public const float F_LASER_MAGAZINE = 1.0f;
 
     //헤비

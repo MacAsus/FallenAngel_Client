@@ -12,10 +12,10 @@ public class Attacker : Player {
         s_tag = Util.S_ENEMY;
 
         Main_Bullet = Resources.Load("BulletPrefab/" + Util.S_AR_BULLET_NAME) as GameObject;
-        //Sub_Bullet = Resources.Load("BulletPrefab/" + Util.S_HG_BULLET_NAME) as GameObject;
+        Sub_Bullet = Resources.Load("BulletPrefab/" + Util.S_LASER_NAME) as GameObject;
 
         Weapon1 = new GeneralInitialize.GunParameter(Util.S_AR_NAME, Util.S_AR_BULLET_NAME, Util.F_AR_BULLET_SPEED, Util.F_AR_BULLET_DAMAGE, Util.F_AR_MAGAZINE);
-        //Weapon2 = new GeneralInitialize.GunParameter(Util.S_LASER_NAME, " ", 0, Util.F_LASER_DAMAGE, Util.F_LASER);
+        Weapon2 = new GeneralInitialize.GunParameter(Util.S_LASER_NAME, Util.S_LASER_NAME, 0, Util.F_LASER_DAMAGE, Util.F_LASER_MAGAZINE);
 
 
         InitializeParam();
@@ -169,7 +169,13 @@ public class Attacker : Player {
 
         if (cur_Weapon == Weapon2)
         {
-            //레이저
+            GameObject bullet = Instantiate(Sub_Bullet, muzzlePos, Muzzle.transform.rotation);
+            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
+            temp_bullet.bulletInfo = Weapon2;
+            temp_bullet.s_Victim = s_tag;
+            //bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * 20.0f;
+            //StartCoroutine(Death_Wait_Sec(1.0f));
+            //Destroy(bullet);
         }
     }
 }

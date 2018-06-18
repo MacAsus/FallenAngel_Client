@@ -25,13 +25,16 @@ public class BulletGeneral : MonoBehaviour
         var hit = col.gameObject;
 
         //플레이어가 쏜 총알이 적과 충돌할 경우
-        if (hit.layer == LayerMask.NameToLayer("EnemyBody") && s_Victim == Util.S_ENEMY)
+        if (hit.layer == LayerMask.NameToLayer("EnemyBody"))
         {
-            if (this.gameObject.tag == "Grenade")
+            if (this.gameObject.tag != "Laser" && s_Victim == Util.S_ENEMY)
             {
-                CollisionParticle.Play();
+                if (this.gameObject.tag == "Grenade")
+                {
+                    CollisionParticle.Play();
+                }
+                Destroy(this.gameObject);
             }
-            Destroy(this.gameObject);
         }
 
         //적이 쏜 총알이 플레이어와 충돌할 경우

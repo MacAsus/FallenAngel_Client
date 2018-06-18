@@ -1461,7 +1461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 11400000, guid: 178f244cbb619ff4aa72d7d4c7461d11, type: 2}
-  initialSkinName: Laser
+  initialSkinName: Ar
   initialFlipX: 0
   initialFlipY: 0
   separatorSlotNames: []
