@@ -1,0 +1,83 @@
+
+Cap_Boss1.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Arm1
+  rotate: false
+  xy: 442, 34
+  size: 10, 5
+  orig: 10, 5
+  offset: 0, 0
+  index: -1
+Behind
+  rotate: false
+  xy: 676, 164
+  size: 231, 88
+  orig: 231, 88
+  offset: 0, 0
+  index: -1
+Body
+  rotate: false
+  xy: 2, 30
+  size: 218, 222
+  orig: 218, 222
+  offset: 0, 0
+  index: -1
+DamagedHead
+  rotate: false
+  xy: 442, 41
+  size: 20, 31
+  orig: 20, 31
+  offset: 0, 0
+  index: -1
+Eye
+  rotate: false
+  xy: 222, 30
+  size: 218, 222
+  orig: 218, 222
+  offset: 0, 0
+  index: -1
+Front
+  rotate: false
+  xy: 442, 164
+  size: 232, 88
+  orig: 232, 88
+  offset: 0, 0
+  index: -1
+Front_Light
+  rotate: false
+  xy: 442, 74
+  size: 232, 88
+  orig: 232, 88
+  offset: 0, 0
+  index: -1
+Hand
+  rotate: false
+  xy: 39, 17
+  size: 20, 11
+  orig: 20, 11
+  offset: 0, 0
+  index: -1
+MadHead
+  rotate: false
+  xy: 909, 221
+  size: 20, 31
+  orig: 20, 31
+  offset: 0, 0
+  index: -1
+NonDamageHead
+  rotate: false
+  xy: 676, 131
+  size: 20, 31
+  orig: 20, 31
+  offset: 0, 0
+  index: -1
+RobotBody
+  rotate: true
+  xy: 2, 2
+  size: 26, 35
+  orig: 26, 35
+  offset: 0, 0
+  index: -1

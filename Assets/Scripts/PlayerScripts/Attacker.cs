@@ -66,7 +66,7 @@ public class Attacker : Player {
                 RotateGun(v_MousePos, true);
                 ChangeWeapon();
                 UpdateRecorderSprite();
-                Debug.Log("원하는것 call!!");
+
             }
         }
         else
@@ -170,7 +170,7 @@ public class Attacker : Player {
         if (cur_Weapon == Weapon2)
         {
             GameObject bullet = Instantiate(Sub_Bullet, muzzlePos, Muzzle.transform.rotation);
-            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
+            BulletGeneral temp_bullet = bullet.GetComponentInChildren<BulletGeneral>();
             temp_bullet.bulletInfo = Weapon2;
             temp_bullet.s_Victim = s_tag;
             //bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * 20.0f;
