@@ -76,7 +76,7 @@ public class Attacker : Player {
                 }
                 
                 UpdateRecorderSprite();
-                Debug.Log("원하는것 call!!");
+
             }
         }
         else
