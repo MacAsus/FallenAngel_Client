@@ -75,7 +75,7 @@ public class InGame : MonoBehaviour
         string job = (string)PhotonNetwork.player.CustomProperties["job"]; // "Attacker" || "Tanker" || "Healer" || "Heavy"
         Debug.Log("Job is " + job);
         Player = PhotonNetwork.Instantiate("Character/" + job, new Vector3(0f, -4.0f, 0f), Quaternion.identity, 0);
-        WWW www = new WWW("https://fallen-angel.s3.ap-northeast-2.amazonaws.com/yoohoogun114%40naver.com_heavy.png");
+        WWW www = new WWW("https://fallen-angel.s3.amazonaws.com/yoohoogun114%40naver.com_attacker.png");
         yield return www;
         Player.transform.Find("Weapon").GetComponent<Renderer>().material.mainTexture = www.texture;
     }
