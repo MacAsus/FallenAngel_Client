@@ -30,6 +30,8 @@ public class RoomListGui : Photon.PunBehaviour
         if(PhotonNetwork.connectionState == ConnectionState.Connected) {
             GameObject.FindWithTag("GUI").GetComponent<LoadingGui>().CompleteLoading();
         }
+
+        SetUserNickName();
     }
 
     // Update is called once per frame
@@ -128,5 +130,13 @@ public class RoomListGui : Photon.PunBehaviour
     {
         // networkState.text = "OnPhotonCreateRoomFailed...";
         Debug.Log("Launcher:OnPhotonCreateRoomFailed() was called by PUN.");
+    }
+
+    void SetUserNickName() {
+        string prefsEmail = PlayerPrefs.GetString("email"); // PlayerPref에 저장하고 씬 이동
+        if (!string.IsNullOrEmpty(prefsEmail)) // already login
+        {
+            PhotonNetwork.player.NickName = prefsEmail;
+        }
     }
 }
