@@ -43,6 +43,12 @@ public class BulletGeneral : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        //적이 쏜 총알이 쉴드와 충돌할 경우
+        else if (hit.layer == LayerMask.NameToLayer("Shield") && s_Victim == Util.S_PLAYER)
+        {
+            Destroy(this.gameObject);
+        }
+
         //총알이 벽과 충돌할 경우
         else if (hit.layer == LayerMask.NameToLayer("Wall") || hit.tag == "Wall")
         {

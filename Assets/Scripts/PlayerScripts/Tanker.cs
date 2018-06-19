@@ -5,7 +5,7 @@ using UnityEngine;
 public class Tanker : Player
 {
     public bool b_IsShieldUpdate = true; //UpdateShieldHp 함수의 작동 가능 여부
-    public float f_ShieldHp; //디버깅용
+    public float f_ShieldHp;
     private PhotonVoiceRecorder recorder;
     private PhotonVoiceSpeaker speaker;
 
@@ -73,6 +73,7 @@ public class Tanker : Player
                 ChangeWeapon();
                 UpdateRecorderSprite();
                 f_ShieldHp = Weapon2.f_Magazine; //현재 쉴드 게이지
+
             }
         }
         else
@@ -154,17 +155,15 @@ public class Tanker : Player
                     b_SlowRun = true;
                     b_IsShieldUpdate = false;
                     Shield.enabled = true;
+                    //transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
                 }
-                else if (Input.GetKey(KeyCode.Mouse0) && Skill == false)
-                {
-                    Shield.enabled = false;
-                    //금지 사운드
-                }
+                
                 else
                 {
                     spine_GunAnim.state.SetAnimation(0, "Idle", true);
                     b_SlowRun = false;
                     Shield.enabled = false;
+                    //transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = true;
                 }
             }
         }
@@ -230,9 +229,23 @@ public class Tanker : Player
     {
         if (Shield.enabled == false)
         {
-            base.PlayerTakeDamage(_f_Damage);
+            if (this.n_hp > 0 && this.n_hp > _f_Damage)
+            {
+                this.n_hp -= _f_Damage;
+                this.b_UnHit = true;
+                transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
+                StartCoroutine("IsDamaged");
+            }
+            else
+            {
+                this.n_hp = 0;
+                this.a_Animator.SetBool("Death", true);
+                e_SpriteState = SpriteState.Dead;
+                StartCoroutine(Death_Wait_Sec(1.0f));
+            }
         }
-        else
+
+        else if (Shield.enabled == true)
         {
             if (Weapon2.f_Magazine > 0 && Weapon2.f_Magazine > _f_Damage)
             {

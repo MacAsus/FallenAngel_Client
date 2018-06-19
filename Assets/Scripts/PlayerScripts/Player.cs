@@ -233,12 +233,9 @@ public class Player : CharacterGeneral
             if (IsMine)
             {
                 Vector3 temp_Dir = Vector3.Normalize(transform.position - col.transform.position);
-                //PlayerSound.instance.Play_Sound_Melee_Hit();
-                //gameObject.GetComponent<PhotonView>().RPC("PlayerHitMove", PhotonTargets.All, (this.gameObject.GetComponentInParent<Player>().transform.position + Util.V_ACCRUATE) - col.gameObject.GetComponentInParent<EnemyGeneral>().transform.position);
-                // PlayerHitMove((this.gameObject.GetComponentInParent<Player>().transform.position + Util.V_ACCRUATE) - col.gameObject.GetComponentInParent<EnemyGeneral>().transform.position);
-                PlayerHitMove(temp_Dir);
+                //PlayerHitMove(temp_Dir);
+                gameObject.GetComponent<PhotonView>().RPC("PlayerHitMove", PhotonTargets.All, temp_Dir);
                 gameObject.GetComponent<PhotonView>().RPC("PlayerTakeDamage", PhotonTargets.All, col.gameObject.GetComponentInParent<EnemyGeneral>().f_Damage);
-                
             }
         }
     }
@@ -280,7 +277,7 @@ public class Player : CharacterGeneral
         StartCoroutine("IsHealing");
     }
 
-    //[PunRPC]
+    [PunRPC]
     protected void PlayerHitMove(Vector3 dir)
     {
         StartCoroutine(KnockBackTimer(0.25f));

@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CollisionParticle: {fileID: 0}
-  s_Victim: 
+  s_Victim: Enemy
   s_Help: 
 --- !u!114 &114580235620322766
 MonoBehaviour:

@@ -136,9 +136,10 @@ public class Attacker : Player {
                     spine_GunAnim.state.SetAnimation(0, "Laser_Shoot", false);
                     PlayerSound.instance.Play_Sound_Sub_Shoot();
                     cur_Weapon.f_Magazine = 0.0f;
+
                     Skill = false;
-                    
                     StartCoroutine("LaserTime");
+
                 }
                 if (Input.GetKey(KeyCode.Mouse0) && Skill == false)
                 {
@@ -171,8 +172,13 @@ public class Attacker : Player {
 
         if (cur_Weapon == Weapon2)
         {
-            b_IsLaserShoot = true;
-            StartCoroutine("LaserShootTime");   
+            //b_IsLaserShoot = true;
+            //StartCoroutine("LaserShootTime");
+            GameObject bullet = Instantiate(Sub_Bullet, muzzlePos, Muzzle.transform.rotation);
+            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
+            temp_bullet.bulletInfo = Weapon2;
+            temp_bullet.s_Victim = s_tag;
+            StartCoroutine(DestroyLaser(bullet));
         }
     }
 
@@ -200,6 +206,13 @@ public class Attacker : Player {
         b_IsLaserShoot = false;
         myLaser.SetActive(false);
 
+        yield return null;
+    }
+
+    protected IEnumerator DestroyLaser(GameObject laser)
+    {
+        yield return new WaitForSeconds(Util.F_LASER_SHOOT_TIME);
+        Destroy(laser);
         yield return null;
     }
 }

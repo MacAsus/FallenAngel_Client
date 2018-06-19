@@ -24,12 +24,12 @@ public class Util : MonoBehaviour {
     public const float F_BOMBER_SPEED = 2.0f;
     public const float F_BOMBER_HP = 50.0f;
 
-    /* Fallen */
-    public const string S_FALLEN_NAME = "Fallen";
-    public const float F_FALLEN_DAMAGE = 20.0f;
-    public const float F_FALLEN_SEARCH = 6.5f;
-    public const float F_FALLEN_SPEED = 3.5f;
-    public const float F_FALLEN_HP = 1000.0f;
+    /* Robot */
+    public const string S_ROBOT_NAME = "Robot";
+    public const float F_ROBOT_DAMAGE = 30.0f;
+    public const float F_ROBOT_SEARCH = 6.5f;
+    public const float F_ROBOT_SPEED = 3.5f;
+    public const float F_ROBOT_HP = 500.0f;
 
     //==========무기 및 탄약 정보==========//
 
