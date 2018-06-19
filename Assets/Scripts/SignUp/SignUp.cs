@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SignUp : MonoBehaviour {
 
@@ -52,6 +53,7 @@ public class SignUp : MonoBehaviour {
 			var res = JsonUtility.FromJson<WWWres> (data.text);
 			if(res.success) { // Login 성공
 				PlayerPrefs.SetString("email", ID_INPUT.text); // PlayerPref에 저장하고 씬 이동
+				SceneManager.LoadScene("RoomList", LoadSceneMode.Single);
 			} else { // Login 실패
 				PlayerPrefs.SetString("email", ""); // PlayerPref에 있는 값 비움
 			} 
