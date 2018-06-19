@@ -35,13 +35,7 @@ public class Boss1 : EnemyGeneral {
 
     string[] s_CurAnim = { " ", " ", " " };
     bool b_IsSpin = false;
-    protected void BossOnevent(TrackEntry trackIndex, Spine.Event e)
-    {
-        if(e.data.name == "Shoot")
-        {
-            Debug.Log("Shoot");
-        }
-    }
+    
     // Use this for initialization
     void Start () {
         s_tag = Util.S_PLAYER;
@@ -54,21 +48,10 @@ public class Boss1 : EnemyGeneral {
         Target = GameObject.FindWithTag(s_tag);
 
         v_muzzle[0] = this.gameObject.transform.position;
-        v_muzzle[1] = muzzle1.transform.position;
-        v_muzzle[2] = muzzle2.transform.position;
-        v_muzzle[3] = muzzle3.transform.position;
-        v_muzzle[4] = muzzle4.transform.position;
-        v_muzzle[5] = muzzle5.transform.position;
-        v_muzzle[6] = muzzle6.transform.position;
-        v_muzzle[7] = muzzle7.transform.position;
-        v_muzzle[8] = muzzle8.transform.position;
-        v_muzzle[9] = muzzle9.transform.position;
-        v_muzzle[10] = muzzle10.transform.position;
-        v_muzzle[11] = muzzle11.transform.position;
-        v_muzzle[12] = muzzle12.transform.position;
+        
 
         Bullet = Resources.Load("BulletPrefab/" + Util.S_SMG_BULLET_NAME) as GameObject;
-        EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_SMG_NAME, Util.S_SMG_BULLET_NAME, Util.F_SMG_BULLET_SPEED, Util.F_SMG_BULLET_DAMAGE, Util.F_SMG_MAGAZINE);
+        EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_SMG_NAME, Util.S_SMG_BULLET_NAME, 3.0f, Util.F_SMG_BULLET_DAMAGE, Util.F_SMG_MAGAZINE);
 
         InitializeParam();
 
@@ -125,27 +108,43 @@ public class Boss1 : EnemyGeneral {
 	}
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
+        v_muzzle[1] = muzzle1.transform.position;
+        v_muzzle[2] = muzzle2.transform.position;
+        v_muzzle[3] = muzzle3.transform.position;
+        v_muzzle[4] = muzzle4.transform.position;
+        v_muzzle[5] = muzzle5.transform.position;
+        v_muzzle[6] = muzzle6.transform.position;
+        v_muzzle[7] = muzzle7.transform.position;
+        v_muzzle[8] = muzzle8.transform.position;
+        v_muzzle[9] = muzzle9.transform.position;
+        v_muzzle[10] = muzzle10.transform.position;
+        v_muzzle[11] = muzzle11.transform.position;
+        v_muzzle[12] = muzzle12.transform.position;
 
         if (n_hp > 0)
         {
-            delayTimer += Time.deltaTime;
-
             if (Target != null)
             {
                 v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
-                WeaponSpineControl(b_Fired, b_Reload);
             }
 
+            this.photonView.RPC("PatternAnim", PhotonTargets.All);
+            //PatternAnim();
             Search(Util.F_ROBOT_SEARCH);
         }
 
+        if (n_hp <= 0)
+        {
+            this.photonView.RPC("Dead", PhotonTargets.All);
+        }
         ////애니메이션 디버깅용
         //if (Input.GetKey(KeyCode.Q))
         //{
-            
+
         //    setAnimation(0, "Shot", true, 1);
-            
+
         //}
         //if (Input.GetKeyDown(KeyCode.W))
         //{
@@ -168,6 +167,14 @@ public class Boss1 : EnemyGeneral {
         //    setAnimation(0, "Dead", true, 1);
         //}
         ////여기까지
+    }
+
+    protected void BossOnevent(TrackEntry trackIndex, Spine.Event e)
+    {
+        if (e.data.name == "Shoot")
+        {
+            Pattern1();
+        }
     }
 
     void setAnimation(int track, string animName, bool loop, float speed)
@@ -202,35 +209,44 @@ public class Boss1 : EnemyGeneral {
     {
         
     }
+    protected void SpinSpeed(float Time)
+    {
+        setAnimation(2, "Spin", true, Time);
+    }
+    protected void ShootSpeed(float Time)
+    {
+        setAnimation(0, "Shot", true, Time);
+    }
+
+    [PunRPC]
+    protected void Dead()
+    {
+        setAnimation(0, "Dead", true, 1);
+
+    }
+    [PunRPC]
+    protected void PatternAnim()
+    {
+        if (n_hp > 0)
+        {
+            //1단계 패턴
+            if (n_hp <= Util.F_ROBOT_HP && n_hp >= Util.F_ROBOT_HP / 2)
+            {
+                ShootSpeed(1f);
+                SpinSpeed(0.1f);
+            }
+            //2단계 패턴
+            else
+            {
+                ShootSpeed(1f);
+                SpinSpeed(0.1f);
+            }
+        }
+    } 
 
     protected override void WeaponSpineControl(bool _b_EnemyFired, bool _b_EnemyReload)
     {
-        //생존 시
-        if (n_hp > 0)
-        {
-            //패턴1
-            if (n_hp <= Util.F_ROBOT_HP && n_hp >= Util.F_ROBOT_HP / 2)
-            {
-                if (/*b_IsSearch == true &&*/ delayTimer > shootDelayTime)
-                {
-                    if (!_b_EnemyFired)
-                    {
-                        Pattern1();
-                        EnemySound.instance.Play_Sound_Main_Shoot();
-                        setAnimation(0, "Shot", false, 1);
-                        setAnimation(2, "Spin", false, 1);
-                    }
-                }
-            }
-        }
-
-        //사망 시
-        else if (n_hp <= 0)
-        {
-            //파티클 뿌려주기
-            setAnimation(0, "Dead", true, 1);
-
-        }
+        
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -266,9 +282,8 @@ public class Boss1 : EnemyGeneral {
         }
 
         this.photonView.RPC("Pattern1Network", PhotonTargets.All, v_bulletDir);
-        this.photonView.RPC("FireAnimationNetwork", PhotonTargets.Others);
+        //this.photonView.RPC("PatternAnim", PhotonTargets.Others);
     }
-
     [PunRPC]
     protected void Pattern1Network(Vector3[] bulletDir)
     {
@@ -341,21 +356,26 @@ public class Boss1 : EnemyGeneral {
         temp_bullet12.s_Victim = s_tag;
 
 
-        bullet1.GetComponent<Rigidbody2D>().velocity = bulletDir[1].normalized * Util.F_SMG_BULLET_SPEED;
-        bullet2.GetComponent<Rigidbody2D>().velocity = bulletDir[2].normalized * Util.F_SMG_BULLET_SPEED;
-        bullet3.GetComponent<Rigidbody2D>().velocity = bulletDir[3].normalized * Util.F_SMG_BULLET_SPEED;
+        bullet1.GetComponent<Rigidbody2D>().velocity = bulletDir[1].normalized * EnemyWeapon.f_BulletSpeed;
+        bullet2.GetComponent<Rigidbody2D>().velocity = bulletDir[2].normalized * EnemyWeapon.f_BulletSpeed;
+        bullet3.GetComponent<Rigidbody2D>().velocity = bulletDir[3].normalized * EnemyWeapon.f_BulletSpeed;
 
-        bullet4.GetComponent<Rigidbody2D>().velocity = bulletDir[4].normalized * Util.F_SMG_BULLET_SPEED;
-        bullet5.GetComponent<Rigidbody2D>().velocity = bulletDir[5].normalized * Util.F_SMG_BULLET_SPEED;
-        bullet6.GetComponent<Rigidbody2D>().velocity = bulletDir[6].normalized * Util.F_SMG_BULLET_SPEED;
+        bullet4.GetComponent<Rigidbody2D>().velocity = bulletDir[4].normalized * EnemyWeapon.f_BulletSpeed;
+        bullet5.GetComponent<Rigidbody2D>().velocity = bulletDir[5].normalized * EnemyWeapon.f_BulletSpeed;
+        bullet6.GetComponent<Rigidbody2D>().velocity = bulletDir[6].normalized * EnemyWeapon.f_BulletSpeed;
 
-        bullet7.GetComponent<Rigidbody2D>().velocity = bulletDir[7].normalized * Util.F_SMG_BULLET_SPEED;
-        bullet8.GetComponent<Rigidbody2D>().velocity = bulletDir[8].normalized * Util.F_SMG_BULLET_SPEED;
-        bullet9.GetComponent<Rigidbody2D>().velocity = bulletDir[9].normalized * Util.F_SMG_BULLET_SPEED;
+        bullet7.GetComponent<Rigidbody2D>().velocity = bulletDir[7].normalized * EnemyWeapon.f_BulletSpeed;
+        bullet8.GetComponent<Rigidbody2D>().velocity = bulletDir[8].normalized * EnemyWeapon.f_BulletSpeed;
+        bullet9.GetComponent<Rigidbody2D>().velocity = bulletDir[9].normalized * EnemyWeapon.f_BulletSpeed;
 
-        bullet10.GetComponent<Rigidbody2D>().velocity = bulletDir[10].normalized * Util.F_SMG_BULLET_SPEED;
-        bullet11.GetComponent<Rigidbody2D>().velocity = bulletDir[11].normalized * Util.F_SMG_BULLET_SPEED;
-        bullet12.GetComponent<Rigidbody2D>().velocity = bulletDir[12].normalized * Util.F_SMG_BULLET_SPEED;
+        bullet10.GetComponent<Rigidbody2D>().velocity = bulletDir[10].normalized * EnemyWeapon.f_BulletSpeed;
+        bullet11.GetComponent<Rigidbody2D>().velocity = bulletDir[11].normalized * EnemyWeapon.f_BulletSpeed;
+        bullet12.GetComponent<Rigidbody2D>().velocity = bulletDir[12].normalized * EnemyWeapon.f_BulletSpeed;
+    }
+
+    protected void Pattern2()
+    {
+
     }
 
     protected override void Search(float dis)
@@ -374,6 +394,7 @@ public class Boss1 : EnemyGeneral {
                 {
                     continue;
                 }
+
                 float playerToTowerDist = Vector3.Distance(playerPos, this.transform.position); // "플레이어 - 타워" 사이의 거리
                 float minDistToTowerDist = Vector3.Distance(distance, this.transform.position); // "최소거리 - 타워" 사이의 거리
 
@@ -392,7 +413,6 @@ public class Boss1 : EnemyGeneral {
             else
             {
                 b_IsSearch = false;
-                //a_Animator.SetBool("Aim", false);
             }
         }
     }

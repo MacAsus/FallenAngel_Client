@@ -62,4 +62,6 @@ MonoBehaviour:
   - ShieldTakeDamage
   - PlayerHitMove
   - Pattern1Network
+  - PatternAnim
+  - Dead
   DisableAutoOpenWizard: 1
