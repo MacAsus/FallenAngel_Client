@@ -5,7 +5,11 @@ licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Sound_Explosion: {fileID: 8300000, guid: d04c3a202d2884842a46fce40d8905d9, type: 3}
+  - Sound_Main_Shoot: {instanceID: 0}
+  - Sound_Melee_Hit: {instanceID: 0}
+  - Sound_Gun_Hit: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

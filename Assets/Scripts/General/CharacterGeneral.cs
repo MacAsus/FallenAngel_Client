@@ -82,8 +82,12 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
             spine_GunAnim.state.Event += SpineOnevent;
         }
 
+        if (g_Sprite.GetComponent<SpriteRenderer>() != null)
+        {
+            mySprite = g_Sprite.GetComponent<SpriteRenderer>();
+        }
+
         f_MaxHp = n_hp; //최대체력 설정
-        mySprite = g_Sprite.GetComponent<SpriteRenderer>();
     }
 
     protected void SpineOnevent(TrackEntry trackIndex, Spine.Event e)
@@ -218,11 +222,23 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 
     protected IEnumerator IsDamagedEnemy()
     {
-        mySprite.color = new Color32(255, 0, 0, 255);
+        if (mySprite != null)
+        {
+            mySprite.color = new Color32(255, 0, 0, 255);
 
-        yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.1f);
 
-        mySprite.color = new Color32(255, 255, 255, 255);
+            mySprite.color = new Color32(255, 255, 255, 255);
+        }
+
+        else
+        {
+            spine_CharacterAnim.skeleton.SetColor(Color.red);
+
+            yield return new WaitForSeconds(0.1f);
+
+            spine_CharacterAnim.skeleton.SetColor(Color.white);
+        }
         yield return null;
     }
 

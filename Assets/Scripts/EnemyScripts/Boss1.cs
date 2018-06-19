@@ -123,57 +123,51 @@ public class Boss1 : EnemyGeneral {
         v_muzzle[11] = muzzle11.transform.position;
         v_muzzle[12] = muzzle12.transform.position;
 
+        //생존 시
         if (n_hp > 0)
         {
+            Search(Util.F_ROBOT_SEARCH);
             if (Target != null)
             {
                 v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
             }
 
-            this.photonView.RPC("PatternAnim", PhotonTargets.All);
-            //PatternAnim();
-            Search(Util.F_ROBOT_SEARCH);
+            //체력 100% ~ 50%
+            if (n_hp >= (Util.F_ROBOT_HP / 2) && n_hp <= Util.F_ROBOT_HP)
+            {
+                this.photonView.RPC("Pattern1Anim", PhotonTargets.All);
+                //if (b_IsSearch == true)
+                //{
+                //    this.photonView.RPC("Rush", PhotonTargets.All);
+                //}
+            }
+            
+            //체력 50% ~ 0%
+            else if (n_hp < (Util.F_ROBOT_HP / 2))
+            {
+                if (b_IsSearch == true)
+                {
+                    this.photonView.RPC("Rush", PhotonTargets.All);
+                }
+                else
+                {
+                    this.photonView.RPC("Pattern2Anim", PhotonTargets.All);
+                }
+            }
         }
 
-        if (n_hp <= 0)
+        //사망 시
+        else if (n_hp <= 0)
         {
             this.photonView.RPC("Dead", PhotonTargets.All);
         }
-        ////애니메이션 디버깅용
-        //if (Input.GetKey(KeyCode.Q))
-        //{
-
-        //    setAnimation(0, "Shot", true, 1);
-
-        //}
-        //if (Input.GetKeyDown(KeyCode.W))
-        //{
-        //    if (b_IsSpin)
-        //    {
-        //        b_IsSpin = false;
-        //    }
-        //    else
-        //    {
-        //        b_IsSpin = true;
-        //        setAnimation(2, "Spin", true, 1.25f);
-        //    }
-        //}
-        //if (Input.GetKey(KeyCode.E))
-        //{
-        //    setAnimation(0, "Idle", true, 1);
-        //}
-        //if (Input.GetKey(KeyCode.R))
-        //{
-        //    setAnimation(0, "Dead", true, 1);
-        //}
-        ////여기까지
     }
 
     protected void BossOnevent(TrackEntry trackIndex, Spine.Event e)
     {
         if (e.data.name == "Shoot")
         {
-            Pattern1();
+            this.photonView.RPC("Fire", PhotonTargets.All);
         }
     }
 
@@ -209,10 +203,13 @@ public class Boss1 : EnemyGeneral {
     {
         
     }
+
     protected void SpinSpeed(float Time)
     {
         setAnimation(2, "Spin", true, Time);
     }
+
+    //ShootSpeed 호출시 자동으로 총알 발사
     protected void ShootSpeed(float Time)
     {
         setAnimation(0, "Shot", true, Time);
@@ -223,30 +220,6 @@ public class Boss1 : EnemyGeneral {
     {
         setAnimation(0, "Dead", true, 1);
 
-    }
-    [PunRPC]
-    protected void PatternAnim()
-    {
-        if (n_hp > 0)
-        {
-            //1단계 패턴
-            if (n_hp <= Util.F_ROBOT_HP && n_hp >= Util.F_ROBOT_HP / 2)
-            {
-                ShootSpeed(1f);
-                SpinSpeed(0.1f);
-            }
-            //2단계 패턴
-            else
-            {
-                ShootSpeed(1f);
-                SpinSpeed(0.1f);
-            }
-        }
-    } 
-
-    protected override void WeaponSpineControl(bool _b_EnemyFired, bool _b_EnemyReload)
-    {
-        
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -270,23 +243,32 @@ public class Boss1 : EnemyGeneral {
     }
 
     //패턴1 - 스핀X, 모든 총구에서 총알 뿌리기
-    protected void Pattern1()
-    {
-        Vector3[] v_bulletDir = new Vector3[13];
+    //protected void Pattern1()
+    //{
+    //    Vector3[] v_bulletDir = new Vector3[13];
 
-        v_bulletDir[0] = v_muzzle[0];
+    //    v_bulletDir[0] = v_muzzle[0];
+
+    //    for (int i = 1; i <= 12; i++)
+    //    {
+    //        v_bulletDir[i] = (v_muzzle[i] - (v_muzzle[0] + Util.V_ACCRUATE)).normalized;
+    //    }
+
+    //    this.photonView.RPC("Pattern1", PhotonTargets.All, v_bulletDir);
+    //    //this.photonView.RPC("PatternAnim", PhotonTargets.Others);
+    //}
+    [PunRPC]
+    protected void Fire()
+    {
+        Vector3[] bulletDir = new Vector3[13];
+
+        bulletDir[0] = v_muzzle[0];
 
         for (int i = 1; i <= 12; i++)
         {
-            v_bulletDir[i] = (v_muzzle[i] - (v_muzzle[0] + Util.V_ACCRUATE)).normalized;
+            bulletDir[i] = (v_muzzle[i] - (v_muzzle[0] + Util.V_ACCRUATE)).normalized;
         }
 
-        this.photonView.RPC("Pattern1Network", PhotonTargets.All, v_bulletDir);
-        //this.photonView.RPC("PatternAnim", PhotonTargets.Others);
-    }
-    [PunRPC]
-    protected void Pattern1Network(Vector3[] bulletDir)
-    {
         //총알 생성
         GameObject bullet1 = Instantiate(Bullet, v_muzzle[1], muzzle1.transform.rotation);
         GameObject bullet2 = Instantiate(Bullet, v_muzzle[2], muzzle2.transform.rotation);
@@ -373,9 +355,23 @@ public class Boss1 : EnemyGeneral {
         bullet12.GetComponent<Rigidbody2D>().velocity = bulletDir[12].normalized * EnemyWeapon.f_BulletSpeed;
     }
 
-    protected void Pattern2()
+    [PunRPC]
+    protected void Pattern1Anim()
     {
-
+        ShootSpeed(0.5f);
+        SpinSpeed(0.1f);
+    }
+    [PunRPC]
+    protected void Rush()
+    {
+        setAnimation(0, "Dead", true, 1);
+        StartCoroutine("WaitAnim");
+    }
+    [PunRPC]
+    protected void Pattern2Anim()
+    {
+        ShootSpeed(1.2f);
+        SpinSpeed(0.2f);
     }
 
     protected override void Search(float dis)
@@ -415,5 +411,13 @@ public class Boss1 : EnemyGeneral {
                 b_IsSearch = false;
             }
         }
+    }
+
+    IEnumerator WaitAnim()
+    {
+        yield return new WaitForSeconds(1.0f);
+        SpinSpeed(2.0f);
+        //돌진
+        rigid.velocity = (v_TargetPosition - transform.position).normalized * f_Speed * 3;
     }
 }

@@ -15,6 +15,7 @@ public class InGame : MonoBehaviour
     public static bool keyboardInputDisabled = false;
     public GameObject Map;
     public GameObject OptionModalGameObj;
+    public GameObject Boss;
 
     // Use this for initialization
     void Start()
@@ -28,14 +29,15 @@ public class InGame : MonoBehaviour
 
 
         this.GetComponent<BossHPSystem>().EnableHpSlider();
-        this.GetComponent<BossHPSystem>().SetMaxBossHP(30);
-        this.GetComponent<BossHPSystem>().SetBossText("Boss");
+        this.GetComponent<BossHPSystem>().SetMaxBossHP((int)Util.F_ROBOT_HP);
+        this.GetComponent<BossHPSystem>().SetBossText("Robot");
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        this.GetComponent<BossHPSystem>().SetBossHP((int)Boss.GetComponent<EnemyGeneral>().n_hp);
         if(Player && Player.GetComponent<Player>()) {
             PlayerHP.text = Player.GetComponent<Player>().n_hp+"";
             PlayerMagazine.text = Player.GetComponent<Player>().cur_Weapon.f_Magazine+" / " + Player.GetComponent<Player>().cur_Weapon.s_GunName;

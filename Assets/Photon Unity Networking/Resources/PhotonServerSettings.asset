@@ -64,4 +64,10 @@ MonoBehaviour:
   - Pattern1Network
   - PatternAnim
   - Dead
+  - Pattern1
+  - Pattern2
+  - Pattern1Anim
+  - Pattern2Anim
+  - Fire
+  - Rush
   DisableAutoOpenWizard: 1

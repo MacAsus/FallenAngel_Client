@@ -72,7 +72,6 @@ GameObject:
   - component: {fileID: 82613326214513408}
   - component: {fileID: 50444023060966672}
   - component: {fileID: 114991770508404478}
-  - component: {fileID: 114706939878763702}
   m_Layer: 12
   m_Name: Turret
   m_TagString: Enemy
@@ -401,25 +400,11 @@ MonoBehaviour:
   delayTimer: 0
   shootDelayTime: 0
   b_IsSearch: 0
+  b_IsPossibleLaserHit: 1
   f_Multiple: 1
   ps: {fileID: 198690317882239044}
   Target: {fileID: 0}
   Bullet: {fileID: 0}
---- !u!114 &114706939878763702
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1296679679950070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43d3a12bc1b7d9b4e94cdb75794e253e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Sound_Explosion: {fileID: 8300000, guid: d04c3a202d2884842a46fce40d8905d9, type: 3}
-  Sound_Main_Shoot: {fileID: 0}
-  Sound_Melee_Hit: {fileID: 0}
-  Sound_Gun_Hit: {fileID: 0}
 --- !u!114 &114991770508404478
 MonoBehaviour:
   m_ObjectHideFlags: 1

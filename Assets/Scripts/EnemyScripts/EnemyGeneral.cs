@@ -14,6 +14,7 @@ public class EnemyGeneral : CharacterGeneral
     public float f_Multiple = 1.0f;
 
     public ParticleSystem ps;
+
     public GameObject Target;
     public GameObject Bullet;
 
@@ -96,14 +97,22 @@ public class EnemyGeneral : CharacterGeneral
         }
         else
         {
-            this.n_hp = 0;
-            this.a_Animator.SetBool("Death", true);
-            this.transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
-            this.transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
-            ps.Play();
-            EnemySound.instance.Play_Sound_Explosion();
+            if (mySprite != null)
+            {
+                this.a_Animator.SetBool("Death", true);
+                this.transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
+                this.transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
+                StartCoroutine(Death_Wait_Sec(0.5f));
+            }
+            else
+            {
+                //this.transform.Find("Sprite").GetComponent<MeshRenderer>().enabled = false;
+                this.transform.Find("Trigger").GetComponent<CircleCollider2D>().enabled = false;
+            }
 
-            StartCoroutine(Death_Wait_Sec(0.5f));
+            this.n_hp = 0;
+            ps.Play();
+            EnemySound.instance.Play_Sound_Explosion();  
         }
     }
 
@@ -119,14 +128,22 @@ public class EnemyGeneral : CharacterGeneral
         }
         else
         {
+            if (mySprite != null)
+            {
+                this.a_Animator.SetBool("Death", true);
+                this.transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
+                this.transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
+                StartCoroutine(Death_Wait_Sec(0.5f));
+            }
+            else
+            {
+                //this.transform.Find("Sprite").GetComponent<MeshRenderer>().enabled = false;
+                this.transform.Find("Trigger").GetComponent<CircleCollider2D>().enabled = false;
+            }
+
             this.n_hp = 0;
-            this.a_Animator.SetBool("Death", true);
-            this.transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
-            this.transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
             ps.Play();
             EnemySound.instance.Play_Sound_Explosion();
-
-            StartCoroutine(Death_Wait_Sec(0.5f));
         }
     }
 
@@ -142,14 +159,22 @@ public class EnemyGeneral : CharacterGeneral
         }
         else
         {
+            if (mySprite != null)
+            {
+                this.a_Animator.SetBool("Death", true);
+                this.transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
+                this.transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
+                StartCoroutine(Death_Wait_Sec(0.5f));
+            }
+            else
+            {
+                //this.transform.Find("Sprite").GetComponent<MeshRenderer>().enabled = false;
+                this.transform.Find("Trigger").GetComponent<CircleCollider2D>().enabled = false;
+            }
+
             this.n_hp = 0;
-            this.a_Animator.SetBool("Death", true);
-            this.transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
-            this.transform.Find("Sprite").GetComponent<SpriteRenderer>().enabled = false;
             ps.Play();
             EnemySound.instance.Play_Sound_Explosion();
-
-            StartCoroutine(Death_Wait_Sec(0.5f));
         }
     }
 

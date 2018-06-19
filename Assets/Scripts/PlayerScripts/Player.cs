@@ -162,32 +162,30 @@ public class Player : CharacterGeneral
 
     protected virtual void ChangeWeapon()
     {
-        if (photonView.isMine == true)
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            Muzzle = Muzzle1;
+            cur_Weapon = Weapon1;
+            spine_GunAnim.Skeleton.SetSkin(Weapon1.s_GunName);
+            spine_GunAnim.Skeleton.SetToSetupPose();
+            spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
+            b_Fired = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (Muzzle2 != null)
             {
-                Muzzle = Muzzle1;
-                cur_Weapon = Weapon1;
-                spine_GunAnim.Skeleton.SetSkin(Weapon1.s_GunName);
-                spine_GunAnim.Skeleton.SetToSetupPose();
-                spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
-                b_Fired = false;
+                Muzzle = Muzzle2;
             }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
+            else
             {
-                if (Muzzle2 != null)
-                {
-                    Muzzle = Muzzle2;
-                }else
-                {
-                    Muzzle = null;
-                }
-                cur_Weapon = Weapon2;
-                spine_GunAnim.Skeleton.SetSkin(Weapon2.s_GunName);
-                spine_GunAnim.Skeleton.SetToSetupPose();
-                spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
-                b_Fired = false;
+                Muzzle = null;
             }
+            cur_Weapon = Weapon2;
+            spine_GunAnim.Skeleton.SetSkin(Weapon2.s_GunName);
+            spine_GunAnim.Skeleton.SetToSetupPose();
+            spine_GunAnim.AnimationState.Apply(spine_GunAnim.Skeleton);
+            b_Fired = false;
         }
     }
 
