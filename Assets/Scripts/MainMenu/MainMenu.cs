@@ -7,7 +7,14 @@ public class MainMenu : MonoBehaviour {
     public AudioSource BtnClickSound;
 
     public void PlayGame() {
-        SceneManager.LoadScene("RoomList", LoadSceneMode.Single);
+        string prefsEmail = PlayerPrefs.GetString("email"); // PlayerPref에 저장하고 씬 이동
+        if (!string.IsNullOrEmpty(prefsEmail)) // already login
+        {
+            SceneManager.LoadScene("RoomList", LoadSceneMode.Single);
+        } else { // need to login
+            SceneManager.LoadScene("Login", LoadSceneMode.Single);
+        }
+        
 	}
 
 	public void QuitGame() {
