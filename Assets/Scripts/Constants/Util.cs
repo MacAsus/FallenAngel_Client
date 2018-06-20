@@ -29,7 +29,7 @@ public class Util : MonoBehaviour {
     public const float F_ROBOT_DAMAGE = 30.0f;
     public const float F_ROBOT_SEARCH = 50.0f;
     public const float F_ROBOT_SPEED = 1.0f;
-    public const float F_ROBOT_HP = 500.0f;
+    public const float F_ROBOT_HP = 2000.0f;
 
     //==========무기 및 탄약 정보==========//
 
@@ -73,7 +73,7 @@ public class Util : MonoBehaviour {
 
     /* Shield */
     public const string S_SHIELD_NAME = "Shield";
-    public const float F_SHIELD_HP = 100.0f;
+    public const float F_SHIELD_HP = 250.0f;
 
     //힐러
     /* Hg */

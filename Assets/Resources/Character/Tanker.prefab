@@ -865,7 +865,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.35}
+  m_Size: {x: 2, y: 1.8}
   m_EdgeRadius: 0
 --- !u!61 &61825736301817256
 BoxCollider2D:
@@ -1214,8 +1214,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114891294671686522}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114503330013504814
@@ -1441,7 +1441,7 @@ MonoBehaviour:
   n_hp: 250
   f_MaxHp: 0
   f_AimDegree: 0
-  f_Speed: 5
+  f_Speed: 6
   f_Multiple: 1
   f_SpritelocalScale: 0
   f_WeaponlocalScale: 0

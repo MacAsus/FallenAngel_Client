@@ -182,7 +182,7 @@ public class Healer : Player
             temp_bullet.bulletInfo = Weapon2;
             temp_bullet.s_Victim = s_tag;
             temp_bullet.s_Help = Util.S_PLAYER;
-            bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Weapon1.f_BulletSpeed;
+            bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized * Weapon2.f_BulletSpeed;
         }
     }
 

@@ -246,7 +246,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     {
         if (mySprite != null)
         {
-            mySprite.color = new Color32(0, 0, 255, 255);
+            mySprite.color = new Color32(255, 0, 0, 255);
             f_Multiple = Util.F_DOUBLE;
 
             yield return new WaitForSeconds(Util.F_LASER);
@@ -256,7 +256,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
         }
         else
         {
-            spine_CharacterAnim.skeleton.SetColor(Color.blue);
+            spine_CharacterAnim.skeleton.SetColor(Color.red);
             f_Multiple = Util.F_DOUBLE;
 
             yield return new WaitForSeconds(Util.F_LASER);

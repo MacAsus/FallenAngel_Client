@@ -31,12 +31,16 @@ public class BulletGeneral : MonoBehaviour
             {
                 BulletSound.instance.Play_Sound_Explosion();
                 CollisionParticle.Play();
+                Destroy(this.gameObject);
             }
-            //else
-            //{
-            //    BulletSound.instance.Play_Sound_Gun_Hit();
-            //}
-            Destroy(this.gameObject);
+            else if(this.gameObject.tag == "Laser")
+            {
+                
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
         }
 
         //적이 쏜 총알이 플레이어와 충돌할 경우
