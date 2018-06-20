@@ -3,21 +3,21 @@
 	<Character>
 		<Name>Attacker</Name>
 		<Hp>150</Hp>
-		<Speed>5</Speed>
+		<Speed>8</Speed>
 	</Character>
 	<Character>
 		<Name>Tanker</Name>
 		<Hp>250</Hp>
-		<Speed>3</Speed>
+		<Speed>6</Speed>
 	</Character>
 	<Character>
 		<Name>Healer</Name>
 		<Hp>100</Hp>
-		<Speed>4</Speed>
+		<Speed>7</Speed>
 	</Character>
 	<Character>
 		<Name>Heavy</Name>
 		<Hp>150</Hp>
-		<Speed>3</Speed>
+		<Speed>6</Speed>
 	</Character>
 </Job>

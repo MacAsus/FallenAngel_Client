@@ -1378,7 +1378,7 @@ MonoBehaviour:
   n_hp: 150
   f_MaxHp: 0
   f_AimDegree: 0
-  f_Speed: 5
+  f_Speed: 7
   f_Multiple: 1
   f_SpritelocalScale: 0
   f_WeaponlocalScale: 0

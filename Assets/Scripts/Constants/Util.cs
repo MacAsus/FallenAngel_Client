@@ -27,9 +27,9 @@ public class Util : MonoBehaviour {
     /* Robot */
     public const string S_ROBOT_NAME = "Robot";
     public const float F_ROBOT_DAMAGE = 30.0f;
-    public const float F_ROBOT_SEARCH = 10.0f;
-    public const float F_ROBOT_SPEED = 2.0f;
-    public const float F_ROBOT_HP = 50.0f;
+    public const float F_ROBOT_SEARCH = 50.0f;
+    public const float F_ROBOT_SPEED = 1.0f;
+    public const float F_ROBOT_HP = 500.0f;
 
     //==========무기 및 탄약 정보==========//
 

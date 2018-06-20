@@ -1,19 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.Events;
 using Spine;
 using Spine.Unity;
 
-public class AnimEvent : UnityEvent<int, string, float>
-{
 
-}
 
 public class Boss1 : EnemyGeneral {
 
-    public AnimEvent animEvent;
 
+    public PlayableDirector FadeOut;
     //총구
     public GameObject muzzle1;
     public GameObject muzzle2;
@@ -33,11 +31,19 @@ public class Boss1 : EnemyGeneral {
 
     public Vector3[] v_muzzle = new Vector3[13];
 
+    public ParticleSystem[] deadPart;
+
+
+    bool b_Dead = false;
+    bool b_ParticleStart = false;
+
     string[] s_CurAnim = { " ", " ", " " };
     bool b_IsSpin = false;
     
     // Use this for initialization
     void Start () {
+
+
         s_tag = Util.S_PLAYER;
         n_hp = Util.F_ROBOT_HP;
         f_Speed = Util.F_ROBOT_SPEED;
@@ -51,7 +57,7 @@ public class Boss1 : EnemyGeneral {
         
 
         Bullet = Resources.Load("BulletPrefab/" + Util.S_SMG_BULLET_NAME) as GameObject;
-        EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_SMG_NAME, Util.S_SMG_BULLET_NAME, 3.0f, Util.F_SMG_BULLET_DAMAGE, Util.F_SMG_MAGAZINE);
+        EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_SMG_NAME, Util.S_SMG_BULLET_NAME, 6.0f, Util.F_SMG_BULLET_DAMAGE, Util.F_SMG_MAGAZINE);
         
         InitializeParam();
 
@@ -99,77 +105,93 @@ public class Boss1 : EnemyGeneral {
                 }
             }
         };
-
-        if(animEvent == null)
+        for(int i=0; i<deadPart.Length; i++)
         {
-            animEvent = new AnimEvent();
+            deadPart[i].Stop();
         }
-        //animEvent.AddListener(setAnimation);
 	}
 
     // Update is called once per frame
     void Update ()
     {
-        v_muzzle[1] = muzzle1.transform.position;
-        v_muzzle[2] = muzzle2.transform.position;
-        v_muzzle[3] = muzzle3.transform.position;
-        v_muzzle[4] = muzzle4.transform.position;
-        v_muzzle[5] = muzzle5.transform.position;
-        v_muzzle[6] = muzzle6.transform.position;
-        v_muzzle[7] = muzzle7.transform.position;
-        v_muzzle[8] = muzzle8.transform.position;
-        v_muzzle[9] = muzzle9.transform.position;
-        v_muzzle[10] = muzzle10.transform.position;
-        v_muzzle[11] = muzzle11.transform.position;
-        v_muzzle[12] = muzzle12.transform.position;
-
-        //생존 시
-        if (n_hp > 0)
+        if (!b_Dead)
         {
-            Search(Util.F_ROBOT_SEARCH);
+            v_muzzle[1] = muzzle1.transform.position;
+            v_muzzle[2] = muzzle2.transform.position;
+            v_muzzle[3] = muzzle3.transform.position;
+            v_muzzle[4] = muzzle4.transform.position;
+            v_muzzle[5] = muzzle5.transform.position;
+            v_muzzle[6] = muzzle6.transform.position;
+            v_muzzle[7] = muzzle7.transform.position;
+            v_muzzle[8] = muzzle8.transform.position;
+            v_muzzle[9] = muzzle9.transform.position;
+            v_muzzle[10] = muzzle10.transform.position;
+            v_muzzle[11] = muzzle11.transform.position;
+            v_muzzle[12] = muzzle12.transform.position;
 
-            if (Target != null)
+            //생존 시
+            if (n_hp > 0)
             {
-                v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
-            }
+                Search(Util.F_ROBOT_SEARCH);
 
-            //체력 100% ~ 50%
-            if (n_hp > (Util.F_ROBOT_HP / 2) && n_hp <= Util.F_ROBOT_HP)
-            {
-                if (b_IsSearch == true)
+                if (Target != null)
                 {
-                    this.photonView.RPC("Rush", PhotonTargets.All, 2.0f);
-                    //this.photonView.RPC("SpinSpeed", PhotonTargets.All, 1.0f);
+                    v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
                 }
-                else
+
+                //체력 100% ~ 50%
+                if (n_hp > (Util.F_ROBOT_HP / 2) && n_hp <= Util.F_ROBOT_HP)
                 {
+                    if (b_IsSearch == true)
+                    {
+                        this.photonView.RPC("Rush", PhotonTargets.All, 2.0f);
+                        this.photonView.RPC("SpinSpeed", PhotonTargets.All, 1.0f);
+                    }
+                    if (spine_CharacterAnim.state.GetCurrent(2) != null)
+                    {
+                        spine_CharacterAnim.state.GetCurrent(2).timeScale = 1.0f;
+                    }
+                    if (spine_CharacterAnim.state.GetCurrent(0) != null)
+                    {
+                        spine_CharacterAnim.state.GetCurrent(0).timeScale = 0.3f;
+                    }
                     //this.photonView.RPC("SpinSpeed", PhotonTargets.All, 0.1f);
-                    this.photonView.RPC("ShootSpeed", PhotonTargets.All, 0.5f);
+                    this.photonView.RPC("ShootSpeed", PhotonTargets.All, 0.3f);
+                    
                 }
-            }
-            
-            //체력 50% 미만
-            if (n_hp <= (Util.F_ROBOT_HP / 2))
-            {
-                if (b_IsSearch == true)
-                {
-                    this.photonView.RPC("Rush", PhotonTargets.All, 2.5f);
-                    this.photonView.RPC("SpinSpeed", PhotonTargets.All, 1.5f);
-                    //this.photonView.RPC("ShootSpeed", PhotonTargets.All, 1.0f);
-                }
-                else
-                {
-                    this.photonView.RPC("SpinSpeed", PhotonTargets.All, 0.15f);
-                    this.photonView.RPC("ShootSpeed", PhotonTargets.All, 1.5f);
-                    //this.photonView.RPC("Pattern2Anim", PhotonTargets.All);
-                }
-            }
-        }
 
-        //사망 시
-        if (n_hp <= 0)
-        {
-            this.photonView.RPC("Dead", PhotonTargets.All);
+                //체력 50% 미만
+                if (n_hp <= (Util.F_ROBOT_HP / 2))
+                {
+                    if (b_IsSearch == true)
+                    {
+                        this.photonView.RPC("Rush", PhotonTargets.All, 2.5f);
+                        //this.photonView.RPC("SpinSpeed", PhotonTargets.All, 1.5f);
+                        //this.photonView.RPC("ShootSpeed", PhotonTargets.All, 1.0f);
+                    }
+                    if (spine_CharacterAnim.state.GetCurrent(2) != null)
+                    {
+                        spine_CharacterAnim.state.GetCurrent(2).timeScale = 1.5f;
+                    }
+                    if(spine_CharacterAnim.state.GetCurrent(0)!= null)
+                    {
+                        spine_CharacterAnim.state.GetCurrent(0).timeScale = 1.0f;
+                    }
+                        this.photonView.RPC("SpinSpeed", PhotonTargets.All, 0.15f);
+
+                        this.photonView.RPC("ShootSpeed", PhotonTargets.All, 1.0f);
+                        //this.photonView.RPC("Pattern2Anim", PhotonTargets.All);
+                    
+                }
+            }
+
+            //사망 시
+            if (n_hp <= 0)
+            {
+                this.photonView.RPC("Dead", PhotonTargets.All);
+
+
+            }
         }
     }
 
@@ -233,6 +255,10 @@ public class Boss1 : EnemyGeneral {
     protected void Dead()
     {
         setAnimation(0, "Dead", true, 1);
+        b_Dead = true;
+        StartCoroutine(DeadPartcile());
+        rigid.velocity = Vector3.zero;
+        FadeOut.Play();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -279,7 +305,7 @@ public class Boss1 : EnemyGeneral {
 
         for (int i = 1; i <= 12; i++)
         {
-            bulletDir[i] = (v_muzzle[i] - (v_muzzle[0] + Util.V_ACCRUATE)).normalized;
+            bulletDir[i] = (v_muzzle[i] - transform.position).normalized;
         }
 
         //총알 생성
@@ -399,14 +425,24 @@ public class Boss1 : EnemyGeneral {
             if (f_Distance <= dis)
             {
                 b_IsSearch = true;
-                Target.GetComponentInChildren<SpriteRenderer>().color = new Color32(0, 0, 255, 128);
+                //Target.GetComponentInChildren<SpriteRenderer>().color = new Color32(0, 0, 255, 128);
             }
             else
             {
                 b_IsSearch = false;
-                Target.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                //Target.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
             }
         }
+    }
+
+    IEnumerator DeadPartcile()
+    {
+        for (int i = 0; i < deadPart.Length; i++)
+        {
+            deadPart[i].Play();
+            yield return new WaitForSeconds(0.8f);
+        }
+
     }
 
 }

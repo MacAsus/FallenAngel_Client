@@ -1025,7 +1025,8 @@ MonoBehaviour:
   n_hp: 100
   f_MaxHp: 0
   f_AimDegree: 0
-  f_Speed: 4
+  f_Speed: 6
+  f_Multiple: 1
   f_SpritelocalScale: 0
   f_WeaponlocalScale: 0
   s_tag: 
