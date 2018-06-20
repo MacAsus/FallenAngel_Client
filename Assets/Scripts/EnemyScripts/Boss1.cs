@@ -113,7 +113,7 @@ public class Boss1 : EnemyGeneral {
         {
             deadPart[i].Stop();
         }
-        this.photonView.RPC("StartSpawn", PhotonTargets.All);
+        //this.photonView.RPC("StartSpawn", PhotonTargets.All);
     }
 
     // Update is called once per frame
@@ -474,10 +474,7 @@ public class Boss1 : EnemyGeneral {
         while (true)
         {
             Debug.Log("Spawn");
-            Instantiate(SpawnMonster, transform.position,Quaternion.identity);
-            Instantiate(SpawnMonster, transform.position, Quaternion.identity);
-            Instantiate(SpawnMonster, transform.position, Quaternion.identity);
-            Instantiate(SpawnMonster, transform.position, Quaternion.identity);
+
             yield return new WaitForSeconds(10f);
         }
     }
