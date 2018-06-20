@@ -58,8 +58,8 @@ public class Boss1 : EnemyGeneral {
         v_muzzle[0] = this.gameObject.transform.position;
         
 
-        Bullet = Resources.Load("BulletPrefab/" + Util.S_SMG_BULLET_NAME) as GameObject;
-        EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_SMG_NAME, Util.S_SMG_BULLET_NAME, 6.0f, Util.F_SMG_BULLET_DAMAGE, Util.F_SMG_MAGAZINE);
+        Bullet = Resources.Load("BulletPrefab/" + Util.S_ENEMY_BULLET_NAME) as GameObject;
+        EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_ENEMY_NAME, Util.S_ENEMY_BULLET_NAME, Util.F_ENEMY_BULLET_SPEED, Util.F_ENEMY_BULLET_DAMAGE, Util.F_ENEMY_MAGAZINE);
         
         InitializeParam();
 

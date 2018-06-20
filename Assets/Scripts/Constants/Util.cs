@@ -117,6 +117,11 @@ public class Util : MonoBehaviour {
     public const float F_DOUBLE = 2.0f;
 
     //몬스터 탄약
+    public const string S_ENEMY_NAME = "";
+    public const string S_ENEMY_BULLET_NAME = "Enemy_Norm";
+    public const float F_ENEMY_BULLET_SPEED = 8.0f;
+    public const float F_ENEMY_BULLET_DAMAGE = 5.0f;
+    public const float F_ENEMY_MAGAZINE = 7.0f;
 
     //==========기타==========//
     public static Vector3 V_ACCRUATE = new Vector3(0, 0.5f, 0);

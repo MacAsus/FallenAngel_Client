@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Sound_Explosion: {fileID: 0}
-  Sound_Gun_Hit: {fileID: 8300000, guid: 5bc07af90199c7c4aa807e399e854bba, type: 3}
+  Sound_Gun_Hit: {fileID: 0}
 --- !u!114 &114742619615411182
 MonoBehaviour:
   m_ObjectHideFlags: 1

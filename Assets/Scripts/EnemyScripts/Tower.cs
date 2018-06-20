@@ -19,8 +19,8 @@ public class Tower : EnemyGeneral
         //EnemyWeapon = new GeneralInitialize.GunParameter(Util.S__NAME, Util.S__BULLET_NAME, Util.F__BULLET_SPEED, Util.F__BULLET_DAMAGE, Util.F__MAGAZINE);
 
         //디버깅용
-        Bullet = Resources.Load("BulletPrefab/" + Util.S_SMG_BULLET_NAME) as GameObject;
-        EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_SMG_NAME, Util.S_SMG_BULLET_NAME, Util.F_SMG_BULLET_SPEED, Util.F_SMG_BULLET_DAMAGE, Util.F_SMG_MAGAZINE);
+        Bullet = Resources.Load("BulletPrefab/" + Util.S_ENEMY_BULLET_NAME) as GameObject;
+        EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_ENEMY_NAME, Util.S_ENEMY_BULLET_NAME, Util.F_ENEMY_BULLET_SPEED, Util.F_ENEMY_BULLET_DAMAGE, Util.F_ENEMY_MAGAZINE);
         //여기까지
 
         InitializeParam();
