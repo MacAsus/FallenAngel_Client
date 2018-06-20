@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 82870702715657488}
   - component: {fileID: 50022091161096254}
   - component: {fileID: 61366600487660176}
+  - component: {fileID: 114947350212547106}
   m_Layer: 8
   m_Name: Ar_Norm
   m_TagString: Untagged
@@ -180,8 +181,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9bd182cb5b1df4793a730e438a0eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CollisionParticle: {fileID: 0}
   s_Victim: 
   s_Help: 
+--- !u!114 &114947350212547106
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1548707265370464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73a03374a22713a4287456e63f1d340f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sound_Explosion: {fileID: 0}
+  Sound_Gun_Hit: {fileID: 8300000, guid: 5bc07af90199c7c4aa807e399e854bba, type: 3}
 --- !u!212 &212204817883646914
 SpriteRenderer:
   m_ObjectHideFlags: 1

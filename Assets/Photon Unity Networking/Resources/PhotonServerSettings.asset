@@ -70,4 +70,7 @@ MonoBehaviour:
   - Pattern2Anim
   - Fire
   - Rush
+  - ShootSpeed
+  - SpinSpeed
+  - FireAll
   DisableAutoOpenWizard: 1

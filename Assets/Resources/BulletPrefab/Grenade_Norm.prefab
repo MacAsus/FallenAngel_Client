@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 82996319012287710}
   - component: {fileID: 61018084394932796}
   - component: {fileID: 50979807117885072}
+  - component: {fileID: 114911956095403388}
   m_Layer: 8
   m_Name: Grenade_Norm
   m_TagString: Grenade
@@ -350,6 +351,19 @@ MonoBehaviour:
   CollisionParticle: {fileID: 198791019754316048}
   s_Victim: 
   s_Help: 
+--- !u!114 &114911956095403388
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1764655248260678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73a03374a22713a4287456e63f1d340f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sound_Explosion: {fileID: 8300000, guid: d04c3a202d2884842a46fce40d8905d9, type: 3}
+  Sound_Gun_Hit: {fileID: 0}
 --- !u!198 &198142674241262230
 ParticleSystem:
   m_ObjectHideFlags: 1

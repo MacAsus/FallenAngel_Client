@@ -1790,7 +1790,7 @@ MonoBehaviour:
   Sound_Main_Reload: {fileID: 8300000, guid: 3ebfad2dd47d9a847a57b4a5b5d92585, type: 3}
   Sound_Sub_Reload: {fileID: 0}
   Sound_Main_Shoot: {fileID: 8300000, guid: 81ad888c709fbcf4b9d44e575d8aafc5, type: 3}
-  Sound_Sub_Shoot: {fileID: 8300000, guid: a6b9a42471842734f9cc71a7fdbd2395, type: 3}
+  Sound_Sub_Shoot: {fileID: 0}
   Sound_Melee_Shoot: {fileID: 0}
   Sound_Melee_Hit: {fileID: 0}
   Sound_Gun_Hit: {fileID: 0}

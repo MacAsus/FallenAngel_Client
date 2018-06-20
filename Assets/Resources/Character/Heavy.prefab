@@ -849,6 +849,7 @@ MonoBehaviour:
   f_MaxHp: 0
   f_AimDegree: 0
   f_Speed: 3
+  f_Multiple: 1
   f_SpritelocalScale: 0
   f_WeaponlocalScale: 0
   s_tag: 
@@ -1082,10 +1083,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Sound_Zero_Shoot: {fileID: 0}
-  Sound_Main_Reload: {fileID: 0}
+  Sound_Main_Reload: {fileID: 8300000, guid: 1f9fa74799eab9543bc4a3d878b2fc5d, type: 3}
   Sound_Sub_Reload: {fileID: 0}
-  Sound_Main_Shoot: {fileID: 0}
-  Sound_Sub_Shoot: {fileID: 0}
+  Sound_Main_Shoot: {fileID: 8300000, guid: d66e7904113107745a563faa702080db, type: 3}
+  Sound_Sub_Shoot: {fileID: 8300000, guid: 0bad057d7c5fa644a98c9c6c010f2b68, type: 3}
   Sound_Melee_Shoot: {fileID: 0}
   Sound_Melee_Hit: {fileID: 0}
   Sound_Gun_Hit: {fileID: 0}

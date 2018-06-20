@@ -1271,7 +1271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43d3a12bc1b7d9b4e94cdb75794e253e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sound_Explosion: {fileID: 0}
+  Sound_Explosion: {fileID: 8300000, guid: d04c3a202d2884842a46fce40d8905d9, type: 3}
   Sound_Main_Shoot: {fileID: 0}
   Sound_Melee_Hit: {fileID: 0}
   Sound_Gun_Hit: {fileID: 0}
@@ -1503,6 +1503,7 @@ MonoBehaviour:
   f_MaxHp: 0
   f_AimDegree: 0
   f_Speed: 0
+  f_Multiple: 1
   f_SpritelocalScale: 0
   f_WeaponlocalScale: 0
   s_tag: 
@@ -1525,7 +1526,6 @@ MonoBehaviour:
   shootDelayTime: 0
   b_IsSearch: 0
   b_IsPossibleLaserHit: 1
-  f_Multiple: 1
   ps: {fileID: 198758036387319290}
   Target: {fileID: 0}
   Bullet: {fileID: 0}
