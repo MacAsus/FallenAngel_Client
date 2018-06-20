@@ -705,6 +705,12 @@ Prefab:
       propertyPath: FadeOut
       value: 
       objectReference: {fileID: 784416037}
+    - target: {fileID: 114637384980295266, guid: 695815f3f2556f346bc9b40d821e177f,
+        type: 2}
+      propertyPath: SpawnMonster
+      value: 
+      objectReference: {fileID: 1450258423907524, guid: 2d39009b898f3a445a80dcdd82b9c64d,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 695815f3f2556f346bc9b40d821e177f, type: 2}
   m_IsPrefabParent: 0

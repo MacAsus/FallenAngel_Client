@@ -30,6 +30,7 @@ public class Boss1 : EnemyGeneral {
     public GameObject muzzle12;
 
     public Vector3[] v_muzzle = new Vector3[13];
+    public GameObject SpawnMonster;
 
     public ParticleSystem[] deadPart;
 
@@ -38,6 +39,7 @@ public class Boss1 : EnemyGeneral {
     bool b_ParticleStart = false;
     bool b_ShootCool = false;
     bool b_RushCool = false;
+    bool b_SpawnCool = false;
 
     string[] s_CurAnim = { " ", " ", " " };
     bool b_IsSpin = false;
@@ -58,8 +60,8 @@ public class Boss1 : EnemyGeneral {
         v_muzzle[0] = this.gameObject.transform.position;
         
 
-        Bullet = Resources.Load("BulletPrefab/" + Util.S_ENEMY_BULLET_NAME) as GameObject;
-        EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_ENEMY_NAME, Util.S_ENEMY_BULLET_NAME, Util.F_ENEMY_BULLET_SPEED, Util.F_ENEMY_BULLET_DAMAGE, Util.F_ENEMY_MAGAZINE);
+        Bullet = Resources.Load("BulletPrefab/" + Util.S_SMG_BULLET_NAME) as GameObject;
+        EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_SMG_NAME, Util.S_SMG_BULLET_NAME, 6.0f, Util.F_SMG_BULLET_DAMAGE, Util.F_SMG_MAGAZINE);
         
         InitializeParam();
 
@@ -111,11 +113,13 @@ public class Boss1 : EnemyGeneral {
         {
             deadPart[i].Stop();
         }
-	}
+        this.photonView.RPC("StartSpawn", PhotonTargets.All);
+    }
 
     // Update is called once per frame
     void Update ()
     {
+
         if (!b_Dead)
         {
             v_muzzle[1] = muzzle1.transform.position;
@@ -458,6 +462,24 @@ public class Boss1 : EnemyGeneral {
     IEnumerator RushCoolTime()
     {
         yield return new WaitForSeconds(6f);
+    }
+
+    [PunRPC]
+    void StartSpawn()
+    {
+        StartCoroutine(MonsterSpawnCool());
+    }
+    IEnumerator MonsterSpawnCool()
+    {
+        while (true)
+        {
+            Debug.Log("Spawn");
+            Instantiate(SpawnMonster, transform.position,Quaternion.identity);
+            Instantiate(SpawnMonster, transform.position, Quaternion.identity);
+            Instantiate(SpawnMonster, transform.position, Quaternion.identity);
+            Instantiate(SpawnMonster, transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(10f);
+        }
     }
 
 }

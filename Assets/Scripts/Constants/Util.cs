@@ -13,7 +13,7 @@ public class Util : MonoBehaviour {
     /* Bruiser */
     public const string S_BRUISER_NAME = "Bruiser";
     public const float F_BRUISER_DAMAGE = 20.0f;
-    public const float F_BRUISER_SEARCH = 5.0f;
+    public const float F_BRUISER_SEARCH = 30.0f;
     public const float F_BRUISER_SPEED = 5.0f;
     public const float F_BRUISER_HP = 30.0f;
 
