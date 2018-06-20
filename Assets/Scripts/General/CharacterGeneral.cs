@@ -11,7 +11,7 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
     public float f_MaxHp; //캐릭터의 최대체력
     public float f_AimDegree; //Aim 각도
     public float f_Speed; //캐릭터 무빙 스피드
-
+    public float f_Multiple = 1.0f;
     public float f_SpritelocalScale; //캐릭터 로컬 스케일(타일과 크기 맞춤을 위함)
     public float f_WeaponlocalScale; //무기 로컬 스케일(타일과 크기 맞춤을 위함)
 
@@ -239,6 +239,32 @@ public abstract class CharacterGeneral : Photon.MonoBehaviour
 
             spine_CharacterAnim.skeleton.SetColor(Color.white);
         }
+        yield return null;
+    }
+
+    protected IEnumerator Weaken()
+    {
+        if (mySprite != null)
+        {
+            mySprite.color = new Color32(0, 0, 255, 255);
+            f_Multiple = Util.F_DOUBLE;
+
+            yield return new WaitForSeconds(Util.F_LASER);
+
+            mySprite.color = new Color32(255, 255, 255, 255);
+            f_Multiple = 1.0f;
+        }
+        else
+        {
+            spine_CharacterAnim.skeleton.SetColor(Color.blue);
+            f_Multiple = Util.F_DOUBLE;
+
+            yield return new WaitForSeconds(Util.F_LASER);
+
+            spine_CharacterAnim.skeleton.SetColor(Color.white);
+            f_Multiple = 1.0f;
+        }
+
         yield return null;
     }
 

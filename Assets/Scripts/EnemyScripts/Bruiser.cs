@@ -26,7 +26,6 @@ public class Bruiser : EnemyGeneral
                 WeaponSpineControl(b_Fired, b_Reload);
             }
 
-
             Search(Util.F_BRUISER_SEARCH);
             Trace();
         }

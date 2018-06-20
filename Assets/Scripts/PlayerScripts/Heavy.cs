@@ -128,7 +128,7 @@ public class Heavy : Player {
                 if (Input.GetKey(KeyCode.Mouse0) && cur_Weapon.f_Magazine > 0)
                 {
                     b_SlowRun = true;
-
+                    PlayerSound.instance.Play_Sound_Melee_Shoot();
                     if (s_CurAnimation != "Gatling_Spin")
                     {
                         s_CurAnimation = "Gatling_Spin";

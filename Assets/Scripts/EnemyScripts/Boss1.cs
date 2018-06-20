@@ -43,7 +43,7 @@ public class Boss1 : EnemyGeneral {
         f_Speed = Util.F_ROBOT_SPEED;
         f_Damage = Util.F_ROBOT_DAMAGE;
 
-        shootDelayTime = 0.333f; //총알 발사 딜레이
+        //shootDelayTime = 0.333f; //총알 발사 딜레이
 
         Target = GameObject.FindWithTag(s_tag);
 
@@ -52,7 +52,7 @@ public class Boss1 : EnemyGeneral {
 
         Bullet = Resources.Load("BulletPrefab/" + Util.S_SMG_BULLET_NAME) as GameObject;
         EnemyWeapon = new GeneralInitialize.GunParameter(Util.S_SMG_NAME, Util.S_SMG_BULLET_NAME, 3.0f, Util.F_SMG_BULLET_DAMAGE, Util.F_SMG_MAGAZINE);
-
+        
         InitializeParam();
 
         if(spine_CharacterAnim == null)
@@ -127,37 +127,47 @@ public class Boss1 : EnemyGeneral {
         if (n_hp > 0)
         {
             Search(Util.F_ROBOT_SEARCH);
+
             if (Target != null)
             {
                 v_TargetPosition = Target.transform.position + Util.V_ACCRUATE;
             }
 
             //체력 100% ~ 50%
-            if (n_hp >= (Util.F_ROBOT_HP / 2) && n_hp <= Util.F_ROBOT_HP)
-            {
-                this.photonView.RPC("Pattern1Anim", PhotonTargets.All);
-                //if (b_IsSearch == true)
-                //{
-                //    this.photonView.RPC("Rush", PhotonTargets.All);
-                //}
-            }
-            
-            //체력 50% ~ 0%
-            else if (n_hp < (Util.F_ROBOT_HP / 2))
+            if (n_hp > (Util.F_ROBOT_HP / 2) && n_hp <= Util.F_ROBOT_HP)
             {
                 if (b_IsSearch == true)
                 {
-                    this.photonView.RPC("Rush", PhotonTargets.All);
+                    this.photonView.RPC("Rush", PhotonTargets.All, 2.0f);
+                    //this.photonView.RPC("SpinSpeed", PhotonTargets.All, 1.0f);
                 }
                 else
                 {
-                    this.photonView.RPC("Pattern2Anim", PhotonTargets.All);
+                    //this.photonView.RPC("SpinSpeed", PhotonTargets.All, 0.1f);
+                    this.photonView.RPC("ShootSpeed", PhotonTargets.All, 0.5f);
+                }
+            }
+            
+            //체력 50% 미만
+            if (n_hp <= (Util.F_ROBOT_HP / 2))
+            {
+                if (b_IsSearch == true)
+                {
+                    this.photonView.RPC("Rush", PhotonTargets.All, 2.5f);
+                    this.photonView.RPC("SpinSpeed", PhotonTargets.All, 1.5f);
+                    //this.photonView.RPC("ShootSpeed", PhotonTargets.All, 1.0f);
+                }
+                else
+                {
+                    this.photonView.RPC("SpinSpeed", PhotonTargets.All, 0.15f);
+                    this.photonView.RPC("ShootSpeed", PhotonTargets.All, 1.5f);
+                    //this.photonView.RPC("Pattern2Anim", PhotonTargets.All);
                 }
             }
         }
 
         //사망 시
-        else if (n_hp <= 0)
+        if (n_hp <= 0)
         {
             this.photonView.RPC("Dead", PhotonTargets.All);
         }
@@ -167,7 +177,7 @@ public class Boss1 : EnemyGeneral {
     {
         if (e.data.name == "Shoot")
         {
-            this.photonView.RPC("Fire", PhotonTargets.All);
+            this.photonView.RPC("FireAll", PhotonTargets.All);
         }
     }
 
@@ -204,22 +214,25 @@ public class Boss1 : EnemyGeneral {
         
     }
 
-    protected void SpinSpeed(float Time)
+    [PunRPC]
+    protected void Rush(float speed)
     {
-        setAnimation(2, "Spin", true, Time);
+        rigid.velocity = (v_TargetPosition - transform.position).normalized * f_Speed * speed;
     }
-
-    //ShootSpeed 호출시 자동으로 총알 발사
-    protected void ShootSpeed(float Time)
+    [PunRPC]
+    protected void SpinSpeed(float speed)
     {
-        setAnimation(0, "Shot", true, Time);
+        setAnimation(2, "Spin", true, speed);
     }
-
+    [PunRPC]
+    protected void ShootSpeed(float speed)
+    {
+        setAnimation(0, "Shot", true, speed);
+    }
     [PunRPC]
     protected void Dead()
     {
         setAnimation(0, "Dead", true, 1);
-
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -258,7 +271,7 @@ public class Boss1 : EnemyGeneral {
     //    //this.photonView.RPC("PatternAnim", PhotonTargets.Others);
     //}
     [PunRPC]
-    protected void Fire()
+    protected void FireAll()
     {
         Vector3[] bulletDir = new Vector3[13];
 
@@ -355,25 +368,6 @@ public class Boss1 : EnemyGeneral {
         bullet12.GetComponent<Rigidbody2D>().velocity = bulletDir[12].normalized * EnemyWeapon.f_BulletSpeed;
     }
 
-    [PunRPC]
-    protected void Pattern1Anim()
-    {
-        ShootSpeed(0.5f);
-        SpinSpeed(0.1f);
-    }
-    [PunRPC]
-    protected void Rush()
-    {
-        setAnimation(0, "Dead", true, 1);
-        StartCoroutine("WaitAnim");
-    }
-    [PunRPC]
-    protected void Pattern2Anim()
-    {
-        ShootSpeed(1.2f);
-        SpinSpeed(0.2f);
-    }
-
     protected override void Search(float dis)
     {
         Vector3 distance = new Vector3(9999, 9999);
@@ -405,19 +399,14 @@ public class Boss1 : EnemyGeneral {
             if (f_Distance <= dis)
             {
                 b_IsSearch = true;
+                Target.GetComponentInChildren<SpriteRenderer>().color = new Color32(0, 0, 255, 128);
             }
             else
             {
                 b_IsSearch = false;
+                Target.GetComponentInChildren<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
             }
         }
     }
 
-    IEnumerator WaitAnim()
-    {
-        yield return new WaitForSeconds(1.0f);
-        SpinSpeed(2.0f);
-        //돌진
-        rigid.velocity = (v_TargetPosition - transform.position).normalized * f_Speed * 3;
-    }
 }

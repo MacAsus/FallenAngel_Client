@@ -7,7 +7,7 @@ public class Attacker : Player {
     private PhotonVoiceRecorder recorder;
     private PhotonVoiceSpeaker speaker;
 
-    public GameObject myLaser;
+    //public GameObject myLaser;
 
     private bool b_IsLaserShoot = false;
 
@@ -29,7 +29,7 @@ public class Attacker : Player {
         Muzzle = Muzzle1;
         spine_GunAnim.Skeleton.SetSkin(Weapon1.s_GunName);
         b_NeedtoRotate = true;
-        myLaser.SetActive(false);
+        //myLaser.SetActive(false);
 
         if (UI != null)
         {
@@ -130,7 +130,7 @@ public class Attacker : Player {
             }
             if (cur_Weapon == Weapon2)
             {
-                if (Input.GetKey(KeyCode.Mouse0) && Skill == true)
+                if (Input.GetKey(KeyCode.Mouse0) && Skill == true && cur_Weapon.f_Magazine != 0)
                 {
                     FireBullet();
                     spine_GunAnim.state.SetAnimation(0, "Laser_Shoot", false);
@@ -141,7 +141,7 @@ public class Attacker : Player {
                     StartCoroutine("LaserTime");
 
                 }
-                if (Input.GetKey(KeyCode.Mouse0) && Skill == false)
+                if (Input.GetKey(KeyCode.Mouse0) && (Skill == false || cur_Weapon.f_Magazine == 0))
                 {
                     PlayerSound.instance.Play_Sound_Zero_Shoot();
                 }
@@ -175,10 +175,11 @@ public class Attacker : Player {
             //b_IsLaserShoot = true;
             //StartCoroutine("LaserShootTime");
             GameObject bullet = Instantiate(Sub_Bullet, muzzlePos, Muzzle.transform.rotation);
-            BulletGeneral temp_bullet = bullet.GetComponent<BulletGeneral>();
+            BulletGeneral temp_bullet = bullet.GetComponentInChildren<BulletGeneral>();
             temp_bullet.bulletInfo = Weapon2;
             temp_bullet.s_Victim = s_tag;
-            StartCoroutine(DestroyLaser(bullet));
+            //bullet.GetComponent<Rigidbody2D>().velocity = (muzzlePos - g_Weapon.transform.position).normalized;
+            //StartCoroutine(DestroyLaser(bullet));
         }
     }
 
@@ -192,27 +193,27 @@ public class Attacker : Player {
         yield return null;
     }
 
-    protected IEnumerator LaserShootTime()
-    {
+    //protected IEnumerator LaserShootTime()
+    //{
         
-        BulletGeneral temp_bullet = myLaser.GetComponentInChildren<BulletGeneral>();
-        temp_bullet.bulletInfo = Weapon2;
-        temp_bullet.s_Victim = s_tag;
-        myLaser.SetActive(true);
+    //    BulletGeneral temp_bullet = myLaser.GetComponentInChildren<BulletGeneral>();
+    //    temp_bullet.bulletInfo = Weapon2;
+    //    temp_bullet.s_Victim = s_tag;
+    //    myLaser.SetActive(true);
 
-        yield return new WaitForSeconds(Util.F_LASER_SHOOT_TIME);
+    //    yield return new WaitForSeconds(Util.F_LASER_SHOOT_TIME);
 
-        b_Fired = false;
-        b_IsLaserShoot = false;
-        myLaser.SetActive(false);
+    //    b_Fired = false;
+    //    b_IsLaserShoot = false;
+    //    myLaser.SetActive(false);
 
-        yield return null;
-    }
+    //    yield return null;
+    //}
 
-    protected IEnumerator DestroyLaser(GameObject laser)
-    {
-        yield return new WaitForSeconds(Util.F_LASER_SHOOT_TIME);
-        Destroy(laser);
-        yield return null;
-    }
+    //protected IEnumerator DestroyLaser(GameObject laser)
+    //{
+    //    yield return new WaitForSeconds(0.1f);
+    //    Destroy(laser);
+    //    yield return null;
+    //}
 }

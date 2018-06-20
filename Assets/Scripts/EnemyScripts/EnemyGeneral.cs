@@ -11,7 +11,7 @@ public class EnemyGeneral : CharacterGeneral
     public bool b_IsSearch = false;
     public bool b_IsPossibleLaserHit = true;
 
-    public float f_Multiple = 1.0f;
+    
 
     public ParticleSystem ps;
 
@@ -210,20 +210,7 @@ public class EnemyGeneral : CharacterGeneral
 
         yield return null;
     }
-
-    //레이저 효과
-    protected IEnumerator Weaken()
-    {
-        mySprite.color = new Color32(0, 0, 255, 255);
-        f_Multiple = Util.F_DOUBLE;
-
-        yield return new WaitForSeconds(Util.F_LASER);
-
-        mySprite.color = new Color32(255, 255, 255, 255);
-        f_Multiple = 1.0f;
-
-        yield return null;
-    }
+    
 
     protected IEnumerator LaserHitCoolTime()
     {

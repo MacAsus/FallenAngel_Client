@@ -16,7 +16,9 @@ public class Player : CharacterGeneral
     public GameObject Main_Bullet; //주무장 총알 프리팹
     public GameObject Sub_Bullet; //부무장 총알 프리팹
     public GameObject Muzzle1, Muzzle2;
-    
+
+    public ParticleSystem DeadPs;
+
     protected bool b_NeedtoRotate = true;
     protected bool b_SlowRun = false;
     protected bool b_Knock = false;
@@ -29,6 +31,12 @@ public class Player : CharacterGeneral
     //Photon Value
     protected Vector3 v_NetworkMousePos;
     protected bool b_NetworkIsTransmitting = false;
+
+    void Start()
+    {
+        DeadPs = GetComponentInChildren<ParticleSystem>();
+        DeadPs.Stop();
+    }
 
     protected void UpdateMousePosition()
     {
@@ -252,8 +260,10 @@ public class Player : CharacterGeneral
         {
             this.n_hp = 0;
             this.a_Animator.SetBool("Death", true);
+            transform.Find("Trigger").GetComponent<BoxCollider2D>().enabled = false;
+            DeadPs.Play();
             e_SpriteState = SpriteState.Dead;
-            StartCoroutine(Death_Wait_Sec(1.0f));
+            StartCoroutine(Death_Wait_Sec(0.1f));
         }
     }
 

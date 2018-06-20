@@ -191,7 +191,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1090927484845324}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -1.04, y: -0.2, z: -0.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4407870938544202}
@@ -347,8 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9bd182cb5b1df4793a730e438a0eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionParticle: {fileID: 198027839464491624, guid: 11ab36d8a74f55c4285ff5d3ff2e72dd,
-    type: 2}
+  CollisionParticle: {fileID: 198791019754316048}
   s_Victim: 
   s_Help: 
 --- !u!198 &198142674241262230
