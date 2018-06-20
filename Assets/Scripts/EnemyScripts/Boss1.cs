@@ -36,6 +36,8 @@ public class Boss1 : EnemyGeneral {
 
     bool b_Dead = false;
     bool b_ParticleStart = false;
+    bool b_ShootCool = false;
+    bool b_RushCool = false;
 
     string[] s_CurAnim = { " ", " ", " " };
     bool b_IsSpin = false;
@@ -443,6 +445,19 @@ public class Boss1 : EnemyGeneral {
             yield return new WaitForSeconds(0.8f);
         }
 
+    }
+
+    IEnumerator ShootStart()
+    {
+        yield return new WaitForSeconds(5f);
+    }
+    IEnumerator ShootCool()
+    {
+        yield return new WaitForSeconds(3f);
+    }
+    IEnumerator RushCoolTime()
+    {
+        yield return new WaitForSeconds(6f);
     }
 
 }
