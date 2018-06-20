@@ -166,7 +166,7 @@ public class RoomWaitingGui : Photon.PunBehaviour
 
     private void LoadSceneToInGame()
     {
-        SceneManager.LoadScene("InGame", LoadSceneMode.Single);
+        SceneManager.LoadScene("InGame2", LoadSceneMode.Single);
     }
 
     // when User Leave
@@ -283,7 +283,7 @@ public class RoomWaitingGui : Photon.PunBehaviour
     [PunRPC]
     private void StartRoomRPC()
     {
-        SceneManager.LoadScene("InGame", LoadSceneMode.Single);
+        SceneManager.LoadScene("InGame2", LoadSceneMode.Single);
     }
 }
 
